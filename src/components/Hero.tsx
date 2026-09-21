@@ -32,7 +32,7 @@ interface HeroProps {
 
 export const GOOGLE_DRIVE_VIDEO_ID = '1inctjFtosU0YppvwjIvIoFc51L479egJ';
 export const GOOGLE_DRIVE_VIDEO_URL = `https://drive.google.com/file/d/${GOOGLE_DRIVE_VIDEO_ID}/preview`;
-export const LOCAL_PROMO_VIDEO_URL = '/assets/jamaah/promo-video.mp4';
+export const LOCAL_PROMO_VIDEO_URL = encodeURI('/🕋 PROMO UMROH .mp4');
 export const INSTAGRAM_REEL_URL = 'https://www.instagram.com/reel/DcDkVAUylrX/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==';
 
 export const Hero = ({ onSearch, onExplorePackages, onOpenConsultation, onOpenAbout }: HeroProps) => {
@@ -45,7 +45,10 @@ export const Hero = ({ onSearch, onExplorePackages, onOpenConsultation, onOpenAb
 
   const handleTogglePlay = () => {
     if (videoRef.current) {
-      if (videoRef.current.paused) {
+      if (videoRef.current.paused || videoRef.current.ended) {
+        if (videoRef.current.ended) {
+          videoRef.current.currentTime = 0;
+        }
         videoRef.current.muted = false;
         videoRef.current.volume = 1;
         videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
@@ -170,13 +173,13 @@ export const Hero = ({ onSearch, onExplorePackages, onOpenConsultation, onOpenAb
                 <video
                   ref={videoRef}
                   src={LOCAL_PROMO_VIDEO_URL}
-                  loop
                   playsInline
                   preload="auto"
                   className="w-full h-full object-cover rounded-xl pointer-events-none"
                   onLoadedData={() => setIsVideoLoaded(true)}
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
+                  onEnded={() => setIsPlaying(false)}
                   onError={() => setUseIframeFallback(true)}
                 />
               ) : (
@@ -193,13 +196,10 @@ export const Hero = ({ onSearch, onExplorePackages, onOpenConsultation, onOpenAb
 
               {/* Play Overlay Saat Video Sedang Dijeda / Baru Masuk (Hilang Total Saat Diputar) */}
               {!isPlaying && isVideoLoaded && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 pointer-events-none transition-all duration-300">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none transition-all duration-300">
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#C5A059] via-[#DFC386] to-[#F5ECE2] text-[#141414] flex items-center justify-center shadow-xl shadow-black/80 border-2 border-white/20 group-hover/player:scale-110 transition-transform">
                     <Play className="w-6 h-6 fill-[#141414] text-[#141414] ml-0.5" />
                   </div>
-                  <span className="mt-2 text-[11px] font-semibold text-white drop-shadow-md tracking-wide">
-                    Putar Video (Bersuara)
-                  </span>
                 </div>
               )}
 
