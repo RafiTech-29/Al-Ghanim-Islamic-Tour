@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "Jamaah": {
+      "title": "Jamaah",
+      "description": "Operational tracking of pilgrims progressing through 5 stages of umrah / hajj preparation.",
+      "type": "object",
+      "properties": {
+        "nij": { "type": "string", "description": "Nomor Induk Jamaah" },
+        "name": { "type": "string", "description": "Full name of the jamaah" },
+        "packageName": { "type": "string", "description": "Package title" },
+        "phone": { "type": "string", "description": "WhatsApp / Phone number" },
+        "city": { "type": "string", "description": "Origin city" },
+        "currentStep": { "type": "number", "description": "Current active step (1-5)" },
+        "departureDate": { "type": "string", "description": "Date of departure" },
+        "airline": { "type": "string", "description": "Airlines code / name" },
+        "hotelMakkah": { "type": "string", "description": "Hotel in Makkah" },
+        "hotelMadinah": { "type": "string", "description": "Hotel in Madinah" }
+      },
+      "required": ["nij", "name", "packageName", "phone", "currentStep"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Leads and questions submitted by prospective pilgrims.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Customer name" },
+        "phone": { "type": "string", "description": "WhatsApp number" },
+        "packageInterest": { "type": "string", "description": "Interested package name" },
+        "message": { "type": "string", "description": "Inquiry content" },
+        "status": { "type": "string", "enum": ["Baru", "Dihubungi", "Selesai"] }
+      },
+      "required": ["name", "phone"]
+    },
+    "PartnerRegistration": {
+      "title": "PartnerRegistration",
+      "description": "Partner / branch / Syiar agent applications.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Partner applicant name" },
+        "phone": { "type": "string", "description": "WhatsApp number" },
+        "city": { "type": "string", "description": "City / Location" },
+        "type": { "type": "string", "description": "Affiliation type" },
+        "status": { "type": "string", "enum": ["Menunggu Verifikasi", "Disetujui", "Dihubungi"] }
+      },
+      "required": ["name", "phone", "city"]
+    },
+    "Package": {
+      "title": "Package",
+      "description": "CMS Umrah and Hajj packages catalog item.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Package title" },
+        "category": { "type": "string", "description": "Package category" },
+        "price": { "type": "string", "description": "Formatted price string" },
+        "departureDate": { "type": "string", "description": "Departure date description" },
+        "airline": { "type": "string", "description": "Airlines" },
+        "hotelMakkah": { "type": "string", "description": "Hotel in Makkah" },
+        "hotelMadinah": { "type": "string", "description": "Hotel in Madinah" },
+        "totalSeats": { "type": "number", "description": "Total quota seats" },
+        "availableSeats": { "type": "number", "description": "Remaining available seats" }
+      },
+      "required": ["title", "category", "price"]
+    },
+    "PromoBanner": {
+      "title": "PromoBanner",
+      "description": "Promotional banners and monthly flyers for campaigns.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Headline promo title" },
+        "subtitle": { "type": "string", "description": "Offer details and discounts" },
+        "badgeText": { "type": "string", "description": "Badge tag text" },
+        "imageUrl": { "type": "string", "description": "Poster image URL or base64" },
+        "targetLink": { "type": "string", "description": "Target CTA link" },
+        "ctaText": { "type": "string", "description": "CTA button label" },
+        "endDate": { "type": "string", "description": "Promo valid until date" },
+        "isActive": { "type": "boolean", "description": "Publish status" }
+      },
+      "required": ["title", "isActive"]
+    },
+    "Testimonial": {
+      "title": "Testimonial",
+      "description": "Reviews, ratings, and social proof submitted by pilgrims with admin moderation.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Pilgrim name" },
+        "city": { "type": "string", "description": "Pilgrim origin city" },
+        "packageTaken": { "type": "string", "description": "Package taken" },
+        "rating": { "type": "number", "description": "Star rating 1 to 5" },
+        "comment": { "type": "string", "description": "Testimonial review comment" },
+        "nij": { "type": "string", "description": "Optional NIJ for verification" },
+        "status": { "type": "string", "enum": ["approved", "pending", "hidden"] },
+        "date": { "type": "string", "description": "Review date" }
+      },
+      "required": ["name", "rating", "comment"]
+    }
+  },
+  "firestore": {
+    "/testimonials/{docId}": {
+      "schema": { "$ref": "#/entities/Testimonial" },
+      "description": "Testimonials and reviews collection"
+    },
+    "/jamaah/{docId}": {
+      "schema": { "$ref": "#/entities/Jamaah" },
+      "description": "Jamaah tracking records collection"
+    },
+    "/inquiries/{docId}": {
+      "schema": { "$ref": "#/entities/Inquiry" },
+      "description": "User inquiries and leads collection"
+    },
+    "/partners_registrations/{docId}": {
+      "schema": { "$ref": "#/entities/PartnerRegistration" },
+      "description": "Partner registrations collection"
+    },
+    "/packages/{docId}": {
+      "schema": { "$ref": "#/entities/Package" },
+      "description": "Umrah & Hajj packages catalog collection"
+    },
+    "/promo_banners/{docId}": {
+      "schema": { "$ref": "#/entities/PromoBanner" },
+      "description": "Promo flyers and banners collection"
+    },
+    "/gallery/{docId}": {
+      "description": "Departure documentation photos collection"
+    },
+    "/settings/{docId}": {
+      "description": "System and admin settings collection"
+    }
+  }
+}

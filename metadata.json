@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Al-Ghanim Sacred Journeys",
+  "description": "Premium Islamic tour and curated Umroh packages with sacred luxury aesthetics, installment savings planner, custom VIP itinerary builder, and spiritual consultation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

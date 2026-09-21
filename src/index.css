@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :root {
+    --font-serif: 'Scheherazade New', 'Amiri', 'Traditional Arabic', Georgia, serif;
+    --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Soft Luxury Color System ALGHANIM */
+    --color-bg-primary: #FFFFFF;
+    --color-bg-offwhite: #FAFAFA;
+    --color-text-charcoal: #2B2B2B;
+    --color-text-muted: #6E6E6E;
+    --color-accent-bronze: #C5A059;
+    --color-accent-bronze-dark: #B38E46;
+    --color-border-subtle: #EBEBEB;
+  }
+
+  html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    scroll-behavior: smooth;
+    background-color: #FFFFFF;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #FFFFFF;
+    color: #2B2B2B;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    position: relative;
+    letter-spacing: -0.005em;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    position: relative;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-serif-luxury {
+    font-family: var(--font-serif);
+    letter-spacing: 0.01em;
+  }
+
+  button, input, select, textarea, nav, .font-sans-luxury {
+    font-family: var(--font-sans);
+  }
+}
+
+.font-serif-luxury {
+  font-family: 'Scheherazade New', 'Amiri', 'Traditional Arabic', Georgia, serif;
+  letter-spacing: 0.01em;
+}
+
+.font-sans-luxury {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Warm Luxury Bronze Gradients & Utilities */
+.luxury-bronze-gradient {
+  background: linear-gradient(135deg, #C5A059 0%, #B38E46 50%, #967434 100%);
+}
+
+.bg-luxury-bronze {
+  background-color: #C5A059;
+}
+
+.bg-luxury-bronze-dark {
+  background-color: #B38E46;
+}
+
+.text-luxury-bronze {
+  color: #C5A059;
+}
+
+.text-luxury-bronze-dark {
+  color: #B38E46;
+}
+
+.border-luxury-bronze {
+  border-color: #C5A059;
+}
+
+.bg-charcoal-soft {
+  background-color: #2B2B2B;
+}
+
+.text-charcoal-soft {
+  color: #2B2B2B;
+}
+
+.bg-offwhite-soft {
+  background-color: #FAFAFA;
+}
+
+.border-subtle-light {
+  border-color: #EBEBEB;
+}
+
+/* =========================================================================
+   CLEAN LUXURY BACKGROUND (WATERMARK REMOVED FOR MAXIMUM PERFORMANCE & SPEED)
+   ========================================================================= */
+.bg-watermark-alghanim {
+  background-color: #FAFAFA;
+}
+
+.bg-watermark-white {
+  background-color: #FFFFFF;
+}
+
+/* Card Floating Soft Luxury Hover Effect */
+
+.card-soft-luxury {
+  background-color: #FFFFFF;
+  border: 1px solid #EBEBEB;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-soft-luxury:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(197, 160, 89, 0.25);
+}
+
+.card-lift-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-lift-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 35px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #FAFAFA;
+}
+::-webkit-scrollbar-thumb {
+  background: #E0E0E0;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C5A059;
+}
+
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* =========================================================================
+   TOP TICKER CONTINUOUS MARQUEE ANIMATION
+   Smooth, steady scrolling animation for the top trust bar
+   ========================================================================= */
+@keyframes marquee-scroll-smooth {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-scroll-smooth 45s linear infinite;
+}
+
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-logos {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-scroll-smooth 32s linear infinite;
+}
+
+.animate-marquee-logos:hover {
+  animation-play-state: paused;
+}
+
+.mask-fade-edges {
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* =========================================================================
+   PRINT STYLES FOR ADMIN USER GUIDE & OFFICIAL REPORTS
+   ========================================================================= */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+  
+  /* Hide interactive/nav elements when printing */
+  nav, footer, .no-print, button:not(.print-include) {
+    display: none !important;
+  }
+  
+  .print-page-break {
+    page-break-before: always;
+  }
+  
+  .print-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+
+

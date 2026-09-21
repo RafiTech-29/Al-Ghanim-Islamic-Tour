@@ -1,0 +1,53 @@
+<svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="agCircleBg" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#1F1F1F"/>
+      <stop offset="70%" stop-color="#131313"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </radialGradient>
+    <linearGradient id="agSilverTone" x1="20%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="25%" stop-color="#F0F0F6"/>
+      <stop offset="60%" stop-color="#C6C6D6"/>
+      <stop offset="85%" stop-color="#9696A8"/>
+      <stop offset="100%" stop-color="#707080"/>
+    </linearGradient>
+    <linearGradient id="agGoldTone" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="20%" stop-color="#F5EBDE"/>
+      <stop offset="50%" stop-color="#D5BA9F"/>
+      <stop offset="80%" stop-color="#A7866B"/>
+      <stop offset="100%" stop-color="#75563D"/>
+    </linearGradient>
+    <linearGradient id="agTextTone" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="30%" stop-color="#ECECF2"/>
+      <stop offset="65%" stop-color="#D8C8B6"/>
+      <stop offset="100%" stop-color="#B69C85"/>
+    </linearGradient>
+    <filter id="agEmboss" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Circular Outer Badge in Pitch Black -->
+  <circle cx="250" cy="250" r="248" fill="url(#agCircleBg)"/>
+
+  <!-- Official AG Diamond Emblem -->
+  <g filter="url(#agEmboss)">
+    <!-- Top-Right Chevron Arm of A (Platinum Silver) -->
+    <path d="M 250,82 L 310,185 C 314,192 312,200 305,204 L 285,190 L 250,130 Z" fill="url(#agSilverTone)"/>
+
+    <!-- Left Outer Arm & Bottom Diamond Apex ('A' + 'G' Silhouette) -->
+    <path d="M 244,90 L 190,185 C 185,193 187,202 195,206 L 250,305 L 292,238 L 272,224 L 250,260 L 222,216 C 218,210 220,203 226,199 L 244,115 Z" fill="url(#agGoldTone)"/>
+
+    <!-- Inner Stylized 'G' Swoop & Flame Stem -->
+    <path d="M 248,138 C 248,138 252,162 252,185 C 252,208 247,225 243,237 C 240,246 244,254 250,254 C 256,254 263,244 266,233 L 278,249 C 272,260 262,268 250,268 C 237,268 229,255 232,239 C 235,222 240,201 241,178 C 241.5,164 239,148 239,148 L 248,138 Z" fill="url(#agGoldTone)"/>
+  </g>
+
+  <!-- Wordmark 'alghanim' (Clean Lowercase Modern Font) -->
+  <text x="250" y="396" text-anchor="middle" font-family="'Poppins', 'Montserrat', -apple-system, sans-serif" font-weight="700" font-size="68" letter-spacing="-1.5" fill="url(#agTextTone)">alghanim</text>
+
+  <!-- Subtitle 'ISLAMIC TOUR' (All Caps Wide Tracking) -->
+  <text x="250" y="432" text-anchor="middle" font-family="'Poppins', -apple-system, sans-serif" font-weight="600" font-size="20" letter-spacing="12" fill="#E5E5E5">ISLAMIC TOUR</text>
+</svg>
