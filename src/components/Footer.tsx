@@ -276,18 +276,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onOpenLegal, onOpenR
         <div className="bg-[#1F1F1F] text-[#D9D9D9] py-4 px-4 sm:px-8 border-t border-[#333333] relative z-10">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
             
-            {/* Sisi Kiri: Copyright Resmi & Akses Staf */}
+            {/* Sisi Kiri: Copyright Resmi */}
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-[#A0A0A0]">
               <span>© 2026 All Rights Reserved by PT. Al-Ghanimah Berkah Bersama</span>
-              <span className="hidden sm:inline opacity-30">•</span>
-              <button
-                type="button"
-                onClick={() => onNavClick('admin-cms')}
-                className="hover:text-[#DFC386] transition-colors text-[11px] text-gray-500 cursor-pointer"
-                title="Akses Portal Khusus Staf & Operasional ALGHANIM"
-              >
-                Akses Staf &amp; Admin
-              </button>
             </div>
 
             {/* Sisi Kanan: Barisan Ikon Sosial Media */}
