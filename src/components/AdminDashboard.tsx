@@ -1277,14 +1277,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
 
         <div className="w-full max-w-md p-8 rounded-3xl bg-[#1E1E1E] border border-white/10 shadow-2xl space-y-6 text-white mt-12">
           <div className="text-center space-y-2">
-            <div className="w-16 h-16 rounded-2xl bg-[#141414] p-2 flex items-center justify-center mx-auto border border-[#C5A059]/40 shadow-xl overflow-hidden">
-              <img
-                src="/alghanim_logo.png"
-                alt="Logo Resmi ALGHANIM"
-                className="w-full h-full object-contain rounded-xl"
-                referrerPolicy="no-referrer"
-              />
-            </div>
+            <AlGhanimLogo size="lg" theme="dark" showText={false} className="mx-auto" />
             <h2 className="font-serif-luxury text-2xl font-bold text-white tracking-wide">
               Selamat Datang, Admin ALGHANIM
             </h2>
@@ -4844,14 +4837,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-gray-200 my-8">
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-[#141414] border border-[#C5A059]/40 p-1 flex items-center justify-center overflow-hidden shadow-xs flex-shrink-0">
-                  <img
-                    src="/alghanim_logo.png"
-                    alt="Logo ALGHANIM"
-                    className="w-full h-full object-contain rounded-lg"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
+                <AlGhanimLogo size="sm" theme="light" showText={false} />
                 <div>
                   <h3 className="font-serif-luxury text-lg font-bold text-[#1A1A1A]">
                     Pengaturan Kata Sandi &amp; Akses Admin

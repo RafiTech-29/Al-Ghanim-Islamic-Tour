@@ -1,5 +1,5 @@
 import React from 'react';
-import officialLogoImg from '../assets/images/alghanim_logo.png';
+import officialLogoImg from '../assets/images/LOGO AL-GHANIM.png';
 
 interface AlGhanimLogoProps {
   variant?: 'full' | 'compact' | 'icon' | 'badge' | 'footer' | 'centered' | 'light' | 'dark' | 'image';
@@ -50,11 +50,6 @@ export const AlGhanimLogo: React.FC<AlGhanimLogoProps> = ({
           src={officialLogoImg}
           alt="ALGHANIM Logo"
           className="w-full h-full object-contain select-none"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            // Fallback
-            e.currentTarget.src = '/alghanim_logo.png';
-          }}
         />
       </div>
 
