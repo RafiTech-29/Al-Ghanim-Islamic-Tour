@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useRef, useState, FormEvent } from 'react';
 import { 
   MessageCircle, 
   Search, 
@@ -32,12 +32,29 @@ interface HeroProps {
 
 export const GOOGLE_DRIVE_VIDEO_ID = '1inctjFtosU0YppvwjIvIoFc51L479egJ';
 export const GOOGLE_DRIVE_VIDEO_URL = `https://drive.google.com/file/d/${GOOGLE_DRIVE_VIDEO_ID}/preview`;
+export const LOCAL_PROMO_VIDEO_URL = '/assets/jamaah/promo-video.mp4';
 export const INSTAGRAM_REEL_URL = 'https://www.instagram.com/reel/DcDkVAUylrX/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==';
 
 export const Hero = ({ onSearch, onExplorePackages, onOpenConsultation, onOpenAbout }: HeroProps) => {
   const [selectedCategory, setSelectedCategory] = useState('umroh-reguler');
   const [selectedMonth, setSelectedMonth] = useState('all');
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [useIframeFallback, setUseIframeFallback] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleTogglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.muted = false;
+        videoRef.current.volume = 1;
+        videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
 
   const handleFilterSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -143,20 +160,51 @@ export const Hero = ({ onSearch, onExplorePackages, onOpenConsultation, onOpenAb
         <div className="order-2 lg:col-span-5 xl:col-span-5 w-full flex justify-center lg:justify-end items-center mt-4 sm:mt-6 lg:mt-0 relative z-20">
           <div className="w-full max-w-[240px] sm:max-w-[260px] lg:max-w-[280px] mx-auto lg:mx-0 p-2.5 sm:p-3 rounded-2xl bg-[#141414]/90 border border-[#C5A059]/40 shadow-2xl backdrop-blur-md relative overflow-hidden group space-y-2">
             
-            {/* Portrait Video Player Container - Perfectly centered & scaled to eliminate black bars on mobile & desktop */}
-            <div className="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-gray-800 shadow-inner">
-              <iframe
-                src={GOOGLE_DRIVE_VIDEO_URL}
-                className="w-[140%] h-[106%] max-w-none border-0 absolute -left-[20%] -top-[3%] rounded-xl"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                loading="lazy"
-                title="Video Dokumentasi Umroh Al-Ghanim"
-                onLoad={() => setIsVideoLoaded(true)}
-              />
+            {/* Portrait Video Player Container - Tanpa tombol kontrol bawaan, klik untuk pause/play bersuara */}
+            <div 
+              className="relative w-full aspect-[9/16] rounded-xl overflow-hidden bg-black border border-gray-800 shadow-inner cursor-pointer select-none group/player"
+              onClick={handleTogglePlay}
+              title={isPlaying ? "Klik untuk jeda (pause)" : "Klik untuk putar video (bersuara)"}
+            >
+              {!useIframeFallback ? (
+                <video
+                  ref={videoRef}
+                  src={LOCAL_PROMO_VIDEO_URL}
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="w-full h-full object-cover rounded-xl pointer-events-none"
+                  onLoadedData={() => setIsVideoLoaded(true)}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onError={() => setUseIframeFallback(true)}
+                />
+              ) : (
+                <iframe
+                  src={GOOGLE_DRIVE_VIDEO_URL}
+                  className="w-[140%] h-[122%] max-w-none border-0 absolute -left-[20%] -top-[3%] rounded-xl pointer-events-none"
+                  allow="autoplay; fullscreen"
+                  allowFullScreen
+                  loading="lazy"
+                  title="Video Dokumentasi Umroh Al-Ghanim"
+                  onLoad={() => setIsVideoLoaded(true)}
+                />
+              )}
+
+              {/* Play Overlay Saat Video Sedang Dijeda / Baru Masuk (Hilang Total Saat Diputar) */}
+              {!isPlaying && isVideoLoaded && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 pointer-events-none transition-all duration-300">
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-[#C5A059] via-[#DFC386] to-[#F5ECE2] text-[#141414] flex items-center justify-center shadow-xl shadow-black/80 border-2 border-white/20 group-hover/player:scale-110 transition-transform">
+                    <Play className="w-6 h-6 fill-[#141414] text-[#141414] ml-0.5" />
+                  </div>
+                  <span className="mt-2 text-[11px] font-semibold text-white drop-shadow-md tracking-wide">
+                    Putar Video (Bersuara)
+                  </span>
+                </div>
+              )}
 
               {!isVideoLoaded && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1F1F1F] text-gray-400 space-y-2 p-4 text-center">
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1F1F1F] text-gray-400 space-y-2 p-4 text-center pointer-events-none">
                   <div className="w-8 h-8 border-2 border-[#C5A059] border-t-transparent rounded-full animate-spin" />
                   <span className="text-xs">Memuat Video...</span>
                 </div>
