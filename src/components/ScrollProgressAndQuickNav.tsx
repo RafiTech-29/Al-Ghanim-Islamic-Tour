@@ -31,17 +31,29 @@ export const ScrollProgressAndQuickNav = ({
   const waUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(defaultMessage)}`;
 
   useEffect(() => {
+    let ticking = false;
+    let animationFrameId: number | null = null;
     const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrollPercent = windowHeight > 0 ? (totalScroll / windowHeight) * 100 : 0;
-      
-      setScrollProgress(Math.min(100, Math.max(0, scrollPercent)));
-      setShowBackToTop(totalScroll > 280);
+      if (ticking) return;
+      ticking = true;
+      animationFrameId = window.requestAnimationFrame(() => {
+        ticking = false;
+        const totalScroll = document.documentElement.scrollTop;
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = windowHeight > 0 ? (totalScroll / windowHeight) * 100 : 0;
+
+        setScrollProgress(Math.min(100, Math.max(0, scrollPercent)));
+        setShowBackToTop(totalScroll > 280);
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   const scrollToTop = () => {

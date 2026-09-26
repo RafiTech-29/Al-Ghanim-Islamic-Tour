@@ -494,10 +494,10 @@ export const generateJamaahTrackingCardPDF = (jamaah: JamaahProgressItem) => {
   // Jamaah Card Box
   let y = 34;
   doc.setFillColor(245, 245, 245);
-  doc.roundedRect(14, y, pageWidth - 28, 44, 2, 2, 'F');
+  doc.roundedRect(14, y, pageWidth - 28, 48, 2, 2, 'F');
   doc.setDrawColor(166, 124, 82);
   doc.setLineWidth(0.4);
-  doc.roundedRect(14, y, pageWidth - 28, 44, 2, 2, 'S');
+  doc.roundedRect(14, y, pageWidth - 28, 48, 2, 2, 'S');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
@@ -527,7 +527,7 @@ export const generateJamaahTrackingCardPDF = (jamaah: JamaahProgressItem) => {
   y += 4;
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(220, 220, 220);
-  doc.roundedRect(14, y, pageWidth - 28, 52, 2, 2, 'FD');
+  doc.roundedRect(14, y, pageWidth - 28, 58, 2, 2, 'FD');
 
   const steps = [
     { step: 1, title: 'Pembayaran DP & Registrasi', status: jamaah.progressStep >= 1 ? 'SELESAI (TERVERIFIKASI)' : 'Menunggu' },
@@ -563,24 +563,24 @@ export const generateJamaahTrackingCardPDF = (jamaah: JamaahProgressItem) => {
     doc.setFont('helvetica', isDone ? 'bold' : 'normal');
     doc.setFontSize(8.5);
     doc.setTextColor(isDone ? 26 : 100, isDone ? 26 : 100, isDone ? 26 : 100);
-    doc.text(`Step ${s.step}: ${s.title}`, 26, stepY);
+    doc.text(`Step ${s.step}: ${s.title}`, 26, stepY, { maxWidth: 105 });
 
     // Status Label Tag
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     if (isDone) {
       doc.setTextColor(20, 140, 60);
-      doc.text(`[✓ ${s.status}]`, 128, stepY);
+      doc.text(`[${s.status}]`, pageWidth - 20, stepY, { align: 'right' });
     } else {
       doc.setTextColor(130, 130, 130);
-      doc.text(`[ ${s.status} ]`, 128, stepY);
+      doc.text(`[ ${s.status} ]`, pageWidth - 20, stepY, { align: 'right' });
     }
     
     stepY += 9;
   });
 
   // Financial & Hotel Info
-  y += 54;
+  y += 60;
   doc.setFillColor(245, 245, 245);
   doc.roundedRect(14, y, pageWidth - 28, 38, 2, 2, 'F');
 

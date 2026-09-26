@@ -152,6 +152,14 @@ export function App() {
     }
   };
 
+  const handleReturnFromStandalone = () => {
+    if (window.opener) {
+      window.close();
+      return;
+    }
+    handleTabChange('beranda');
+  };
+
   // Sync state if user uses browser Back / Forward buttons or alters hash + Secret Admin Shortcut
   useEffect(() => {
     // If the browser was previously stuck on #admin from past dev session, immediately clear it
@@ -357,10 +365,7 @@ export function App() {
     return (
       <PackageDetailPage
         packageId={detailPackageId || 'pkg-friendly-9d-wy'}
-        onBackToHome={() => {
-          setScrollToCatalogOnReturn(true);
-          handleTabChange('beranda', undefined, true);
-        }}
+        onBackToHome={handleReturnFromStandalone}
         onRegisterPackage={(pkg) => {
           handleRegisterPackage({
             id: pkg.id,
@@ -389,7 +394,7 @@ export function App() {
     return (
       <div className="min-h-screen bg-stone-50/50 text-[#1A1A1A] font-sans-luxury">
         <JamaahTransparencyPortal
-          onBackToHome={() => handleTabChange('beranda')}
+          onBackToHome={handleReturnFromStandalone}
           onOpenConsultation={(topic) => handleOpenConsultation(topic || 'Bantuan Portal Jamaah')}
         />
       </div>
@@ -401,7 +406,7 @@ export function App() {
     return (
       <div className="min-h-screen bg-[#FDFBF7] text-[#1A1A1A] font-sans-luxury">
         <PartnerPortal
-          onBackToHome={() => handleTabChange('beranda')}
+          onBackToHome={handleReturnFromStandalone}
           onGoToKemitraan={() => handleTabChange('kemitraan')}
         />
       </div>

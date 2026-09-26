@@ -211,7 +211,7 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
 
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-gray-500 italic">
-            *Untuk jamaah dari luar kota Priangan Timur, tersedia opsi bimbingan manasik daring / materi video panduan.
+            *Untuk jamaah dari luar kota Priangan Timur, tersedia opsi bimbingan manasik daring via zoom meet / materi video panduan.
           </p>
           <a
             href={`${OFFICIAL_WA_LINK}?text=${encodeURIComponent('Halo Admin ALGHANIM, saya ingin tanya informasi bimbingan manasik ibadah umroh/haji.')}`}

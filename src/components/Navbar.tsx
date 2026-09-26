@@ -94,26 +94,38 @@ export const Navbar = ({
       { id: 'faq-section', tab: 'faq' }
     ];
 
+    let ticking = false;
+    let animationFrameId: number | null = null;
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 160;
+      if (ticking) return;
+      ticking = true;
+      animationFrameId = window.requestAnimationFrame(() => {
+        ticking = false;
+        const scrollPosition = window.scrollY + 160;
 
-      let currentTab: NavTabType = 'beranda';
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i].id);
-        if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY;
-          if (scrollPosition >= top) {
-            currentTab = sections[i].tab;
-            break;
+        let currentTab: NavTabType = 'beranda';
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const el = document.getElementById(sections[i].id);
+          if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY;
+            if (scrollPosition >= top) {
+              currentTab = sections[i].tab;
+              break;
+            }
           }
         }
-      }
-      setActiveSection(currentTab);
+        setActiveSection(currentTab);
+      });
     };
 
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [activeTab]);
 
   const effectiveActiveTab: NavTabType = activeTab === 'beranda' ? activeSection : activeTab;
@@ -147,10 +159,11 @@ export const Navbar = ({
     setServicesDropdownOpen(false);
     setPartnershipDropdownOpen(false);
 
-    // Portal Jamaah dapat dibuka di tab terpisah mandiri
-    if (tab === 'portal-jamaah') {
-      const url = `${window.location.origin}${window.location.pathname}#/portal-jamaah`;
-      window.open(url, '_blank', 'noopener,noreferrer');
+    if (tab === 'portal-jamaah' || tab === 'portal-mitra') {
+      setActiveTab(tab);
+      window.history.pushState(null, '', `#/${tab}`);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      toggleMobileMenu(false);
       return;
     }
 
@@ -561,7 +574,7 @@ export const Navbar = ({
             </button>
 
             {partnershipDropdownOpen && (
-              <div className="absolute top-full left-0 w-72 bg-white border border-[#EBEBEB] rounded-2xl shadow-xl p-2 space-y-1 animate-fadeIn z-50">
+              <div className="absolute top-full left-0 w-72 bg-[#161616]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2.5 space-y-1 animate-fadeIn z-50 text-white">
                 {partnershipSubmenus.map((sub) => (
                   <button
                     key={sub.id}
@@ -578,10 +591,10 @@ export const Navbar = ({
                         }
                       }, 150);
                     }}
-                    className="w-full text-left p-2.5 rounded-xl hover:bg-[#FAF8F5] transition-colors cursor-pointer block group"
+                    className="w-full text-left p-2.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer block group"
                   >
-                    <p className="text-xs font-bold text-[#2B2B2B] group-hover:text-[#C5A059] transition-colors">{sub.label}</p>
-                    <p className="text-[11px] text-[#6E6E6E]">{sub.desc}</p>
+                    <p className="text-xs font-bold text-gray-100 group-hover:text-[#C5A059] transition-colors">{sub.label}</p>
+                    <p className="text-[11px] text-gray-100">{sub.desc}</p>
                   </button>
                 ))}
               </div>

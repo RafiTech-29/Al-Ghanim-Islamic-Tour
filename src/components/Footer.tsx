@@ -367,13 +367,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onOpenLegal, onOpenR
 
             <div className="space-y-3 text-xs sm:text-sm text-gray-700 leading-relaxed">
               <p>
-                <strong>PT Al-Ghanim Tour &amp; Travel</strong> adalah Penyelenggara Perjalanan Ibadah Umrah (PPIU) resmi berizin Kementerian Agama Republik Indonesia dengan nomor izin <strong>SK PPIU No. U.412 Tahun 2021</strong>.
+                PT. Al-Ghanimah Berkah Bersama (AL-GHANIM Islamic Tour) adalah Penyelenggara Perjalanan Ibadah Umrah (PPIU) resmi berizin Kementerian Agama Republik Indonesia dengan nomor izin PPIU No. 1030 Tahun 2019 (Akreditasi "A").
               </p>
               <p>
                 Informasi jadwal keberangkatan, harga paket, fasilitas hotel, dan maskapai penerbangan yang tercantum pada situs ini dapat mengalami penyesuaian mengikuti regulasi resmi Otoritas Penerbangan, Kebijakan Kementerian Haji &amp; Umrah Kerajaan Arab Saudi, dan fluktuasi kurs mata uang asing.
               </p>
               <p>
-                Seluruh data pemesanan dan transaksi pembayaran jamaah wajib dilakukan melalui rekening resmi atas nama <strong>PT Al-Ghanim Tour &amp; Travel</strong> untuk menjamin keamanan dan keabsahan pendaftaran ibadah.
+                Seluruh data pemesanan dan transaksi pembayaran jamaah wajib dilakukan melalui rekening resmi atas nama <strong>PT. Al-Ghanimah Berkah Bersama</strong> untuk menjamin keamanan dan keabsahan pendaftaran ibadah.
               </p>
             </div>
 

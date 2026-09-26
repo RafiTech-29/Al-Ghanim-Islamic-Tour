@@ -1281,7 +1281,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: 'profil',
     question: 'Apakah Al-Ghanim sudah berizin resmi Kemenag RI?',
-    answer: 'Ya, PT. Al-Ghanim Mandiri Wisata telah berizin resmi sebagai Penyelenggara Perjalanan Ibadah Umrah (PPIU) dari Kementerian Agama Republik Indonesia dengan SK Kemenag No. U.412/2021 dan terakreditasi "A" secara berkala, serta terhubung langsung ke sistem SISKOPATUH Kemenag RI.',
+    answer: 'Ya, PT. Al-Ghanimah Berkah Bersama telah berizin resmi sebagai Penyelenggara Perjalanan Ibadah Umrah (PPIU) dari Kementerian Agama Republik Indonesia dengan PPIU No. 1030 Tahun 2019 (Akreditasi A), serta terhubung langsung ke sistem SISKOPATUH Kemenag RI.',
     tags: ['izin', 'legalitas', 'kemenag', 'siskopatuh', 'resmi', 'akreditasi']
   },
   {
@@ -1537,7 +1537,7 @@ export const OFFICES_DATA = {
   garut: {
     city: 'Garut',
     type: 'Kantor Cabang',
-    title: 'Kantor Operasional Cabang Garut (Mandala Umroh)',
+    title: 'Kantor Operasional Garut (Mandala Umroh)',
     address: 'Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44116',
     phone: '(0262) 4890731 / 0813-1670-218',
     whatsapp: '0813-1670-218',
@@ -1627,7 +1627,7 @@ export const LEGAL_INFO = {
   companyName: 'PT. Al-Ghanimah Berkah Bersama',
   corporateEntity: 'PT. Al-Ghanimah Berkah Bersama (Supported by Mandala 525 Islamic Tour)',
   brandName: 'ALGHANIM Islamic Tour',
-  skKemenag: 'PPIU No. 1030 Tahun 2019 / SK Kemenag No. U.412/2021',
+  skKemenag: 'PPIU No. 1030 Tahun 2019 (Akreditasi A)',
   akreditasi: 'Terakreditasi "A" BAN PPIU Kemenag RI',
   iathiMembership: 'Anggota Resmi SAPUHI (No. 082/DPP/2021) & ASITA',
   siskopatuhId: 'Terintegrasi Sistem SISKOPATUH Kemenag RI No. 1030/2019',

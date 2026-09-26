@@ -429,8 +429,8 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
 
   const handleScheduleAction = (pkg: PackageScheduleItem) => {
     const targetId = pkg.id === 'pkg-friendly-9d-wy' ? 'pkg-friendly-9d-wy' : pkg.id;
-    const targetUrl = `#/detail-paket?id=${encodeURIComponent(targetId)}`;
-    window.open(targetUrl, '_blank');
+    window.location.hash = `#/detail-paket?id=${encodeURIComponent(targetId)}`;
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   // Tripled list for seamless infinite marquee effect without stuttering
@@ -439,6 +439,7 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
   // Auto-scroll loop from right to left: ultra slow, butter-smooth delta-timed animation
   useEffect(() => {
     const container = scrollContainerRef.current;
+    if (window.innerWidth < 768) return;
     if (!container || viewMode !== 'slider' || !isInViewport) return;
 
     let animationFrameId: number;
@@ -486,8 +487,8 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
 
   const handleDetailClick = (pkg: SliderPackageItem) => {
     const targetId = pkg.id === 'pkg-friendly-9d-wy' ? 'pkg-friendly-9d-wy' : (pkg.scheduleItemData?.id || pkg.id);
-    const targetUrl = `#/detail-paket?id=${encodeURIComponent(targetId)}`;
-    window.open(targetUrl, '_blank');
+    window.location.hash = `#/detail-paket?id=${encodeURIComponent(targetId)}`;
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   return (

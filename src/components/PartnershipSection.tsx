@@ -169,21 +169,22 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({
         </div>
 
         <div className="w-full md:w-auto flex flex-col sm:flex-row items-center gap-3">
-          <a
-            href="#/portal-mitra"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => {
-              e.preventDefault();
-              window.open('#/portal-mitra', '_blank');
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenPartnerPortal) {
+                onOpenPartnerPortal();
+              } else {
+                window.location.hash = '#/portal-mitra';
+              }
             }}
             className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:brightness-110 text-black font-extrabold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all transform active:scale-95 cursor-pointer whitespace-nowrap text-center"
-            title="Buka Portal Mandiri Mitra Resmi di Tab Baru"
+            title="Buka Portal Mandiri Mitra Resmi"
           >
             <ShieldCheck className="w-4 h-4 text-black" />
             <span>Portal Mitra Terdaftar</span>
             <ArrowRight className="w-4 h-4 text-black" />
-          </a>
+          </button>
         </div>
       </div>
 

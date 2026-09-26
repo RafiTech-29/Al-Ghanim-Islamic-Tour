@@ -771,26 +771,6 @@ export const AdminPackagesCMS: React.FC = () => {
                               )}
                             </div>
                             <h4 className="font-bold text-[#1A1A1A] truncate mt-0.5">{pkg.title}</h4>
-                            <div className="flex items-center gap-1.5 mt-1">
-                              {isCustomFlyerAvailable(pkg) ? (
-                                <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded" title="Flyer brosur custom aktif">
-                                  <FileCheck2 className="w-2.5 h-2.5" /> Flyer Custom
-                                </span>
-                              ) : (
-                                <span className="text-[9px] text-gray-400 bg-gray-50 border border-gray-200 px-1.5 py-0.5 rounded" title="Menggunakan flyer template otomatis">
-                                  Flyer Otomatis
-                                </span>
-                              )}
-                              {isCustomItineraryAvailable(pkg) ? (
-                                <span className="inline-flex items-center gap-1 text-[9px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-1.5 py-0.5 rounded" title="Itinerary PDF custom aktif">
-                                  <FileText className="w-2.5 h-2.5" /> Itin Custom
-                                </span>
-                              ) : (
-                                <span className="text-[9px] text-gray-400 bg-gray-50 border border-gray-200 px-1.5 py-0.5 rounded" title="Menggunakan itinerary template otomatis">
-                                  Itin Otomatis
-                                </span>
-                              )}
-                            </div>
                           </div>
                         </div>
                       </td>
@@ -946,27 +926,6 @@ export const AdminPackagesCMS: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Document Badges */}
-                    <div className="flex items-center gap-1.5 pt-2 border-t border-gray-100">
-                      {isCustomFlyerAvailable(pkg) ? (
-                        <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
-                          <FileCheck2 className="w-2.5 h-2.5" /> Flyer Custom
-                        </span>
-                      ) : (
-                        <span className="text-[9px] text-gray-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-md">
-                          Flyer Otomatis
-                        </span>
-                      )}
-                      {isCustomItineraryAvailable(pkg) ? (
-                        <span className="inline-flex items-center gap-1 text-[9px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md">
-                          <FileText className="w-2.5 h-2.5" /> Itin Custom
-                        </span>
-                      ) : (
-                        <span className="text-[9px] text-gray-400 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-md">
-                          Itin Otomatis
-                        </span>
-                      )}
-                    </div>
                   </div>
                 </div>
 
