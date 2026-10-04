@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Navbar, NavTabType } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { WhyChooseSection } from './components/WhyChooseSection';
@@ -104,6 +104,9 @@ export function App() {
   const [detailPackageId, setDetailPackageId] = useState<string | null>(getPackageIdFromUrl);
   const [livePackages, setLivePackages] = useState<PackageScheduleItem[]>(DETAILED_SCHEDULES);
   const [scrollToCatalogOnReturn, setScrollToCatalogOnReturn] = useState(false);
+  const [scrollToKemitraanOnReturn, setScrollToKemitraanOnReturn] = useState(false);
+  const activeTabRef = useRef(activeTab);
+  activeTabRef.current = activeTab;
 
   // Subscribe to live packages from Firestore
   useEffect(() => {
@@ -152,12 +155,32 @@ export function App() {
     }
   };
 
-  const handleReturnFromStandalone = () => {
-    if (window.opener) {
-      window.close();
-      return;
+  const handleReturnFromStandalone = (
+    targetTab: NavTabType = 'beranda',
+    scrollToCatalog = targetTab === 'beranda'
+  ) => {
+    if (typeof window !== 'undefined' && window.opener && !window.opener.closed) {
+      try {
+        window.opener.focus();
+        window.close();
+        return;
+      } catch {
+        // fallback
+      }
     }
-    handleTabChange('beranda');
+    if (targetTab === 'beranda') {
+      if (scrollToCatalog) {
+        setScrollToCatalogOnReturn(true);
+        handleTabChange('beranda', undefined, true);
+      } else {
+        handleTabChange('beranda');
+      }
+    } else if (targetTab === 'kemitraan') {
+      setScrollToKemitraanOnReturn(true);
+      handleTabChange('kemitraan', undefined, true);
+    } else {
+      handleTabChange(targetTab, undefined, false);
+    }
   };
 
   // Sync state if user uses browser Back / Forward buttons or alters hash + Secret Admin Shortcut
@@ -174,8 +197,11 @@ export function App() {
 
     const handleLocationChange = () => {
       const detectedTab = getTabFromLocation(true);
-      if (detectedTab === 'beranda' && activeTab === 'detail-paket') {
+      if (detectedTab === 'beranda' && activeTabRef.current === 'detail-paket') {
         setScrollToCatalogOnReturn(true);
+      }
+      if (detectedTab === 'kemitraan' && activeTabRef.current === 'portal-mitra') {
+        setScrollToKemitraanOnReturn(true);
       }
       setActiveTab(detectedTab);
       const id = getPackageIdFromUrl();
@@ -254,24 +280,31 @@ export function App() {
       const doScrollToCatalog = () => {
         const target = document.getElementById('katalog-unggulan-section') || document.getElementById('banyak-pilihan-paket');
         if (target) {
-          const navOffset = 90;
-          const targetTop = target.getBoundingClientRect().top + window.pageYOffset - navOffset;
-          window.scrollTo({
-            top: Math.max(0, targetTop),
-            behavior: 'smooth'
-          });
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
           return true;
         }
         return false;
       };
 
-      if (!doScrollToCatalog()) {
-        setTimeout(doScrollToCatalog, 60);
-      }
-      setTimeout(doScrollToCatalog, 180);
-      setTimeout(doScrollToCatalog, 380);
+      doScrollToCatalog();
+      [60, 180, 380, 700].forEach((delay) => {
+        window.setTimeout(doScrollToCatalog, delay);
+      });
     }
   }, [activeTab, scrollToCatalogOnReturn]);
+
+  useEffect(() => {
+    if (activeTab !== 'kemitraan' || !scrollToKemitraanOnReturn) return;
+    setScrollToKemitraanOnReturn(false);
+    const scrollToPartnerBanner = () => {
+      const target = document.getElementById('portal-mitra-banner') || document.getElementById('kemitraan-section');
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    scrollToPartnerBanner();
+    [60, 180, 380].forEach((delay) => {
+      window.setTimeout(scrollToPartnerBanner, delay);
+    });
+  }, [activeTab, scrollToKemitraanOnReturn]);
 
   // Modal States
   const [selectedSchedulePkg, setSelectedSchedulePkg] = useState<PackageScheduleItem | null>(null);
@@ -365,7 +398,7 @@ export function App() {
     return (
       <PackageDetailPage
         packageId={detailPackageId || 'pkg-friendly-9d-wy'}
-        onBackToHome={handleReturnFromStandalone}
+        onBackToHome={() => handleReturnFromStandalone('beranda')}
         onRegisterPackage={(pkg) => {
           handleRegisterPackage({
             id: pkg.id,
@@ -394,7 +427,7 @@ export function App() {
     return (
       <div className="min-h-screen bg-stone-50/50 text-[#1A1A1A] font-sans-luxury">
         <JamaahTransparencyPortal
-          onBackToHome={handleReturnFromStandalone}
+          onBackToHome={() => handleReturnFromStandalone('beranda', false)}
           onOpenConsultation={(topic) => handleOpenConsultation(topic || 'Bantuan Portal Jamaah')}
         />
       </div>
@@ -406,8 +439,8 @@ export function App() {
     return (
       <div className="min-h-screen bg-[#FDFBF7] text-[#1A1A1A] font-sans-luxury">
         <PartnerPortal
-          onBackToHome={handleReturnFromStandalone}
-          onGoToKemitraan={() => handleTabChange('kemitraan')}
+          onBackToHome={() => handleReturnFromStandalone('kemitraan')}
+          onGoToKemitraan={() => handleReturnFromStandalone('kemitraan')}
         />
       </div>
     );

@@ -147,7 +147,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({
       </div>
 
       {/* SATU PINTU MASUK: KHUSUS MITRA TERDAFTAR (LANGSUNG BUKA TAB BARU) */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-[#1A1A1A] text-white border border-amber-500/30 shadow-sm flex flex-col md:flex-row items-center justify-between gap-5">
+      <div id="portal-mitra-banner" className="p-5 sm:p-6 rounded-2xl bg-[#1A1A1A] text-white border border-amber-500/30 shadow-sm flex flex-col md:flex-row items-center justify-between gap-5 scroll-mt-24">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-black flex items-center justify-center font-bold text-lg shadow-sm flex-shrink-0">
             <Award className="w-6 h-6" />
