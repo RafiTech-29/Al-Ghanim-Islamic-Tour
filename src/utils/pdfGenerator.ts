@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf';
 import { JamaahProgressItem } from '../types';
+import { OFFICES_DATA } from '../data/packagesData';
 
 export interface ConsultationPDFData {
   fullName: string;
@@ -68,7 +69,7 @@ export const generateConsultationBrochurePDF = (data: ConsultationPDFData) => {
   doc.setTextColor(100, 100, 100);
   doc.setFontSize(8);
   doc.text('Izin Resmi Kemenag RI: PPIU No. 1030 Tahun 2019 • Akreditasi "A" BAN-PPIU', 14, 28);
-  doc.text('Kantor Garut: Jl. Sudirman Copong Garut, Sukamentri, Garut 44116 • WA: 0813-1670-218', 14, 32);
+  doc.text(`Head Office: ${OFFICES_DATA.garut.address} • WA: 0813-1670-218`, 14, 32);
 
   // Right Header Meta Box
   doc.setFillColor(245, 245, 245);
@@ -287,22 +288,22 @@ export const generateConsultationBrochurePDF = (data: ConsultationPDFData) => {
   doc.setTextColor(180, 50, 50);
   doc.text('*Dilarang mentransfer ke rekening selain atas nama PT resmi', 18, currentY + 29);
 
-  // Right Box: Verifikasi & Kontak Cabang Garut
+  // Right Box: Verifikasi & Kontak Head Office Garut
   const rightBoxX = 14 + (pageWidth - 28) / 2 + 6;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(166, 124, 82);
-  doc.text('LAYANAN RESMI CABANG GARUT', rightBoxX, currentY + 7);
+  doc.text('HEAD OFFICE (KANTOR PUSAT)', rightBoxX, currentY + 7);
   doc.setFontSize(7.5);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(60, 60, 60);
-  doc.text('Jl. Sudirman Copong Garut', rightBoxX, currentY + 13);
-  doc.text('Sukamentri, Kec. Garut Kota, Garut 44116', rightBoxX, currentY + 17);
+  doc.text('Jl. Jenderal Sudirman No. 30 (Copong),', rightBoxX, currentY + 13);
+  doc.text('Sukamentri, Garut Kota, Kabupaten Garut', rightBoxX, currentY + 17);
   doc.setFont('helvetica', 'bold');
   doc.text('Hotline WhatsApp: 0813-1670-218', rightBoxX, currentY + 22);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 100, 100);
-  doc.text('Google Maps: share.google/fsqwRYJHLHFaiESVm', rightBoxX, currentY + 27);
+  doc.textWithLink('Buka Google Maps Kantor Garut', rightBoxX, currentY + 27, { url: OFFICES_DATA.garut.mapsUrl });
 
   // Footer Signature & Stamp Note
   currentY += 40;
@@ -360,7 +361,7 @@ export const generatePassportRecommendationPDF = (jamaah: JamaahProgressItem) =>
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(80, 80, 80);
   doc.text('Izin Penyelenggara Perjalanan Ibadah Umrah (PPIU) No. 1030 Tahun 2019 Kemenag RI', pageWidth / 2, 30, { align: 'center' });
-  doc.text('Kantor Garut: Jl. Sudirman Copong, Garut 44116 • Telp/WA: 0813-1670-218', pageWidth / 2, 34, { align: 'center' });
+  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address} • Telp/WA: 0813-1670-218`, pageWidth / 2, 34, { align: 'center', maxWidth: pageWidth - 36 });
 
   // Double Line
   doc.setLineWidth(0.8);
@@ -604,8 +605,9 @@ export const generateJamaahTrackingCardPDF = (jamaah: JamaahProgressItem) => {
   doc.setFontSize(7.5);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 100, 100);
-  doc.text('Kantor Cabang Garut: Jl. Sudirman Copong, Sukamentri, Garut • Maps: share.google/fsqwRYJHLHFaiESVm', 14, y);
-  doc.text(`Diunduh pada: ${today} melalui Portal Transparansi ALGHANIM Islamic Tour`, 14, y + 5);
+  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address}`, 14, y, { maxWidth: pageWidth - 28 });
+  doc.textWithLink('Buka Google Maps Kantor Garut', 14, y + 5, { url: OFFICES_DATA.garut.mapsUrl });
+  doc.text(`Diunduh pada: ${today} melalui Portal Transparansi ALGHANIM Islamic Tour`, 14, y + 10);
 
   // Save
   doc.save(`Status_Jamaah_ALGHANIM_${jamaah.nij}.pdf`);
@@ -649,7 +651,7 @@ export const generatePartnershipProgramPDF = (programTitle: string) => {
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 100, 100);
   doc.text('PT. Al-Ghanimah Berkah Bersama • PPIU Kemenag RI No. 1030 Thn. 2019 (Akreditasi A)', 14, 28);
-  doc.text('Pusat Layanan Garut: Jl. Sudirman Copong Garut, Sukamentri • WA: 0813-1670-218', 14, 32);
+  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address} • WA: 0813-1670-218`, 14, 32, { maxWidth: pageWidth - 28 });
 
   // Right Meta
   doc.setFillColor(245, 245, 245);
@@ -815,7 +817,7 @@ export const generatePartnershipProgramPDF = (programTitle: string) => {
 
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(166, 124, 82);
-  doc.text('Hotline Kemitraan: 0813-1670-218 • Kantor Garut: Jl. Sudirman Copong, Sukamentri', 18, currentY + 25);
+  doc.text(`Hotline Kemitraan: 0813-1670-218 • Head Office: ${OFFICES_DATA.garut.address}`, 18, currentY + 25, { maxWidth: pageWidth - 36 });
 
   // Footer
   currentY += 36;
@@ -826,7 +828,7 @@ export const generatePartnershipProgramPDF = (programTitle: string) => {
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(120, 120, 120);
   doc.text('Dokumen Panduan Kemitraan Resmi • PT. Al-Ghanimah Berkah Bersama (ALGHANIM Islamic Tour).', 14, currentY + 5);
-  doc.text(`Tautan Peta Kantor: share.google/fsqwRYJHLHFaiESVm`, 14, currentY + 9);
+  doc.textWithLink('Buka Google Maps Kantor Garut', 14, currentY + 9, { url: OFFICES_DATA.garut.mapsUrl });
 
   const cleanName = programTitle.replace(/[^a-zA-Z0-9]/g, '_');
   doc.save(`Panduan_Kemitraan_ALGHANIM_${cleanName}.pdf`);
@@ -951,15 +953,15 @@ export const generateFullMarketingKitPDF = () => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
   doc.setTextColor(166, 124, 82);
-  doc.text('PUSAT BANTUAN & PENDAMPINGAN MITRA CABANG GARUT', 20, y + 7);
+  doc.text('HEAD OFFICE & PENDAMPINGAN MITRA ALGHANIM', 20, y + 7);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(40, 40, 40);
-  doc.text('Alamat Kantor: Jl. Sudirman Copong Garut, Sukamentri, Garut 44116', 20, y + 14);
+  doc.text(`Alamat Head Office: ${OFFICES_DATA.garut.address}`, 20, y + 14, { maxWidth: pageWidth - 40 });
   doc.text('WhatsApp Mitra: 0813-1670-218 • Instagram: @alghanimislamictour', 20, y + 20);
   doc.setFont('helvetica', 'bold');
-  doc.text('Google Maps: share.google/fsqwRYJHLHFaiESVm', 20, y + 26);
+  doc.textWithLink('Buka Google Maps Kantor Garut', 20, y + 26, { url: OFFICES_DATA.garut.mapsUrl });
 
   // Footer
   y += 36;
@@ -1022,7 +1024,7 @@ export const generateBadalUmrohReceiptPDF = (data: BadalUmrohPDFData) => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.text('PT. Al-Ghanimah Berkah Bersama • PPIU No. 1030 Thn. 2019 Kemenag RI (Akreditasi A)', 14, 28);
-  doc.text('Pusat Layanan Garut: Jl. Sudirman Copong, Sukamentri • WA: 0813-1670-218', 14, 32);
+  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address} • WA: 0813-1670-218`, 14, 32, { maxWidth: pageWidth - 28 });
 
   // Right Header Meta Box
   doc.setFillColor(245, 245, 245);
@@ -1201,7 +1203,7 @@ export const generateBadalUmrohReceiptPDF = (data: BadalUmrohPDFData) => {
   doc.text('WhatsApp: 0813-1670-218', rightBoxX, currentY + 18);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(60, 60, 60);
-  doc.text('Jl. Sudirman Copong, Sukamentri, Garut', rightBoxX, currentY + 23);
+  doc.text('Jl. Jenderal Sudirman No. 30 (Copong),', rightBoxX, currentY + 23);
 
   // Footer
   currentY += 38;
@@ -1257,14 +1259,14 @@ export const generateJamaahRegistrationSlipPDF = (jamaah: JamaahProgressItem) =>
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(166, 124, 82);
-  doc.text('ALGHANIM ISLAMIC TOUR & TRAVEL • CABANG GARUT', 14, 20);
+  doc.text('ALGHANIM ISLAMIC TOUR & TRAVEL • HEAD OFFICE GARUT', 14, 20);
 
   // Legalities Info
   doc.setTextColor(90, 90, 90);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.text('Izin PPIU Kemenag RI No. 1030 Tahun 2019 • Akreditasi "A"', 14, 24.5);
-  doc.text('Kantor Operasional: Jl. Sudirman Copong, Sukamentri, Garut • Hotline WA: 0813-1670-218', 14, 28.5);
+  doc.text(`Head Office: ${OFFICES_DATA.garut.address} • Hotline WA: 0813-1670-218`, 14, 28.5, { maxWidth: pageWidth - 28 });
 
   // Right Header Meta Box
   doc.setFillColor(245, 245, 245);
@@ -1399,7 +1401,7 @@ export const generateJamaahRegistrationSlipPDF = (jamaah: JamaahProgressItem) =>
   doc.text('Kantor Pelayanan', col2X, currentY + 26);
   doc.text(':', col2X + 32, currentY + 26);
   doc.setTextColor(26, 26, 26);
-  doc.text('Cabang Garut', col2X + 35, currentY + 26);
+  doc.text('Head Office Garut', col2X + 35, currentY + 26);
 
   // Subtle divider between 2-column info and full-width notes
   doc.setDrawColor(235, 235, 235);
@@ -1413,7 +1415,7 @@ export const generateJamaahRegistrationSlipPDF = (jamaah: JamaahProgressItem) =>
   doc.text('Catatan Registrasi', 18, currentY + 37.5);
   doc.text(':', 58, currentY + 37.5);
   doc.setTextColor(40, 40, 40);
-  doc.text(jamaah.notes || 'Pendaftaran resmi via Kantor Al-Ghanim Cabang Garut.', 61, currentY + 37.5, {
+  doc.text(jamaah.notes || 'Pendaftaran resmi via Head Office Al-Ghanim Garut.', 61, currentY + 37.5, {
     maxWidth: pageWidth - 82
   });
 
@@ -1687,5 +1689,3 @@ export const generateItineraryUmrohPDF = (jamaah?: JamaahProgressItem) => {
 
   doc.save(`Itinerary_Perjalanan_Umroh_ALGHANIM.pdf`);
 };
-
-

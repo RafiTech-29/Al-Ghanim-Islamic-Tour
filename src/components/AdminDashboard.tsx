@@ -159,7 +159,7 @@ const getJamaahRegistrationWAMessage = (jamaah: JamaahProgressItem) => {
 
 Yth. Bpk/Ibu *${jamaah.fullName}*,
 
-Alhamdulillah, pendaftaran Ibadah Umroh Anda telah resmi terdaftar di *PT. AL-GHANIMAH BERKAH BERSAMA* (Cabang Garut - Mandala 525).
+Alhamdulillah, pendaftaran Ibadah Umroh Anda telah resmi terdaftar di *PT. AL-GHANIMAH BERKAH BERSAMA* (Head Office Garut - Mandala 525).
 
 📋 *Data Registrasi Anda:*
 • *Nomor Induk Jamaah (NIJ):* *${jamaah.nij}*

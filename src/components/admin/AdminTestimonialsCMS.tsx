@@ -3,7 +3,6 @@ import {
   Star, 
   Trash2, 
   Eye, 
-  EyeOff, 
   MessageSquare, 
   Plus, 
   Search, 
@@ -13,7 +12,8 @@ import {
   X,
   Send,
   HeartHandshake,
-  UserCheck
+  UserCheck,
+  Archive
 } from 'lucide-react';
 import { TestimonialItem } from '../../types';
 
@@ -33,12 +33,12 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
   onShowToast
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState<'all' | 'approved' | 'hidden' | 'stars5'>('all');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'archived' | 'stars5'>('all');
   
   // Reply State
   const [replyingId, setReplyingId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
-  const [replyAuthor, setReplyAuthor] = useState('Manajemen ALGHANIM Cabang Garut');
+  const [replyAuthor, setReplyAuthor] = useState('Manajemen ALGHANIM Head Office Garut');
   const [isSubmittingReply, setIsSubmittingReply] = useState(false);
 
   // Delete Confirmation Modal
@@ -60,8 +60,8 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
 
   // Statistics
   const totalCount = testimonials.length;
-  const approvedCount = testimonials.filter(t => t.status !== 'hidden').length;
-  const hiddenCount = testimonials.filter(t => t.status === 'hidden').length;
+  const approvedCount = testimonials.filter(t => t.status !== 'hidden' && !t.isArchived).length;
+  const archivedCount = testimonials.filter(t => t.isArchived || t.status === 'hidden').length;
   const avgRating = totalCount > 0 
     ? (testimonials.reduce((sum, t) => sum + (t.rating || 5), 0) / totalCount).toFixed(1)
     : '5.0';
@@ -77,23 +77,25 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
 
     if (!matchesSearch) return false;
 
-    if (filterStatus === 'approved') return t.status !== 'hidden';
-    if (filterStatus === 'hidden') return t.status === 'hidden';
+    if (filterStatus === 'active') return t.status !== 'hidden' && !t.isArchived;
+    if (filterStatus === 'archived') return Boolean(t.isArchived || t.status === 'hidden');
     if (filterStatus === 'stars5') return (t.rating || 5) === 5;
     return true;
   });
 
-  // Handle Toggle Hide/Show
-  const handleToggleHide = async (t: TestimonialItem) => {
-    const newStatus = t.status === 'hidden' ? 'approved' : 'hidden';
+  const handleToggleArchive = async (t: TestimonialItem) => {
+    const wasArchived = t.isArchived === true || t.status === 'hidden';
+    const isArchived = !wasArchived;
     try {
-      await onUpdateTestimonial(t.id, { status: newStatus });
-      onShowToast(newStatus === 'hidden' 
-        ? `Ulasan dari ${t.name} telah disembunyikan dari publik.` 
-        : `Ulasan dari ${t.name} kini tampil di publik.`);
+      await onUpdateTestimonial(t.id, {
+        isArchived,
+        ...(isArchived ? { archivedAt: new Date().toISOString() } : {}),
+        ...(t.status === 'hidden' ? { status: 'approved' } : {})
+      });
+      onShowToast(isArchived ? 'Ulasan diarsipkan.' : 'Ulasan ditayangkan kembali.');
     } catch (err) {
       console.error(err);
-      onShowToast('Gagal mengubah status ulasan.');
+      onShowToast('Gagal mengubah status arsip ulasan.');
     }
   };
 
@@ -254,14 +256,14 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
           <div className="text-[10px] text-gray-400 mt-0.5">Aktif di web</div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white border border-rose-200/80 shadow-sm">
-          <div className="text-[11px] font-semibold text-rose-600 uppercase tracking-wider">
-            Disembunyikan
+        <div className="p-4 rounded-2xl bg-white border border-amber-200/80 shadow-sm">
+          <div className="text-[11px] font-semibold text-amber-700 uppercase tracking-wider">
+            Diarsipkan
           </div>
-          <div className="text-2xl font-bold text-rose-600 mt-1">
-            {hiddenCount}
+          <div className="text-2xl font-bold text-amber-700 mt-1">
+            {archivedCount}
           </div>
-          <div className="text-[10px] text-gray-400 mt-0.5">Moderasi / hate comment</div>
+          <div className="text-[10px] text-gray-400 mt-0.5">Tidak tampil di website</div>
         </div>
       </div>
 
@@ -292,9 +294,9 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
             Semua ({totalCount})
           </button>
           <button
-            onClick={() => setFilterStatus('approved')}
+            onClick={() => setFilterStatus('active')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-              filterStatus === 'approved'
+              filterStatus === 'active'
                 ? 'bg-emerald-700 text-white'
                 : 'text-emerald-700 hover:bg-emerald-50'
             }`}
@@ -302,14 +304,14 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
             Tayang ({approvedCount})
           </button>
           <button
-            onClick={() => setFilterStatus('hidden')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-              filterStatus === 'hidden'
-                ? 'bg-rose-600 text-white'
-                : 'text-rose-600 hover:bg-rose-50'
-            }`}
+          onClick={() => setFilterStatus('archived')}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            filterStatus === 'archived'
+              ? 'bg-amber-600 text-white shadow-sm'
+              : 'bg-white text-gray-500 border border-gray-200 hover:bg-amber-50'
+          }`}
           >
-            Disembunyikan ({hiddenCount})
+          Diarsipkan ({archivedCount})
           </button>
           <button
             onClick={() => setFilterStatus('stars5')}
@@ -341,8 +343,8 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
             <div
               key={t.id}
               className={`bg-white rounded-2xl border transition-all p-5 shadow-sm space-y-4 ${
-                t.status === 'hidden'
-                  ? 'border-rose-200 bg-rose-50/20'
+                t.isArchived || t.status === 'hidden'
+                  ? 'border-amber-200 bg-amber-50/20'
                   : 'border-gray-200 hover:border-[#A67C52]/60'
               }`}
             >
@@ -365,15 +367,15 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
                           Jamaah Umum
                         </span>
                       )}
-                      {t.status === 'hidden' ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-full">
-                          <EyeOff className="w-3 h-3" />
-                          Disembunyikan (Tidak Tayang)
+                      {t.isArchived || t.status === 'hidden' ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
+                          <Archive className="w-3 h-3" />
+                          DIARSIPKAN
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
                           <Eye className="w-3 h-3" />
-                          Tayang di Website
+                          TAYANG
                         </span>
                       )}
                     </div>
@@ -395,21 +397,16 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
                   </div>
 
                   <div className="flex items-center gap-1.5 border-l border-gray-200 pl-3">
-                    {/* Toggle Hide */}
                     <button
-                      onClick={() => handleToggleHide(t)}
+                      onClick={() => handleToggleArchive(t)}
                       className={`p-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                        t.status === 'hidden'
-                          ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                          : 'bg-amber-50 text-amber-800 hover:bg-amber-100'
+                        t.isArchived || t.status === 'hidden'
+                          ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                          : 'bg-gray-100 text-gray-600 hover:bg-amber-50 hover:text-amber-800'
                       }`}
-                      title={t.status === 'hidden' ? 'Tampilkan ke publik' : 'Sembunyikan dari publik'}
+                      title={t.isArchived || t.status === 'hidden' ? 'Tayangkan ulasan kembali' : 'Arsipkan ulasan'}
                     >
-                      {t.status === 'hidden' ? (
-                        <Eye className="w-4 h-4" />
-                      ) : (
-                        <EyeOff className="w-4 h-4" />
-                      )}
+                      {t.isArchived || t.status === 'hidden' ? <Eye className="w-4 h-4" /> : <Archive className="w-4 h-4" />}
                     </button>
 
                     {/* Reply Button */}
@@ -493,7 +490,7 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
                         type="text"
                         value={replyAuthor}
                         onChange={(e) => setReplyAuthor(e.target.value)}
-                        placeholder="Contoh: Manajemen ALGHANIM Cabang Garut"
+                        placeholder="Contoh: Manajemen ALGHANIM Head Office Garut"
                         className="w-full px-3 py-1.5 rounded-lg border border-blue-200 text-xs bg-white focus:outline-none focus:border-blue-500"
                       />
                     </div>

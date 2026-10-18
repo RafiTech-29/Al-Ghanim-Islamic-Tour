@@ -21,7 +21,8 @@ import {
 } from 'lucide-react';
 import { 
   OFFICIAL_WA_NUMBER, 
-  OFFICIAL_WA_LINK
+  OFFICIAL_WA_LINK,
+  OFFICES_DATA
 } from '../data/packagesData';
 import { AlGhanimLogo } from './AlGhanimLogo';
 
@@ -273,13 +274,13 @@ export const Navbar = ({
 
               {/* Item 5: Kantor Garut Mandala Umroh */}
               <a
-                href="https://share.google/fsqwRYJHLHFaiESVm"
+                href={OFFICES_DATA.garut.mapsUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1.5 text-[11px] sm:text-xs text-[#555555] hover:text-[#A67C52] font-medium transition-colors"
               >
                 <MapPin className="w-3.5 h-3.5 text-[#C5A059] flex-shrink-0" />
-                <span>Kantor Garut: Jl. Sudirman Copong, Sukamentri</span>
+                <span>Head Office Garut: {OFFICES_DATA.garut.address}</span>
               </a>
 
               <span className="text-[#C5A059]/40 font-bold">•</span>
@@ -934,4 +935,3 @@ export const Navbar = ({
     </>
   );
 };
-

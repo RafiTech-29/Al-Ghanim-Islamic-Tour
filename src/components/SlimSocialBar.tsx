@@ -1,6 +1,5 @@
 import React from 'react';
 import { Instagram, Youtube, Facebook, MessageCircle } from 'lucide-react';
-import { OFFICIAL_WA_LINK } from '../data/packagesData';
 
 // Logo TikTok Asli (SVG)
 const TikTokIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
@@ -13,8 +12,8 @@ export const SlimSocialBar: React.FC = () => {
   const socialLinks = [
     {
       name: 'Instagram',
-      handle: '@alghanimtour',
-      url: 'https://instagram.com/alghanimtour',
+      handle: '@alghanimislamictour',
+      url: 'https://www.instagram.com/alghanimislamictour/',
       icon: Instagram,
       hoverClass: 'hover:bg-[#E1306C] hover:text-white hover:border-[#E1306C]',
       activeColor: 'text-[#E1306C]'
@@ -22,15 +21,15 @@ export const SlimSocialBar: React.FC = () => {
     {
       name: 'YouTube',
       handle: 'AL-GHANIM Official',
-      url: 'https://youtube.com/@alghanimtour',
+      url: 'https://www.youtube.com/@alghanimislamictour',
       icon: Youtube,
       hoverClass: 'hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000]',
       activeColor: 'text-[#FF0000]'
     },
     {
       name: 'TikTok',
-      handle: '@alghanim.travel',
-      url: 'https://tiktok.com/@alghanim.travel',
+      handle: '@alghanimislamictour',
+      url: 'https://www.tiktok.com/@alghanimislamictour',
       icon: TikTokIcon,
       hoverClass: 'hover:bg-black hover:text-white hover:border-black',
       activeColor: 'text-gray-900'
@@ -38,7 +37,7 @@ export const SlimSocialBar: React.FC = () => {
     {
       name: 'Facebook',
       handle: 'Al-Ghanim Islamic Tour',
-      url: 'https://facebook.com/alghanimtour',
+      url: 'https://www.facebook.com/alghanimislamictour',
       icon: Facebook,
       hoverClass: 'hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]',
       activeColor: 'text-[#1877F2]'
@@ -46,7 +45,7 @@ export const SlimSocialBar: React.FC = () => {
     {
       name: 'WhatsApp',
       handle: '0813-1670-218',
-      url: OFFICIAL_WA_LINK,
+      url: 'https://wa.me/628131670218?text=Halo%20Admin%20ALGHANIM,%20saya%20ingin%20konsultasi%20paket%20ibadah',
       icon: MessageCircle,
       hoverClass: 'hover:bg-[#25D366] hover:text-white hover:border-[#25D366]',
       activeColor: 'text-[#25D366]'

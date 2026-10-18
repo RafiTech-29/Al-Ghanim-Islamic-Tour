@@ -36,7 +36,7 @@ export const BadalUmrohModal = ({ isOpen, onClose, packageData }: BadalUmrohModa
       setLivePackage(packageData);
     }
     const unsubscribe = subscribeToPackages((items) => {
-      const found = items.find(p => p.category === 'badal-umroh' || p.id.includes('badal') || p.title.toLowerCase().includes('badal'));
+      const found = items.find(p => !p.isArchived && p.isActive !== false && (p.category === 'badal-umroh' || p.id.includes('badal') || p.title.toLowerCase().includes('badal')));
       if (found) {
         setLivePackage(found);
       }

@@ -199,7 +199,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({
                 4 Langkah Menjadi Mitra Resmi
               </h3>
               <p className="text-xs text-[#666666]">
-                Proses verifikasi resmi cepat dan langsung didampingi oleh tim kantor cabang Garut &amp; Bandung.
+                Proses verifikasi resmi cepat dan langsung didampingi oleh tim Head Office Garut &amp; Kantor Cabang Bandung.
               </p>
             </div>
 
@@ -472,21 +472,21 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Card 1: Garut */}
           <div className="p-5 rounded-2xl bg-[#FBFBFB] border border-gray-200 hover:border-[#A67C52]/40 hover:shadow-md transition-all flex flex-col justify-between">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="px-2.5 py-0.5 rounded-full bg-[#A67C52] text-white text-[10px] font-bold uppercase tracking-wider">
-                  Cabang Garut
+                  Head Office (Kantor Pusat)
                 </span>
-                <span className="text-[11px] text-gray-500 font-medium">Kantor Operasional</span>
+                <span className="text-[11px] text-gray-500 font-medium">Garut</span>
               </div>
               <h4 className="font-serif-luxury font-bold text-[#1A1A1A] text-base">
-                PT. Al-Ghanim &amp; Mandala 525 Garut
+                {OFFICES_DATA.garut.title}
               </h4>
               <p className="text-xs text-[#555555] leading-relaxed">
-                Jl. Sudirman Copong, Garut Kota, Jawa Barat
+                {OFFICES_DATA.garut.address}
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between">
@@ -513,15 +513,15 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({
                 <span className="text-[11px] text-gray-500 font-medium">Jawa Barat</span>
               </div>
               <h4 className="font-serif-luxury font-bold text-[#1A1A1A] text-base">
-                Metro Trade Center (MTC)
+                {OFFICES_DATA.bandung.title}
               </h4>
               <p className="text-xs text-[#555555] leading-relaxed">
-                Jl. Soekarno Hatta No. 590, Sekejati, Buahbatu, Kota Bandung, Jawa Barat 40286
+                {OFFICES_DATA.bandung.address}
               </p>
             </div>
             <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between">
               <a
-                href="https://maps.google.com/?q=Metro+Trade+Center+Jl.+Soekarno+Hatta+No.+590+Bandung"
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(OFFICES_DATA.bandung.address)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1 text-xs font-bold text-[#A67C52] hover:text-[#8E653E] transition-colors"
@@ -533,35 +533,6 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({
             </div>
           </div>
 
-          {/* Card 3: Jakarta */}
-          <div className="p-5 rounded-2xl bg-[#FBFBFB] border border-gray-200 hover:border-[#A67C52]/40 hover:shadow-md transition-all flex flex-col justify-between">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-bold uppercase tracking-wider">
-                  Kantor Pusat
-                </span>
-                <span className="text-[11px] text-gray-500 font-medium">DKI Jakarta</span>
-              </div>
-              <h4 className="font-serif-luxury font-bold text-[#1A1A1A] text-base">
-                Menara Kadin Indonesia Lt. 12
-              </h4>
-              <p className="text-xs text-[#555555] leading-relaxed">
-                Jl. H.R. Rasuna Said Blok X-5 Kav 2-3, Kuningan Timur, Jakarta Selatan 12950
-              </p>
-            </div>
-            <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between">
-              <a
-                href="https://maps.google.com/?q=Menara+Kadin+Indonesia+Jl.+H.R.+Rasuna+Said+Jakarta+Selatan"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-xs font-bold text-[#A67C52] hover:text-[#8E653E] transition-colors"
-              >
-                <span>Buka Rute Maps</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-              <span className="text-[11px] text-gray-400">Jakarta Selatan</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>

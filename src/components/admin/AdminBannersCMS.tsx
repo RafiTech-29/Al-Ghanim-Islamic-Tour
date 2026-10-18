@@ -9,8 +9,7 @@ import {
   AlertCircle, 
   X, 
   ExternalLink,
-  ToggleLeft,
-  ToggleRight,
+  Archive,
   Calendar,
   Eye,
   RefreshCw,
@@ -51,6 +50,7 @@ export const AdminBannersCMS: React.FC = () => {
   const [banners, setBanners] = useState<PromoBannerItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'archived'>('active');
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,6 +76,7 @@ export const AdminBannersCMS: React.FC = () => {
     startDate: '2026-08-01',
     endDate: '2026-12-31',
     isActive: true,
+    isArchived: false,
     aspectRatio: 'portrait',
     posterSizeFormat: 'flyer-vertical'
   });
@@ -113,6 +114,7 @@ export const AdminBannersCMS: React.FC = () => {
       startDate: new Date().toISOString().split('T')[0],
       endDate: '2027-12-31',
       isActive: true,
+      isArchived: false,
       aspectRatio: 'portrait',
       posterSizeFormat: 'flyer-vertical'
     });
@@ -132,7 +134,9 @@ export const AdminBannersCMS: React.FC = () => {
       ctaText: banner.ctaText || 'Klaim Promo via WhatsApp',
       startDate: banner.startDate || '',
       endDate: banner.endDate || '',
-      isActive: banner.isActive !== false,
+      isActive: !banner.isArchived && banner.isActive !== false,
+      isArchived: banner.isArchived === true || banner.isActive === false,
+      archivedAt: banner.archivedAt,
       aspectRatio: banner.aspectRatio || 'portrait',
       posterSizeFormat: banner.posterSizeFormat || 'flyer-vertical'
     });
@@ -176,6 +180,8 @@ export const AdminBannersCMS: React.FC = () => {
 
     const payload: Omit<PromoBannerItem, 'id'> = {
       ...formData,
+      isActive: !formData.isArchived,
+      isArchived: Boolean(formData.isArchived),
       imageUrl: uploadPreview || formData.imageUrl || PRESET_BANNERS[0].url
     };
 
@@ -196,24 +202,32 @@ export const AdminBannersCMS: React.FC = () => {
       setIsModalOpen(false);
     } catch (err) {
       console.error('Error saving banner:', err);
-      showToast('✓ Data disimpan di tampilan.');
-      setIsModalOpen(false);
+      if (editingId) {
+        const previous = banners.find(banner => banner.id === editingId);
+        if (previous) setBanners(items => items.map(banner => banner.id === editingId ? previous : banner));
+      }
+      showToast('Gagal menyimpan banner. Silakan coba lagi.');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleToggleActive = async (banner: PromoBannerItem) => {
-    const newStatus = !banner.isActive;
+  const handleToggleArchive = async (banner: PromoBannerItem) => {
+    const wasArchived = banner.isArchived === true || banner.isActive === false;
+    const updates = {
+      isArchived: !wasArchived,
+      isActive: wasArchived,
+      ...(!wasArchived ? { archivedAt: new Date().toISOString() } : {})
+    };
     // Optimistic UI update
-    setBanners(prev => prev.map(b => b.id === banner.id ? { ...b, isActive: newStatus } : b));
+    setBanners(prev => prev.map(b => b.id === banner.id ? { ...b, ...updates } : b));
     try {
-      await updatePromoBannerInFirestore(banner.id, { isActive: newStatus });
-      showToast(newStatus ? '✓ Banner diaktifkan!' : '✓ Banner dinonaktifkan.');
+      await updatePromoBannerInFirestore(banner.id, updates);
+      showToast(wasArchived ? '✓ Banner ditayangkan.' : '✓ Banner diarsipkan.');
     } catch (err) {
       console.error('Error toggling banner status:', err);
       // Revert if error
-      setBanners(prev => prev.map(b => b.id === banner.id ? { ...b, isActive: banner.isActive } : b));
+      setBanners(prev => prev.map(b => b.id === banner.id ? banner : b));
       showToast('Gagal mengubah status banner.');
     }
   };
@@ -229,6 +243,16 @@ export const AdminBannersCMS: React.FC = () => {
       alert('Gagal menghapus banner.');
     }
   };
+
+  const totalBannersCount = banners.length;
+  const activeBannersCount = banners.filter(banner => !banner.isArchived && banner.isActive !== false).length;
+  const archivedBannersCount = banners.filter(banner => banner.isArchived === true || banner.isActive === false).length;
+  const filteredBanners = banners.filter(banner => {
+    const isArchived = banner.isArchived === true || banner.isActive === false;
+    if (statusFilter === 'active' && isArchived) return false;
+    if (statusFilter === 'archived' && !isArchived) return false;
+    return true;
+  });
 
   return (
     <div className="space-y-6">
@@ -267,6 +291,67 @@ export const AdminBannersCMS: React.FC = () => {
         </button>
       </div>
 
+      {/* Status Tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <button
+            onClick={() => setStatusFilter('active')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'active'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/60'
+            }`}
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span>Tayang di Website</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'active' ? 'bg-emerald-700 text-white' : 'bg-emerald-200 text-emerald-800'
+            }`}>
+              {activeBannersCount}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setStatusFilter('archived')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'archived'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60'
+            }`}
+          >
+            <Archive className="w-3.5 h-3.5" />
+            <span>Diarsipkan (Disimpan)</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'archived' ? 'bg-amber-700 text-white' : 'bg-amber-200 text-amber-900'
+            }`}>
+              {archivedBannersCount}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setStatusFilter('all')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'all'
+                ? 'bg-[#1A1A1A] text-white shadow-sm'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <span>Semua Banner</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'all' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
+            }`}>
+              {totalBannersCount}
+            </span>
+          </button>
+        </div>
+
+        <div className="text-[11px] text-gray-500 font-medium hidden md:block">
+          {statusFilter === 'active' && 'Menampilkan banner yang aktif tayang di website.'}
+          {statusFilter === 'archived' && 'Menampilkan banner arsip yang tidak tayang di website.'}
+          {statusFilter === 'all' && 'Menampilkan semua banner tayang dan arsip.'}
+        </div>
+      </div>
+
       {/* Banners List */}
       {loading ? (
         <div className="p-12 text-center bg-white rounded-2xl border border-gray-200">
@@ -279,13 +364,18 @@ export const AdminBannersCMS: React.FC = () => {
           <p className="text-sm font-semibold text-gray-700">Belum ada poster promo tersimpan.</p>
           <p className="text-xs text-gray-400 mt-1">Klik tombol "+ Upload Poster Promo Baru" untuk menambahkan poster atau flyer promo Anda.</p>
         </div>
+      ) : filteredBanners.length === 0 ? (
+        <div className="p-12 text-center bg-white rounded-2xl border border-gray-200">
+          <ImageIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+          <p className="text-sm font-semibold text-gray-700">Tidak ada banner pada status ini.</p>
+        </div>
       ) : (
         <div className="space-y-4">
-          {banners.map((banner) => (
+          {filteredBanners.map((banner) => (
             <div
               key={banner.id}
               className={`p-5 rounded-2xl border transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-5 ${
-                banner.isActive 
+                !banner.isArchived && banner.isActive !== false
                   ? 'bg-white border-gray-200 shadow-sm' 
                   : 'bg-gray-50 border-gray-200 opacity-80'
               }`}
@@ -311,13 +401,13 @@ export const AdminBannersCMS: React.FC = () => {
                     <Maximize2 className="w-4 h-4" />
                   </div>
 
-                  {banner.isActive ? (
+                  {!banner.isArchived && banner.isActive !== false ? (
                     <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-bold">
                       TAYANG
                     </span>
                   ) : (
-                    <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded bg-gray-600 text-white text-[9px] font-bold">
-                      DRAFT
+                    <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded bg-amber-500 text-white text-[9px] font-bold">
+                      DIARSIPKAN
                     </span>
                   )}
                 </div>
@@ -358,25 +448,17 @@ export const AdminBannersCMS: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={() => handleToggleActive(banner)}
+                  onClick={() => handleToggleArchive(banner)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
-                    banner.isActive
-                      ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    banner.isArchived || banner.isActive === false
+                      ? 'bg-amber-50 text-amber-800 hover:bg-amber-100'
+                      : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
                   }`}
-                  title={banner.isActive ? "Klik untuk jadikan draft (sembunyikan dari beranda)" : "Klik untuk tayangkan di beranda"}
+                  title={banner.isArchived || banner.isActive === false ? 'Tayangkan banner' : 'Arsipkan banner'}
                 >
-                  {banner.isActive ? (
-                    <>
-                      <ToggleRight className="w-4 h-4 text-emerald-600" />
-                      <span>Tayang</span>
-                    </>
-                  ) : (
-                    <>
-                      <ToggleLeft className="w-4 h-4 text-gray-500" />
-                      <span>Draft</span>
-                    </>
-                  )}
+                  {banner.isArchived || banner.isActive === false
+                    ? <><Eye className="w-4 h-4" /><span>Tayang</span></>
+                    : <><Archive className="w-4 h-4" /><span>Arsip</span></>}
                 </button>
 
                 <button
@@ -623,26 +705,33 @@ export const AdminBannersCMS: React.FC = () => {
                 </div>
               </div>
 
-              {/* Status Switch (Bisa diposting atau disimpan sebagai draft) */}
-              <div className="p-3.5 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-gray-800">Status Penayangan di Website</p>
-                  <p className="text-[11px] text-gray-500">
-                    Aktifkan jika ada promo yang ingin ditampilkan sekarang, atau nonaktifkan jika disimpan sebagai draft.
-                  </p>
+              <fieldset className="rounded-2xl border border-gray-200 bg-white p-4">
+                <legend className="px-1 text-xs font-bold text-gray-700">Status Banner</legend>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <label className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-semibold cursor-pointer ${!formData.isArchived ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-gray-200 text-gray-600'}`}>
+                    <input
+                      type="radio"
+                      name="bannerVisibility"
+                      checked={!formData.isArchived}
+                      onChange={() => setFormData({ ...formData, isActive: true, isArchived: false })}
+                      className="accent-emerald-700"
+                    />
+                    <Eye className="w-4 h-4" />
+                    <span>Tayang Aktif</span>
+                  </label>
+                  <label className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-semibold cursor-pointer ${formData.isArchived ? 'border-amber-300 bg-amber-50 text-amber-800' : 'border-gray-200 text-gray-600'}`}>
+                    <input
+                      type="radio"
+                      name="bannerVisibility"
+                      checked={Boolean(formData.isArchived)}
+                      onChange={() => setFormData({ ...formData, isActive: false, isArchived: true, archivedAt: new Date().toISOString() })}
+                      className="accent-amber-700"
+                    />
+                    <Archive className="w-4 h-4" />
+                    <span>Arsipkan</span>
+                  </label>
                 </div>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.isActive}
-                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                    className="rounded text-[#A67C52] focus:ring-[#A67C52] w-4 h-4 cursor-pointer"
-                  />
-                  <span className={`text-xs font-bold ${formData.isActive ? 'text-emerald-700' : 'text-gray-500'}`}>
-                    {formData.isActive ? 'Langsung Tayang' : 'Simpan Draft'}
-                  </span>
-                </label>
-              </div>
+              </fieldset>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
                 <button

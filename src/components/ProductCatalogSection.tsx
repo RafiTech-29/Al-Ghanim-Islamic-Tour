@@ -61,9 +61,7 @@ export const ProductCatalogSection = ({
 
   useEffect(() => {
     const unsubscribe = subscribeToPackages((items) => {
-      if (items && items.length > 0) {
-        setPackagesList(items);
-      }
+      setPackagesList(items.filter((item) => !item.isArchived && item.isActive !== false));
     });
     return () => unsubscribe();
   }, []);

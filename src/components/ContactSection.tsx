@@ -41,20 +41,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   selectedPackage,
   onResetSelectedPackage
 }) => {
-  const [selectedMapCity, setSelectedMapCity] = useState<'garut' | 'bandung' | 'jakarta'>('garut');
+  const [selectedMapCity, setSelectedMapCity] = useState<'garut' | 'bandung'>('garut');
   const [availablePackages, setAvailablePackages] = useState<PackageScheduleItem[]>(DETAILED_SCHEDULES);
 
   const MAPS_EMBED_URLS = {
-    garut: 'https://maps.google.com/maps?q=Mandala+Umroh,+Jl.+Sudirman+Copong+Garut,+Sukamentri&t=&z=17&ie=UTF8&iwloc=&output=embed',
-    bandung: 'https://maps.google.com/maps?q=Metro+Trade+Center,+Jl.+Soekarno-Hatta+No.+590,+Sekejati,+Buahbatu,+Kota+Bandung&t=&z=16&ie=UTF8&iwloc=&output=embed',
-    jakarta: 'https://maps.google.com/maps?q=Menara+Kadin+Indonesia,+Jl.+H.R.+Rasuna+Said,+Jakarta+Selatan&t=&z=16&ie=UTF8&iwloc=&output=embed'
+    garut: OFFICES_DATA.garut.embedUrl,
+    bandung: OFFICES_DATA.bandung.embedUrl
   };
 
   // Subscribe to real-time packages from CMS / Firestore
   useEffect(() => {
     const unsubscribe = subscribeToPackages((items) => {
       if (items && items.length > 0) {
-        setAvailablePackages(items);
+        setAvailablePackages(items.filter((item) => !item.isArchived && item.isActive !== false));
       }
     });
     return () => unsubscribe();
@@ -620,14 +619,14 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
             Lokasi Kantor Resmi ALGHANIM
           </h2>
           <p className="font-sans-luxury text-sm sm:text-base text-[#555555] leading-relaxed">
-            Kunjungi kantor representatif kami di Garut, Bandung, dan Jakarta untuk konsultasi langsung, penyerahan berkas jamaah, maupun silaturahmi tatap muka.
+            Kunjungi Head Office Garut atau Kantor Cabang Bandung untuk konsultasi langsung dan penyerahan berkas jamaah.
           </p>
         </div>
 
 {/* 3 KARTU KANTOR RESMI */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           
-          {/* Kantor Cabang Garut (Highlight Utama) */}
+          {/* Head Office Garut */}
           <div 
             onClick={() => setSelectedMapCity('garut')}
             className={`p-6 sm:p-8 rounded-3xl bg-white shadow-lg space-y-6 relative flex flex-col justify-between cursor-pointer transition-all ${
@@ -636,8 +635,8 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-[#A67C52] text-white text-xs font-bold uppercase tracking-wider">
-                  Kantor Operasional Garut
+                <span className="px-3 py-1 rounded-full bg-[#C5A059] text-white text-xs font-bold uppercase tracking-wider">
+                  Head Office (Kantor Pusat)
                 </span>
                 <div className="p-2 rounded-xl bg-[#F5F5F5] text-[#A67C52]">
                   <Building2 className="w-5 h-5" />
@@ -646,7 +645,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
 
               <div>
                 <h3 className="font-serif-luxury text-2xl font-bold text-[#1A1A1A]">
-                  Kantor Operasional Garut (Mandala Umroh)
+                  {OFFICES_DATA.garut.title}
                 </h3>
                 <p className="text-xs text-[#A67C52] font-semibold mt-0.5">
                   Pusat Layanan &bull; Supported by @mandala525islamictour
@@ -656,7 +655,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
               <div className="space-y-3 text-xs text-[#555555]">
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-[#A67C52] flex-shrink-0 mt-0.5" />
-                  <span>Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44116</span>
+                  <span>{OFFICES_DATA.garut.address}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-[#A67C52] flex-shrink-0" />
@@ -664,7 +663,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Clock className="w-4 h-4 text-[#A67C52] flex-shrink-0" />
-                  <span>Senin – Sabtu: 09.00 – 17.00 WIB</span>
+                  <span>{OFFICES_DATA.garut.hours}</span>
                 </div>
               </div>
             </div>
@@ -723,7 +722,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
               <div className="space-y-3 text-xs text-[#555555]">
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-[#A67C52] flex-shrink-0 mt-0.5" />
-                  <span>Jl. Soekarno Hatta No. 590, Sekejati, Buahbatu, Kota Bandung, Jawa Barat 40286</span>
+                  <span>{OFFICES_DATA.bandung.address}</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-[#A67C52] flex-shrink-0" />
@@ -731,7 +730,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
                 </div>
                 <div className="flex items-center gap-2.5">
                   <Clock className="w-4 h-4 text-[#A67C52] flex-shrink-0" />
-                  <span>Senin – Sabtu: 09.00 – 17.30 WIB</span>
+                  <span>{OFFICES_DATA.bandung.hours}</span>
                 </div>
               </div>
             </div>
@@ -755,73 +754,6 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
                 onClick={(e) => e.stopPropagation()}
                 className="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#1A1A1A] transition-colors"
                 title="Hubungi Cabang Bandung"
-              >
-                <Phone className="w-4 h-4 text-[#A67C52]" />
-              </a>
-            </div>
-          </div>
-
-          {/* Kantor Pusat Jakarta */}
-          <div 
-            onClick={() => setSelectedMapCity('jakarta')}
-            className={`p-6 sm:p-8 rounded-3xl bg-white shadow-md space-y-6 flex flex-col justify-between cursor-pointer transition-all ${
-              selectedMapCity === 'jakarta' ? 'border-2 border-[#A67C52] ring-2 ring-[#A67C52]/20' : 'border border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-[#F5F5F5] text-[#A67C52] text-xs font-bold uppercase tracking-wider border border-gray-200">
-                  Kantor Pusat Jakarta
-                </span>
-                <div className="p-2 rounded-xl bg-[#F5F5F5] text-[#A67C52]">
-                  <Building2 className="w-5 h-5" />
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-serif-luxury text-2xl font-bold text-[#1A1A1A]">
-                  PT. Al-Ghanimah Berkah Bersama
-                </h3>
-                <p className="text-xs text-[#666666] mt-0.5">
-                  PPIU No. 1030 Tahun 2019 (Akreditasi A)
-                </p>
-              </div>
-
-              <div className="space-y-3 text-xs text-[#555555]">
-                <div className="flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 text-[#A67C52] flex-shrink-0 mt-0.5" />
-                  <span>Gedung Menara Kadin Indonesia Lt. 12, Jl. H.R. Rasuna Said, Jakarta Selatan 12950</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-[#A67C52] flex-shrink-0" />
-                  <span>0813-1670-218</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Clock className="w-4 h-4 text-[#A67C52] flex-shrink-0" />
-                  <span>Senin – Jumat: 08.30 – 17.30 WIB</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-gray-100 flex items-center gap-2">
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedMapCity('jakarta');
-                }}
-                className="flex-1 py-2.5 rounded-xl bg-[#F5F5F5] hover:bg-gray-200 text-[#1A1A1A] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"
-              >
-                <MapPin className="w-3.5 h-3.5" />
-                <span>Lihat di Peta</span>
-              </button>
-              <a
-                href={OFFICES_DATA.jakarta.waLink}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-[#1A1A1A] transition-colors"
-                title="Hubungi Kantor Pusat"
               >
                 <Phone className="w-4 h-4 text-[#A67C52]" />
               </a>
@@ -856,7 +788,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
                     : 'bg-white text-[#1A1A1A] hover:bg-gray-200 border border-gray-200'
                 }`}
               >
-                📍 Cabang Garut
+                📍 Head Office Garut
               </button>
 
               <button
@@ -871,17 +803,6 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
                 📍 Cabang Bandung
               </button>
 
-              <button
-                type="button"
-                onClick={() => setSelectedMapCity('jakarta')}
-                className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                  selectedMapCity === 'jakarta'
-                    ? 'bg-[#A67C52] text-white shadow-md'
-                    : 'bg-white text-[#1A1A1A] hover:bg-gray-200 border border-gray-200'
-                }`}
-              >
-                📍 Pusat Jakarta
-              </button>
             </div>
           </div>
 
@@ -902,22 +823,17 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
             {/* Bottom floating details badge on map */}
             <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-md bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-gray-200 shadow-xl space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#A67C52] text-white">
-                  {selectedMapCity === 'garut' ? 'Kantor Cabang Garut' : selectedMapCity === 'bandung' ? 'Kantor Cabang Bandung' : 'Kantor Pusat Jakarta'}
+                <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white ${selectedMapCity === 'garut' ? 'bg-[#C5A059]' : 'bg-[#A67C52]'}`}>
+                  {selectedMapCity === 'garut' ? 'Head Office (Kantor Pusat)' : 'Kantor Cabang Bandung'}
                 </span>
                 <span className="text-[11px] text-gray-500 font-semibold">0813-1670-218</span>
               </div>
               <p className="text-xs text-[#1A1A1A] font-medium leading-snug">
-                {selectedMapCity === 'garut' 
-                  ? 'Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kab. Garut, Jawa Barat 44116'
-                  : selectedMapCity === 'bandung'
-                  ? 'Jl. Soekarno Hatta No. 590, Sekejati, Buahbatu, Kota Bandung, Jawa Barat 40286'
-                  : 'Gedung Menara Kadin Indonesia Lt. 12, Jl. H.R. Rasuna Said, Jakarta Selatan 12950'
-                }
+                {selectedMapCity === 'garut' ? OFFICES_DATA.garut.address : OFFICES_DATA.bandung.address}
               </p>
               <div className="pt-1 flex items-center gap-2">
                 <a
-                  href={selectedMapCity === 'garut' ? 'https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.9108831,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.9108831!16s%2Fg%2F11t7k1s3_y' : selectedMapCity === 'bandung' ? 'https://maps.google.com/?q=Jl.+Soekarno+Hatta+No.+590+Bandung' : 'https://maps.google.com/?q=Menara+Kadin+Indonesia+Jakarta'}
+                  href={selectedMapCity === 'garut' ? OFFICES_DATA.garut.mapsUrl : OFFICES_DATA.bandung.mapsUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="flex-1 py-1.5 px-3 rounded-lg bg-[#A67C52] hover:bg-[#8E653E] text-white text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"

@@ -11,7 +11,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { ChatMessage } from '../types';
-import { OFFICIAL_WA_LINK } from '../data/packagesData';
+import { OFFICIAL_WA_LINK, OFFICES_DATA } from '../data/packagesData';
 import { addInquiryToFirestore } from '../lib/firestoreService';
 
 interface ConciergeDrawerProps {
@@ -66,7 +66,7 @@ export const ConciergeDrawer = ({ isOpen, onClose, onOpenConsultation }: Concier
     } else if (lower.includes('bandung')) {
       return 'Kantor Cabang Bandung';
     } else if (lower.includes('jakarta')) {
-      return 'Kantor Pusat Jakarta';
+      return `Kantor resmi ALGHANIM berada di Garut dan Bandung. Head Office (Kantor Pusat): ${OFFICES_DATA.garut.address}. Kantor Cabang Bandung: ${OFFICES_DATA.bandung.address}.`;
     } else if (lower.includes('syarat') || lower.includes('paspor') || lower.includes('visa') || lower.includes('dokumen')) {
       return 'Persyaratan & Dokumen Paspor';
     } else if (lower.includes('harga') || lower.includes('biaya') || lower.includes('paket') || lower.includes('daftar umroh')) {
@@ -146,13 +146,13 @@ export const ConciergeDrawer = ({ isOpen, onClose, onOpenConsultation }: Concier
       const lower = text.toLowerCase();
       
       if (lower.includes('garut') || lower.includes('copong') || lower.includes('mandala')) {
-        fallbackReply = `**Kantor Operasional Garut (Mandala Umroh):**\n\n📍 **Alamat:** Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44116\n📞 **Hotline / WA:** 0813-1670-218 / (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 09.00 – 17.00 WIB\n🏢 **Layanan:** Customer Service & Tim Operasional Mandala 525\n\n*Anda dipersilakan berkunjung langsung untuk konsultasi tatap muka atau pengecekan paspor.*`;
+        fallbackReply = `**Head Office (Kantor Pusat) ALGHANIM:**\n\n📍 **Alamat:** ${OFFICES_DATA.garut.address}\n🗺️ **Google Maps:** ${OFFICES_DATA.garut.mapsUrl}\n📞 **Hotline / WA:** 0813-1670-218 / (0262) 4890731\n⏰ **Jam Operasional:** ${OFFICES_DATA.garut.hours}\n🏢 **Layanan:** Customer Service & Tim Operasional Mandala 525\n\n*Anda dipersilakan berkunjung langsung untuk konsultasi tatap muka atau pengecekan paspor.*`;
       } else if (lower.includes('daftar') || lower.includes('cara') || lower.includes('gimana')) {
         fallbackReply = `**Langkah Pendaftaran Umroh di ALGHANIM:**\n\n1. **Pilih Paket:** Tentukan program (Reguler 9/12 hari, VIP, atau Tabungan).\n2. **Setor DP Seat:** Minimal Rp 5 - 10 Juta untuk mengunci nomor porsi penerbangan.\n3. **Serahkan Dokumen:** Paspor asli (min. 7 bulan), copy KTP, KK, pasfoto 4x6 latar putih.\n4. **Manasik Sunnah:** Ikuti bimbingan manasik intensif di Garut / Bandung.\n5. **Pelunasan & Berangkat:** Pelunasan H-30 sebelum keberangkatan.\n\n*Untuk pendaftaran langsung, silakan ke kantor Garut (Copong) atau hubungi WhatsApp resmi di **0813-1670-218**.*`;
       } else if (lower.includes('harga') || lower.includes('biaya') || lower.includes('paket')) {
         fallbackReply = `**Pilihan Paket Ibadah ALGHANIM:**\n\n• **Umroh Reguler (9 Hari):** Mulai Rp 28,9 Jt (Direct Saudia/Garuda, Bintang 4/5 50m ke Haram)\n• **Umroh Jum'atain (12 Hari):** Rp 34,5 Jt (2x Shalat Jum'at di Makkah & Madinah)\n• **Umroh Custom VIP:** Jadwal bebas, mobil GMC Yukon/Alphard, kamar Suite View Ka'bah\n• **Tabungan Umroh:** Setoran awal Rp 5 Jt, cicilan mulai Rp 800rb/bln bebas bunga\n• **Badal Umroh Amanah:** Rp 2,5 Jt / Jiwa (Sertifikat + Video Dokumentasi + Zamzam 5L)`;
       } else {
-        fallbackReply = `Terima kasih atas pertanyaannya. Tim konsultan ALGHANIM (Mandala 525 Garut) siap memberikan pelayanan ibadah yang nyaman, amanah, dan terjangkau.\n\nAnda dapat berkonsultasi langsung dengan konsultan kami melalui WhatsApp di **0813-1670-218** atau mengunjungi kantor resmi kami di Garut (Jl. Sudirman Copong), Bandung, atau Jakarta.`;
+        fallbackReply = `Terima kasih atas pertanyaannya. Tim konsultan ALGHANIM (Mandala 525 Garut) siap memberikan pelayanan ibadah yang nyaman, amanah, dan terjangkau.\n\nAnda dapat berkonsultasi langsung dengan konsultan kami melalui WhatsApp di **0813-1670-218** atau mengunjungi Head Office Garut (${OFFICES_DATA.garut.address}) maupun Kantor Cabang Bandung (${OFFICES_DATA.bandung.address}).`;
       }
 
       const botMsg: ChatMessage = {

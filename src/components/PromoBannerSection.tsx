@@ -21,7 +21,7 @@ export const PromoBannerSection: React.FC<PromoBannerSectionProps> = () => {
 
   useEffect(() => {
     const unsubscribe = subscribeToPromoBanners((items) => {
-      const activeItems = items.filter(b => b.isActive !== false);
+      const activeItems = items.filter(b => !b.isArchived && b.isActive !== false);
       setBanners(activeItems);
     });
     return () => unsubscribe();

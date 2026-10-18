@@ -52,17 +52,14 @@ INFORMASI RESMI PERUSAHAAN (KNOWLEDGE BASE ALGHANIM):
    - Berpengalaman sejak 2013, telah memberangkatkan lebih dari 10.000+ jamaah ke Tanah Suci.
 
 2. LOKASI KANTOR RESMI & KONTAK:
-   - KANTOR CABANG GARUT (Mandala Umroh):
-     * Alamat: Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44116.
+   - KANTOR UTAMA GARUT:
+     * Alamat: Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut.
      * Telepon: (0262) 4890731 / Hotline WA: 0813-1670-218.
-     * Jam Operasional: Senin – Sabtu: 08.30 – 17.00 WIB.
+     * Jam Operasional: Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu/libur nasional tutup).
      * Konsultan: Ustadz Wildan Firdaus, S.Pd.I. & Tim Mandala 525.
    - KANTOR CABANG KOTA BANDUNG:
-     * Alamat: Jl. Soekarno Hatta No. 590, Sekejati, Buahbatu, Kota Bandung, Jawa Barat 40286.
-     * Jam Operasional: Senin – Sabtu: 09.00 – 17.30 WIB.
-     * Telepon/WA: 0813-1670-218.
-   - KANTOR PUSAT JAKARTA:
-     * Alamat: Gedung Menara Kadin Indonesia Lt. 12, Jl. H.R. Rasuna Said Blok X-5 Kav. 2-3, Kuningan Timur, Setiabudi, Jakarta Selatan 12950.
+     * Alamat: Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul.
+     * Jam Operasional: Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu tutup).
      * Telepon/WA: 0813-1670-218.
    - HOTLINE WHATSAPP NASIONAL RESMI: 0813-1670-218 (Layanan 24 Jam).
 
@@ -79,7 +76,7 @@ INFORMASI RESMI PERUSAHAAN (KNOWLEDGE BASE ALGHANIM):
    - Langkah Pendaftaran:
      1. Konsultasi & Pilih Paket: Tentukan tanggal keberangkatan dan jenis kamar (Quad/Triple/Double).
      2. Booking Seat & Pembayaran DP: Cukup DP awal Rp 5 - 10 Juta untuk mengunci nomor kursi penerbangan dan kamar hotel.
-     3. Penyerahan Dokumen: Serahkan paspor asli (min. berlaku 7 bulan, nama min. 2 kata), copy KTP, KK, Buku Nikah (jika suami istri), dan pasfoto 4x6 latar belakang putih fokus 80%. (Bisa diantar ke kantor Copong Garut / Bandung / Jakarta atau dikirim via kurir aman).
+     3. Penyerahan Dokumen: Serahkan paspor asli (min. berlaku 7 bulan, nama min. 2 kata), copy KTP, KK, Buku Nikah (jika suami istri), dan pasfoto 4x6 latar belakang putih fokus 80%. (Bisa diantar ke kantor Garut / Bandung atau dikirim via kurir aman).
      4. Bimbingan Manasik: Mengikuti sesi manasik teori dan praktik di hotel/kantor sebelum keberangkatan.
      5. Pelunasan & Penerbitan Visa: Pelunasan biaya sisa maksimal 1 bulan sebelum jadwal terbang. Visa Umroh diterbitkan secara resmi.
      6. Keberangkatan: Kumpul di Lounge Eksekutif Bandara Soekarno Hatta Terminal 3, siap terbang langsung ke Madinah/Jeddah.
@@ -133,20 +130,16 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
     return `**Program Haji Resmi ALGHANIM (Musim Haji 1447H):**\n\n1. 🕋 **Haji Furoda / Mujamalah VVIP (USD $19.500):**\n   • **Langsung Berangkat Tahun Ini:** Tanpa antre / tanpa masa tunggu bertahun-tahun.\n   • **Legalitas:** Menggunakan Visa Haji Mujamalah resmi Kerajaan Arab Saudi (Tercatat resmi di e-Hajj Kementerian Haji Saudi).\n   • **Fasilitas:** Hotel Bintang 5 depan Masjidil Haram & Nabawi, Tenda Maktab VVIP di Mina & Arafah ber-AC dingin dengan kasur springbed, dokter pendamping, dan pembimbing ibadah sunnah.\n\n2. 🕌 **Haji Khusus PIHK Kuota Kemenag (USD $12.500):**\n   • Nomor Porsi resmi SISKOPATUH Kementerian Agama RI.\n   • Masa tunggu lebih singkat (5–7 tahun) dengan fasilitas hotel bintang 5.\n\n*Konsultasi pendaftaran Haji Furoda dapat menghubungi WhatsApp VIP di **0813-1670-218**.*`;
   }
 
-  // 5. LOKASI KANTOR (GARUT / COPONG / BANDUNG / JAKARTA)
-  if (lower === "garut" || lower.includes("garut") || lower.includes("copong") || lower.includes("mandala")) {
+  // 5. LOKASI KANTOR (GARUT / COPONG / BANDUNG)
+  if (lower === "garut" || lower.includes("garut") || lower.includes("copong") || lower.includes("mandala") || lower.includes("pusat")) {
     if (lastUserTopic.includes("daftar") || lastUserTopic.includes("gimana") || lastUserTopic.includes("cara")) {
-      return `**Pendaftaran Langsung di Kantor Cabang Garut (Mandala 525):**\n\n📍 **Alamat:** Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44116\n📞 **Hotline WA:** **0813-1670-218** / Telp: (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 08.30 – 17.00 WIB\n👳‍♂️ **Konsultan Ibadah:** Ustadz Wildan Firdaus & Tim Mandala 525\n\n**Dokumen Cukup Dibawa:**\n1. KTP & Kartu Keluarga (KK)\n2. Paspor Asli (jika sudah ada)\n3. Uang Muka (DP) mulai Rp 5.000.000 untuk kunci seat penerbangan\n\n*Tim kami di Copong Garut siap melayani bimbingan pengurusan paspor, penyerahan koper, dan konsultasi manasik.*`;
+      return `**Pendaftaran Langsung di Kantor Utama Garut (Mandala 525):**\n\n📍 **Alamat:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut\n🗺️ **Google Maps:** https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D\n📞 **Hotline WA:** **0813-1670-218** / Telp: (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu/libur nasional tutup)\n👳‍♂️ **Konsultan Ibadah:** Ustadz Wildan Firdaus & Tim Mandala 525\n\n**Dokumen Cukup Dibawa:**\n1. KTP & Kartu Keluarga (KK)\n2. Paspor Asli (jika sudah ada)\n3. Uang Muka (DP) mulai Rp 5.000.000 untuk kunci seat penerbangan\n\n*Tim kami di Copong Garut siap melayani bimbingan pengurusan paspor, penyerahan koper, dan konsultasi manasik.*`;
     }
-    return `**Kantor Operasional Cabang Garut (Mandala Umroh):**\n\n🏢 **Alamat:** Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44116\n📞 **Hotline WhatsApp:** **0813-1670-218**\n☎️ **Telepon Kantor:** (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 08.30 – 17.00 WIB\n👳‍♂️ **Konsultan:** Ustadz Wildan Firdaus, S.Pd.I. & Tim Mandala 525 (@mandala525islamictour)\n\n*Fasilitas kantor: Konsultasi tatap muka, display koper & seragam, pembuatan surat rekomendasi paspor Kemenag, dan bimbingan manasik.*`;
+    return `**Kantor Utama Garut (Mandala Umroh):**\n\n🏢 **Alamat:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut\n🗺️ **Google Maps:** https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D\n📞 **Hotline WhatsApp:** **0813-1670-218**\n☎️ **Telepon Kantor:** (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu/libur nasional tutup)\n👳‍♂️ **Konsultan:** Ustadz Wildan Firdaus, S.Pd.I. & Tim Mandala 525 (@mandala525islamictour)\n\n*Fasilitas kantor: Konsultasi tatap muka, display koper & seragam, pembuatan surat rekomendasi paspor Kemenag, dan bimbingan manasik.*`;
   }
 
   if (lower === "bandung" || lower.includes("bandung")) {
-    return `**Kantor Cabang Bandung ALGHANIM:**\n\n🏢 **Alamat:** Jl. Soekarno Hatta No. 590, Sekejati, Buahbatu, Kota Bandung, Jawa Barat 40286\n📞 **Hotline WhatsApp:** **0813-1670-218**\n⏰ **Jam Operasional:** Senin – Sabtu: 09.00 – 17.30 WIB\n\n*Melayani konsultasi, pendaftaran, dan penyerahan berkas bagi jamaah wilayah Bandung Raya & Priangan.*`;
-  }
-
-  if (lower === "jakarta" || lower.includes("jakarta") || lower.includes("pusat")) {
-    return `**Kantor Pusat Jakarta ALGHANIM:**\n\n🏢 **Alamat:** Gedung Menara Kadin Indonesia Lt. 12, Jl. H.R. Rasuna Said Blok X-5 Kav. 2-3, Kuningan Timur, Jakarta Selatan 12950\n📞 **Hotline WhatsApp:** **0813-1670-218**\n📜 **Legalitas:** PT. Al-Ghanimah Berkah Bersama — Izin PPIU No. 1030 Tahun 2019 (Akreditasi A).`;
+    return `**Kantor Cabang Bandung ALGHANIM:**\n\n🏢 **Alamat:** Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul\n🗺️ **Google Maps:** https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16\n📞 **Hotline WhatsApp:** **0813-1670-218**\n⏰ **Jam Operasional:** Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu tutup)\n\n*Melayani konsultasi, pendaftaran, dan penyerahan berkas bagi jamaah wilayah Bandung Raya & Priangan.*`;
   }
 
   // 6. SYARAT, PASPOR, DOKUMEN & VISA
@@ -217,7 +210,7 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
     lower.includes("booking seat") ||
     lower.includes("kunci seat")
   ) {
-    return `**Tata Cara & Alur Pendaftaran Umroh di ALGHANIM:**\n\n1. **Pilih Paket & Tanggal:** Tentukan program (Reguler 9/12 hari, VIP Bintang 5, atau Tabungan Syariah).\n2. **Booking Seat & DP:** Setorkan uang muka (DP) mulai dari Rp 5.000.000 untuk mengunci nomor kursi penerbangan dan kamar hotel.\n3. **Serahkan Dokumen:** Paspor asli (masa berlaku min. 7 bulan, min. 2 kata), salinan KTP, KK, dan pasfoto 4x6 latar belakang putih (fokus wajah 80%).\n4. **Bimbingan Manasik:** Ikuti bimbingan manasik intensif sesuai Sunnah di Garut / Bandung.\n5. **Pelunasan & Berangkat:** Pelunasan biaya maksimal H-30 sebelum keberangkatan, lalu kumpul di Terminal 3 Bandara Soekarno Hatta.\n\n📍 *Bisa mendaftar langsung di Kantor Cabang Garut (Jl. Sudirman Copong) atau online via WhatsApp di **0813-1670-218**.*`;
+    return `**Tata Cara & Alur Pendaftaran Umroh di ALGHANIM:**\n\n1. **Pilih Paket & Tanggal:** Tentukan program (Reguler 9/12 hari, VIP Bintang 5, atau Tabungan Syariah).\n2. **Booking Seat & DP:** Setorkan uang muka (DP) mulai dari Rp 5.000.000 untuk mengunci nomor kursi penerbangan dan kamar hotel.\n3. **Serahkan Dokumen:** Paspor asli (masa berlaku min. 7 bulan, min. 2 kata), salinan KTP, KK, dan pasfoto 4x6 latar belakang putih (fokus wajah 80%).\n4. **Bimbingan Manasik:** Ikuti bimbingan manasik intensif sesuai Sunnah di Garut / Bandung.\n5. **Pelunasan & Berangkat:** Pelunasan biaya maksimal H-30 sebelum keberangkatan, lalu kumpul di Terminal 3 Bandara Soekarno Hatta.\n\n📍 *Bisa mendaftar langsung di Kantor Utama Garut (Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut) atau online via WhatsApp di **0813-1670-218**.*`;
   }
 
   // 11. FASILITAS & PERLENGKAPAN
@@ -237,16 +230,16 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
 
   // 14. KONTAK & CS
   if (lower.includes("kontak") || lower.includes("wa") || lower.includes("whatsapp") || lower.includes("telepon") || lower.includes("call center") || lower.includes("cs")) {
-    return `**Kontak Resmi ALGHANIM & Mandala 525 Garut:**\n\n📱 **Hotline WhatsApp Resmi (24 Jam):** **0813-1670-218**\n☎️ **Telepon Kantor Garut:** (0262) 4890731\n📍 **Kantor Garut:** Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Garut 44116\n📍 **Kantor Bandung:** Jl. Soekarno Hatta No. 590, Sekejati, Buahbatu, Kota Bandung\n\n*Konsultan kami siap membantu konsultasi ibadah, cek paspor, dan simulasi biaya.*`;
+    return `**Kontak Resmi ALGHANIM & Mandala 525 Garut:**\n\n📱 **Hotline WhatsApp Resmi (24 Jam):** **0813-1670-218**\n☎️ **Telepon Kantor Garut:** (0262) 4890731\n📍 **Kantor Utama Garut:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut\n🗺️ **Google Maps Garut:** https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D\n📍 **Kantor Bandung:** Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul\n🗺️ **Google Maps Bandung:** https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16\n\n*Konsultan kami siap membantu konsultasi ibadah, cek paspor, dan simulasi biaya.*`;
   }
 
   // 15. SALAM & SAPAAN
   if (lower.includes("assalamu") || lower === "halo" || lower === "hai" || lower === "selamat pagi" || lower === "selamat siang" || lower === "selamat malam") {
-    return `Assalamu'alaikum warahmatullah wabarakatuh. Selamat datang di **Spiritual Concierge ALGHANIM & Mandala 525 Garut**.\n\nAda yang bisa kami bantu seputar:\n• 🌟 **Peluang Kemitraan / Agen Syiar**\n• 🕋 **Pendaftaran & Pilihan Paket Umroh / Haji**\n• 💰 **Simulasi Tabungan Umroh Syariah**\n• 🤲 **Program Badal Umroh Amanah**\n• 📍 **Alamat Kantor Garut (Copong), Bandung, atau Jakarta**?`;
+    return `Assalamu'alaikum warahmatullah wabarakatuh. Selamat datang di **Spiritual Concierge ALGHANIM & Mandala 525 Garut**.\n\nAda yang bisa kami bantu seputar:\n• 🌟 **Peluang Kemitraan / Agen Syiar**\n• 🕋 **Pendaftaran & Pilihan Paket Umroh / Haji**\n• 💰 **Simulasi Tabungan Umroh Syariah**\n• 🤲 **Program Badal Umroh Amanah**\n• 📍 **Alamat Kantor Utama Garut (Copong) atau Cabang Bandung**?`;
   }
 
   // Default intelligent contextual fallback
-  return `Assalamu'alaikum warahmatullah. Terima kasih atas pertanyaan Anda seputar **"${message}"**.\n\n**ALGHANIM Islamic Tour & Mandala 525 Garut** siap melayani:\n\n• 🌟 **Program Kemitraan & Agen:** Ujrah syiar berkah & bimbingan kemitraan cabang.\n• 🕋 **Paket Ibadah:** Umroh Reguler 9/12 Hari (Direct Saudia, Bintang 5), VIP Ka'bah View, Badal Umroh, & Tabungan Syariah.\n• 🏢 **Kantor Operasional Garut:** Jl. Sudirman Copong Garut (Hotline WA: **0813-1670-218**).\n\nSilakan ketik pertanyaan spesifik mengenai kemitraan, harga paket, syarat paspor, atau lokasi kantor kami.`;
+  return `Assalamu'alaikum warahmatullah. Terima kasih atas pertanyaan Anda seputar **"${message}"**.\n\n**ALGHANIM Islamic Tour & Mandala 525 Garut** siap melayani:\n\n• 🌟 **Program Kemitraan & Agen:** Ujrah syiar berkah & bimbingan kemitraan cabang.\n• 🕋 **Paket Ibadah:** Umroh Reguler 9/12 Hari (Direct Saudia, Bintang 5), VIP Ka'bah View, Badal Umroh, & Tabungan Syariah.\n• 🏢 **Kantor Utama Garut:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut (Hotline WA: **0813-1670-218**).\n\nSilakan ketik pertanyaan spesifik mengenai kemitraan, harga paket, syarat paspor, atau lokasi kantor kami.`;
 }
 
 // Health check endpoint
@@ -333,7 +326,7 @@ app.post("/api/concierge/chat", async (req, res) => {
   } catch (err) {
     console.error("Error in fallback reply generator:", err);
     return res.json({
-      reply: `Assalamu'alaikum warahmatullah. Terima kasih atas pertanyaan Anda. Untuk konsultasi paket Umroh & Haji Al-Ghanim (Mandala 525 Garut), silakan hubungi hotline WhatsApp resmi kami di **0813-1670-218** atau kunjungi kantor kami di Jl. Sudirman Copong Garut.`,
+      reply: `Assalamu'alaikum warahmatullah. Terima kasih atas pertanyaan Anda. Untuk konsultasi paket Umroh & Haji Al-Ghanim (Mandala 525 Garut), silakan hubungi hotline WhatsApp resmi kami di **0813-1670-218** atau kunjungi kantor kami di Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut.`,
       source: "static-fallback",
     });
   }

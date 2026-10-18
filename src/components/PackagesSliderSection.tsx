@@ -359,9 +359,9 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
 
   useEffect(() => {
     const unsubscribe = subscribeToPackages((firestoreItems) => {
-      if (firestoreItems && firestoreItems.length > 0) {
-        setScheduleList(firestoreItems);
-        const mappedItems: SliderPackageItem[] = firestoreItems.map((item) => {
+      const activeItems = firestoreItems.filter((item) => !item.isArchived && item.isActive !== false);
+      setScheduleList(activeItems);
+      const mappedItems: SliderPackageItem[] = activeItems.map((item) => {
           let cat: SliderPackageItem['category'] = 'reguler';
           if (item.category === 'haji-khusus') cat = 'haji';
           else if (item.category === 'wisata-halal') cat = 'plus';
@@ -399,9 +399,8 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
             isPromo: item.badge?.variant === 'saving',
             scheduleItemData: item
           };
-        });
-        setSliderItems(mappedItems);
-      }
+      });
+      setSliderItems(mappedItems);
     });
     return () => unsubscribe();
   }, []);

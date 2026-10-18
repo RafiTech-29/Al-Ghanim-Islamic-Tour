@@ -81,6 +81,9 @@ export interface PackageScheduleItem {
   totalSeats: number;
   availableSeats: number;
   isFullBooked?: boolean;
+  isActive?: boolean;
+  isArchived?: boolean;
+  archivedAt?: string;
   features: PackageFeature[];
   description: string;
   programHighlights: string[];
@@ -135,6 +138,8 @@ export interface TestimonialItem {
   };
   createdAt?: any;
   createdTimestamp?: number;
+  isArchived?: boolean;
+  archivedAt?: string;
   isDeleted?: boolean;
   deletedAt?: string;
   deletedBy?: string;
@@ -151,6 +156,9 @@ export interface GalleryPhotoItem {
   videoUrl?: string;
   caption?: string;
   date?: string;
+  isActive?: boolean;
+  isArchived?: boolean;
+  archivedAt?: string;
   isDeleted?: boolean;
   deletedAt?: string;
   deletedBy?: string;
@@ -325,6 +333,8 @@ export interface PromoBannerItem {
   startDate?: string;
   endDate?: string;
   isActive: boolean;
+  isArchived?: boolean;
+  archivedAt?: string;
   aspectRatio?: 'portrait' | 'landscape' | 'square' | 'auto';
   posterSizeFormat?: 'flyer-vertical' | 'banner-horizontal' | 'story-9-16';
   createdAt?: any;
@@ -357,6 +367,5 @@ export interface TrashArchiveItem {
   deletedBy?: string;
   originalData: any;
 }
-
 
 

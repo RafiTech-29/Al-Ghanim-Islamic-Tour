@@ -28,6 +28,7 @@ import {
   ChevronRight,
   FileText,
   Download,
+  Archive,
   Link as LinkIcon,
   Sparkles,
   FileCheck2,
@@ -96,6 +97,7 @@ export const AdminPackagesCMS: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'archived'>('active');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // View Mode: Cards vs Clean Pricelist Master Table (Default 'cards' sesuai permintaan)
@@ -190,6 +192,8 @@ export const AdminPackagesCMS: React.FC = () => {
     totalSeats: 45,
     availableSeats: 15,
     isFullBooked: false,
+    isActive: true,
+    isArchived: false,
     badge: 'BEST SELLER',
     posterUrl: PRESET_POSTERS[0].url,
     flyerUrl: '',
@@ -235,6 +239,8 @@ export const AdminPackagesCMS: React.FC = () => {
       totalSeats: 45,
       availableSeats: 15,
       isFullBooked: false,
+      isActive: true,
+      isArchived: false,
       badge: 'TERBARU',
       posterUrl: PRESET_POSTERS[0].url,
       flyerUrl: '',
@@ -269,6 +275,9 @@ export const AdminPackagesCMS: React.FC = () => {
       totalSeats: pkg.totalSeats || 45,
       availableSeats: pkg.availableSeats || 10,
       isFullBooked: Boolean(pkg.isFullBooked),
+      isActive: !pkg.isArchived && pkg.isActive !== false,
+      isArchived: pkg.isArchived === true || pkg.isActive === false,
+      archivedAt: pkg.archivedAt,
       badge: pkg.badge?.text || (typeof pkg.badge === 'string' ? pkg.badge : ''),
       posterUrl: poster,
       flyerUrl: pkg.flyerUrl || '',
@@ -544,6 +553,9 @@ export const AdminPackagesCMS: React.FC = () => {
       totalSeats: Number(formData.totalSeats) || 45,
       availableSeats: Number(formData.availableSeats) || 0,
       isFullBooked: formData.availableSeats <= 0 ? true : formData.isFullBooked,
+      isActive: formData.isActive !== false,
+      isArchived: Boolean(formData.isArchived),
+      ...(formData.archivedAt ? { archivedAt: formData.archivedAt } : {}),
       image: posterImage,
       imageAlt: formData.title,
       flyerUrl: formData.flyerUrl ? formData.flyerUrl.trim() : '',
@@ -587,9 +599,11 @@ export const AdminPackagesCMS: React.FC = () => {
       setIsModalOpen(false);
     } catch (err) {
       console.error('Error saving package to Firestore:', err);
-      // Fallback message with graceful handling
-      showToast('✓ Data berhasil disimpan di tampilan (koneksi database sinkronisasi)');
-      setIsModalOpen(false);
+      if (editingId) {
+        const previous = packages.find(pkg => pkg.id === editingId);
+        if (previous) setPackages(items => items.map(pkg => pkg.id === editingId ? previous : pkg));
+      }
+      showToast('Gagal menyimpan paket. Silakan coba lagi.');
     } finally {
       setIsSaving(false);
     }
@@ -607,12 +621,40 @@ export const AdminPackagesCMS: React.FC = () => {
     }
   };
 
+  const handleTogglePackageArchive = async (pkg: PackageScheduleItem) => {
+    const wasArchived = pkg.isArchived === true || pkg.isActive === false;
+    const updates = {
+      isArchived: !wasArchived,
+      isActive: wasArchived,
+      ...(!wasArchived ? { archivedAt: new Date().toISOString() } : {})
+    };
+    setPackages(prev => prev.map(item => item.id === pkg.id ? { ...item, ...updates } : item));
+    try {
+      await updatePackageInFirestore(pkg.id, updates);
+      showToast(wasArchived ? '✓ Paket ditayangkan.' : '✓ Paket diarsipkan.');
+    } catch (err) {
+      console.error('Error changing package visibility:', err);
+      setPackages(prev => prev.map(item => item.id === pkg.id ? { ...item, isArchived: pkg.isArchived, isActive: pkg.isActive, archivedAt: pkg.archivedAt } : item));
+      showToast('Gagal mengubah status paket.');
+    }
+  };
+
   // Filtered packages
+  const totalPackagesCount = packages.length;
+  const activePackagesCount = packages.filter(pkg => !pkg.isArchived && pkg.isActive !== false).length;
+  const archivedPackagesCount = packages.filter(pkg => pkg.isArchived === true || pkg.isActive === false).length;
+
   const filteredPackages = packages.filter(pkg => {
+    const isArchived = pkg.isArchived === true || pkg.isActive === false;
+    if (statusFilter === 'active' && isArchived) return false;
+    if (statusFilter === 'archived' && !isArchived) return false;
+
     const matchCat = categoryFilter === 'all' || pkg.category === categoryFilter;
-    const matchSearch = pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.departureDate.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.airline.toLowerCase().includes(searchTerm.toLowerCase());
+    const query = searchTerm.trim().toLowerCase();
+    const matchSearch = !query ||
+      pkg.title.toLowerCase().includes(query) ||
+      pkg.departureDate.toLowerCase().includes(query) ||
+      pkg.airline.toLowerCase().includes(query);
     return matchCat && matchSearch;
   });
 
@@ -679,6 +721,67 @@ export const AdminPackagesCMS: React.FC = () => {
             <Plus className="w-4 h-4" />
             <span>Tambah Paket</span>
           </button>
+        </div>
+      </div>
+
+      {/* Status Tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <button
+            onClick={() => setStatusFilter('active')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'active'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/60'
+            }`}
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span>Tayang di Website</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'active' ? 'bg-emerald-700 text-white' : 'bg-emerald-200 text-emerald-800'
+            }`}>
+              {activePackagesCount}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setStatusFilter('archived')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'archived'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60'
+            }`}
+          >
+            <Archive className="w-3.5 h-3.5" />
+            <span>Diarsipkan (Disimpan)</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'archived' ? 'bg-amber-700 text-white' : 'bg-amber-200 text-amber-900'
+            }`}>
+              {archivedPackagesCount}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setStatusFilter('all')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'all'
+                ? 'bg-[#1A1A1A] text-white shadow-sm'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <span>Semua Paket</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'all' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
+            }`}>
+              {totalPackagesCount}
+            </span>
+          </button>
+        </div>
+
+        <div className="text-[11px] text-gray-500 font-medium hidden md:block">
+          {statusFilter === 'active' && 'Menampilkan paket aktif yang tayang di website.'}
+          {statusFilter === 'archived' && 'Menampilkan paket arsip yang tidak tayang di website.'}
+          {statusFilter === 'all' && 'Menampilkan semua paket tayang dan arsip.'}
         </div>
       </div>
 
@@ -764,6 +867,13 @@ export const AdminPackagesCMS: React.FC = () => {
                               <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-700">
                                 {pkg.category.replace('-', ' ')}
                               </span>
+                              <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded ${
+                                pkg.isArchived || pkg.isActive === false
+                                  ? 'bg-amber-100 text-amber-800'
+                                  : 'bg-emerald-100 text-emerald-800'
+                              }`}>
+                                {pkg.isArchived || pkg.isActive === false ? 'DIARSIPKAN' : 'TAYANG'}
+                              </span>
                               {pkg.badge && (
                                 <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-[#A67C52]/10 text-[#A67C52]">
                                   {typeof pkg.badge === 'string' ? pkg.badge : pkg.badge.text}
@@ -811,6 +921,19 @@ export const AdminPackagesCMS: React.FC = () => {
                       {/* Aksi */}
                       <td className="py-3.5 px-4 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => handleTogglePackageArchive(pkg)}
+                            className={`px-2.5 py-1.5 rounded-lg font-bold text-xs flex items-center gap-1 transition-all cursor-pointer border ${
+                              pkg.isArchived || pkg.isActive === false
+                                ? 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-200'
+                                : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200'
+                            }`}
+                            title={pkg.isArchived || pkg.isActive === false ? 'Tayangkan paket' : 'Arsipkan paket'}
+                          >
+                            {pkg.isArchived || pkg.isActive === false
+                              ? <><Eye className="w-3.5 h-3.5" /><span>Tayang</span></>
+                              : <><Archive className="w-3.5 h-3.5" /><span>Arsip</span></>}
+                          </button>
                           {/* Quick Docs Button */}
                           <button
                             onClick={() => handleOpenDocsModal(pkg)}
@@ -882,6 +1005,13 @@ export const AdminPackagesCMS: React.FC = () => {
                     
                     {/* Badges */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow ${
+                        pkg.isArchived || pkg.isActive === false
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-emerald-600 text-white'
+                      }`}>
+                        {pkg.isArchived || pkg.isActive === false ? 'DIARSIPKAN' : 'TAYANG'}
+                      </span>
                       {pkg.badge && (
                         <span className="px-2.5 py-1 rounded-full bg-[#A67C52] text-white text-[10px] font-bold uppercase tracking-wider shadow">
                           {typeof pkg.badge === 'string' ? pkg.badge : pkg.badge?.text}
@@ -932,6 +1062,19 @@ export const AdminPackagesCMS: React.FC = () => {
                 {/* Card Actions */}
                 <div className="p-4 pt-0 flex items-center justify-between gap-2 border-t border-gray-100 mt-2">
                   <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => handleTogglePackageArchive(pkg)}
+                      className={`px-2.5 py-1.5 rounded-lg font-bold text-xs flex items-center gap-1 transition-all cursor-pointer ${
+                        pkg.isArchived || pkg.isActive === false
+                          ? 'bg-amber-50 hover:bg-amber-100 text-amber-800'
+                          : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800'
+                      }`}
+                      title={pkg.isArchived || pkg.isActive === false ? 'Tayangkan paket' : 'Arsipkan paket'}
+                    >
+                      {pkg.isArchived || pkg.isActive === false
+                        ? <><Eye className="w-3.5 h-3.5" /><span>Tayang</span></>
+                        : <><Archive className="w-3.5 h-3.5" /><span>Arsip</span></>}
+                    </button>
                     <button
                       onClick={() => handleOpenQuickPrice(pkg)}
                       className="px-2.5 py-1.5 rounded-lg bg-[#A67C52]/10 hover:bg-[#A67C52] text-[#A67C52] hover:text-white font-bold text-xs flex items-center gap-1 transition-all cursor-pointer"
@@ -1388,6 +1531,34 @@ export const AdminPackagesCMS: React.FC = () => {
                   </label>
                 </div>
               </div>
+
+              <fieldset className="rounded-2xl border border-gray-200 bg-white p-4">
+                <legend className="px-1 text-xs font-bold text-gray-700">Status Paket</legend>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <label className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-semibold cursor-pointer ${!formData.isArchived ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-gray-200 text-gray-600'}`}>
+                    <input
+                      type="radio"
+                      name="packageVisibility"
+                      checked={!formData.isArchived}
+                      onChange={() => setFormData({ ...formData, isActive: true, isArchived: false })}
+                      className="accent-emerald-700"
+                    />
+                    <Eye className="w-4 h-4" />
+                    <span>Tayang Aktif</span>
+                  </label>
+                  <label className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-semibold cursor-pointer ${formData.isArchived ? 'border-amber-300 bg-amber-50 text-amber-800' : 'border-gray-200 text-gray-600'}`}>
+                    <input
+                      type="radio"
+                      name="packageVisibility"
+                      checked={Boolean(formData.isArchived)}
+                      onChange={() => setFormData({ ...formData, isActive: false, isArchived: true, archivedAt: new Date().toISOString() })}
+                      className="accent-amber-700"
+                    />
+                    <Archive className="w-4 h-4" />
+                    <span>Arsipkan</span>
+                  </label>
+                </div>
+              </fieldset>
 
               {/* 5. Upload Flyer / Poster (Ramah HP & Laptop) */}
               <div className="space-y-3">

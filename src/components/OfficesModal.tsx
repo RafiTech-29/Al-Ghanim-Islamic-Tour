@@ -4,13 +4,12 @@ import { OFFICE_DETAILS, LEGAL_INFO } from '../data/packagesData';
 interface OfficesModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedCity?: 'garut' | 'bandung' | 'jakarta';
-  initialCity?: 'garut' | 'bandung' | 'jakarta';
+  selectedCity?: 'garut' | 'bandung';
+  initialCity?: 'garut' | 'bandung';
   onConsult?: (city: string) => void;
 }
 
 export const OfficesModal = ({ isOpen, onClose, selectedCity, initialCity, onConsult }: OfficesModalProps) => {
-  const defaultCity = initialCity || selectedCity || 'jakarta';
   if (!isOpen) return null;
 
   return (
@@ -34,35 +33,6 @@ export const OfficesModal = ({ isOpen, onClose, selectedCity, initialCity, onCon
         </div>
 
         <div className="p-6 overflow-y-auto space-y-6 flex-1 bg-white">
-          {/* Jakarta Head Office */}
-          <div className="p-5 rounded-xl bg-[#F5F5F5] border border-gray-200 space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="font-serif-luxury text-lg font-bold text-[#1A1A1A] flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-[#A67C52]" />
-                {OFFICE_DETAILS.jakarta.title}
-              </h3>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#A67C52] text-white font-bold uppercase tracking-wider">
-                Kantor Pusat
-              </span>
-            </div>
-            <p className="text-xs sm:text-sm text-[#555555]">{OFFICE_DETAILS.jakarta.address}</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#666666] pt-1">
-              <p className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[#A67C52]" /> {OFFICE_DETAILS.jakarta.phone}</p>
-              <p className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-[#A67C52]" /> {OFFICE_DETAILS.jakarta.hours}</p>
-            </div>
-            <div className="pt-2 flex items-center justify-between border-t border-gray-200">
-              <span className="text-xs text-emerald-700 font-medium">Layanan: Konsultasi &amp; Pendaftaran</span>
-              <a
-                href={OFFICE_DETAILS.jakarta.waLink}
-                target="_blank"
-                rel="noreferrer"
-                className="bg-[#A67C52] hover:bg-[#8E653E] text-white px-4 py-1.5 rounded-full text-xs font-semibold uppercase cursor-pointer transition-colors"
-              >
-                Chat WA Pusat
-              </a>
-            </div>
-          </div>
-
           {/* Bandung Office */}
           <div className="p-5 rounded-xl bg-[#F5F5F5] border border-gray-200 space-y-3">
             <div className="flex items-center justify-between">
@@ -81,14 +51,24 @@ export const OfficesModal = ({ isOpen, onClose, selectedCity, initialCity, onCon
             </div>
             <div className="pt-2 flex items-center justify-between border-t border-gray-200">
               <span className="text-xs text-emerald-700 font-medium">Layanan: Konsultasi &amp; Pendaftaran</span>
-              <a
-                href={OFFICE_DETAILS.bandung.waLink}
-                target="_blank"
-                rel="noreferrer"
-                className="bg-[#A67C52] hover:bg-[#8E653E] text-white px-4 py-1.5 rounded-full text-xs font-semibold uppercase cursor-pointer transition-colors"
-              >
-                WA Sales Bandung
-              </a>
+              <div className="flex items-center gap-2">
+                <a
+                  href={OFFICE_DETAILS.bandung.mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-gray-100 hover:bg-gray-200 text-[#1A1A1A] border border-gray-300 px-3 py-1.5 rounded-full text-xs font-semibold uppercase cursor-pointer transition-colors"
+                >
+                  Buka Maps
+                </a>
+                <a
+                  href={OFFICE_DETAILS.bandung.waLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-[#A67C52] hover:bg-[#8E653E] text-white px-4 py-1.5 rounded-full text-xs font-semibold uppercase cursor-pointer transition-colors"
+                >
+                  WA Sales Bandung
+                </a>
+              </div>
             </div>
           </div>
 
@@ -99,8 +79,8 @@ export const OfficesModal = ({ isOpen, onClose, selectedCity, initialCity, onCon
                 <MapPin className="w-5 h-5 text-[#A67C52]" />
                 {OFFICE_DETAILS.garut.title}
               </h3>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-gray-200 text-[#1A1A1A] font-bold uppercase tracking-wider">
-                Cabang Garut
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#C5A059] text-white font-bold uppercase tracking-wider">
+                Head Office (Kantor Pusat)
               </span>
             </div>
             <p className="text-xs sm:text-sm text-[#555555]">{OFFICE_DETAILS.garut.address}</p>
@@ -112,7 +92,7 @@ export const OfficesModal = ({ isOpen, onClose, selectedCity, initialCity, onCon
               <span className="text-xs text-emerald-700 font-medium">Layanan: Kantor Operasional Mandala 525</span>
               <div className="flex items-center gap-2">
                 <a
-                  href="https://share.google/fsqwRYJHLHFaiESVm"
+                  href={OFFICE_DETAILS.garut.mapsUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="bg-gray-100 hover:bg-gray-200 text-[#1A1A1A] border border-gray-300 px-3 py-1.5 rounded-full text-xs font-semibold uppercase cursor-pointer transition-colors"

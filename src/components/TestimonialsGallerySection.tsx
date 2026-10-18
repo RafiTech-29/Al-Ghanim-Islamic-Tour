@@ -12,7 +12,8 @@ import {
   ExternalLink,
   Film,
   MessageSquarePlus,
-  ShieldCheck
+  ShieldCheck,
+  ArrowRight
 } from 'lucide-react';
 import { 
   TESTIMONIALS_DATA, 
@@ -22,7 +23,15 @@ import { subscribeToGallery, subscribeToTestimonials } from '../lib/firestoreSer
 import { GalleryPhotoItem, TestimonialItem } from '../types';
 import { SubmitTestimonialModal } from './SubmitTestimonialModal';
 
-export const TestimonialsGallerySection = () => {
+interface TestimonialsGallerySectionProps {
+  isHomepage?: boolean;
+  onNavigateToGalleryTab?: () => void;
+}
+
+export const TestimonialsGallerySection = ({
+  isHomepage = false,
+  onNavigateToGalleryTab
+}: TestimonialsGallerySectionProps) => {
   const [testimonialsList, setTestimonialsList] = useState<TestimonialItem[]>(TESTIMONIALS_DATA);
   const [showAllTestimonials, setShowAllTestimonials] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
@@ -50,8 +59,10 @@ export const TestimonialsGallerySection = () => {
     };
   }, []);
 
-  const activeTestimonials = testimonialsList.filter((t) => t.status !== 'hidden');
-  const displayedTestimonials = showAllTestimonials ? activeTestimonials : activeTestimonials.slice(0, 6);
+  const activeTestimonials = testimonialsList.filter((t) => t.status !== 'hidden' && !t.isArchived);
+  const displayedTestimonials = isHomepage
+    ? activeTestimonials.slice(0, 3)
+    : showAllTestimonials ? activeTestimonials : activeTestimonials.slice(0, 6);
 
   const avgRating = (
     activeTestimonials.reduce((acc, curr) => acc + (curr.rating || 5), 0) /
@@ -59,11 +70,14 @@ export const TestimonialsGallerySection = () => {
   ).toFixed(1);
 
   const filteredGallery = galleryItems.filter((item) => {
+    if (item.isArchived || item.isActive === false) return false;
     if (selectedPhotoCategory === 'all') return true;
     return item.category === selectedPhotoCategory;
   });
 
-  const displayedGallery = showAllGallery ? filteredGallery : filteredGallery.slice(0, 6);
+  const displayedGallery = isHomepage
+    ? filteredGallery.slice(0, 3)
+    : showAllGallery ? filteredGallery : filteredGallery.slice(0, 6);
 
   const handleOpenLightbox = (index: number) => {
     setActiveLightboxIndex(index);
@@ -114,12 +128,22 @@ export const TestimonialsGallerySection = () => {
               </span>
             </div>
 
+            {isHomepage && onNavigateToGalleryTab && (
+              <button
+                type="button"
+                onClick={onNavigateToGalleryTab}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-[#A67C52] text-[#8e653d] hover:bg-[#A67C52]/5 text-xs font-bold transition-all cursor-pointer"
+              >
+                <span>Lihat Semua Ulasan di Galeri &amp; Testimoni ({activeTestimonials.length})</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
             <button
               onClick={() => setIsReviewModalOpen(true)}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#A67C52] hover:bg-[#8e653d] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md shadow-[#A67C52]/20 hover:scale-[1.02] cursor-pointer"
             >
               <MessageSquarePlus className="w-4 h-4" />
-              <span>Tulis Testimoni &amp; Rating</span>
+              <span>{isHomepage ? 'Tulis Pengalaman Ibadah' : 'Tulis Testimoni &amp; Rating'}</span>
             </button>
           </div>
         </div>
@@ -209,7 +233,7 @@ export const TestimonialsGallerySection = () => {
         </div>
 
         {/* Load More Button for Testimonials */}
-        {activeTestimonials.length > 6 && (
+        {!isHomepage && activeTestimonials.length > 6 && (
           <div className="text-center pt-2">
             <button
               onClick={() => setShowAllTestimonials(!showAllTestimonials)}
@@ -328,8 +352,21 @@ export const TestimonialsGallerySection = () => {
           ))}
         </div>
 
+        {isHomepage && onNavigateToGalleryTab && (
+          <div className="text-center pt-2">
+            <button
+              type="button"
+              onClick={onNavigateToGalleryTab}
+              className="px-6 py-2.5 rounded-xl bg-white border border-gray-300 hover:border-[#A67C52] text-xs font-bold text-[#1A1A1A] hover:text-[#A67C52] transition-all shadow-sm cursor-pointer"
+            >
+              <span>Lihat Selengkapnya di Galeri &amp; Testimoni ({filteredGallery.length} Foto/Video)</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         {/* Load More Button for Gallery */}
-        {filteredGallery.length > 6 && (
+        {!isHomepage && filteredGallery.length > 6 && (
           <div className="text-center pt-2">
             <button
               onClick={() => {

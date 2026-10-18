@@ -24,7 +24,6 @@ import {
 import { 
   BRAND_TAGLINES, 
   LEGAL_INFO, 
-  OFFICES_DATA, 
   OFFICIAL_WA_LINK, 
   OFFICIAL_WA_NUMBER 
 } from '../data/packagesData';

@@ -112,7 +112,7 @@ export function App() {
   useEffect(() => {
     const unsubscribe = subscribeToPackages((items) => {
       if (items && items.length > 0) {
-        setLivePackages(items);
+        setLivePackages(items.filter((item) => item.isActive !== false));
       }
     });
     return () => unsubscribe();
@@ -500,7 +500,10 @@ export function App() {
               onOpenOfficesModal={handleOpenOffices}
             />
             <PartnersMediaSection onOpenLegal={() => setIsLegalOpen(true)} />
-            <TestimonialsGallerySection />
+            <TestimonialsGallerySection
+              isHomepage={true}
+              onNavigateToGalleryTab={() => handleTabChange('testimoni-galeri')}
+            />
             <FAQSection onOpenConsultation={(title) => handleOpenConsultation(title || 'Konsultasi FAQ')} />
           </div>
         )}
@@ -543,7 +546,7 @@ export function App() {
         {/* VIEW 5: GALERI & TESTIMONI */}
         {activeTab === 'testimoni-galeri' && (
           <div className="pt-2 sm:pt-6 pb-12 w-full max-w-full overflow-x-hidden">
-            <TestimonialsGallerySection />
+            <TestimonialsGallerySection isHomepage={false} />
           </div>
         )}
 

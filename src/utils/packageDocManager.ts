@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf';
 import { PackageScheduleItem } from '../types';
+import { OFFICES_DATA } from '../data/packagesData';
 
 /**
  * Checks if a package has a custom Flyer uploaded or linked by the Admin
@@ -252,7 +253,7 @@ export async function downloadOrOpenPackageFlyer(
     doc.setTextColor(224, 184, 128);
     doc.text('IZIN PPIU KEMENAG RI NO. 1030 TAHUN 2019 • AKREDITASI A', 14, 22);
     doc.setTextColor(220, 220, 220);
-    doc.text('Jl. Sudirman Copong, Sukamentri, Garut & Menara Kadin Lt. 24 Jakarta Selatan', 14, 28);
+    doc.text(`Head Office: ${OFFICES_DATA.garut.address}`, 14, 28);
 
     // Flyer Title Box
     const splitTitle = doc.splitTextToSize(pkg.title.toUpperCase(), 174);
@@ -399,7 +400,7 @@ export async function downloadOrOpenPackageFlyer(
     doc.setTextColor(224, 184, 128);
     doc.text('WhatsApp: 0813-1670-218  |  Website: alghanimtour.com', 14, 289);
     doc.setTextColor(200, 200, 200);
-    doc.text('Garut: Jl. Sudirman Copong • Jakarta: Menara Kadin Lt. 24', 14, 293);
+    doc.text(`Head Office: ${OFFICES_DATA.garut.address}`, 14, 293);
 
     doc.save(filename);
   } catch (e) {

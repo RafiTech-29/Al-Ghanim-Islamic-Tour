@@ -18,7 +18,8 @@ import {
   Video,
   PlayCircle,
   Camera,
-  Film
+  Film,
+  Archive
 } from 'lucide-react';
 import { GalleryPhotoItem } from '../../types';
 import { 
@@ -90,6 +91,7 @@ export const AdminGalleryCMS: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'archived'>('active');
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,6 +112,8 @@ export const AdminGalleryCMS: React.FC = () => {
     location: 'Pelataran Mataf Masjidil Haram, Makkah',
     year: 'Musim 1448 H / 2027',
     mediaType: 'photo',
+    isActive: true,
+    isArchived: false,
     videoUrl: '',
     caption: 'Dokumentasi nyata jamaah Al-Ghanim saat menunaikan ibadah di Tanah Suci.',
     date: 'April 2027'
@@ -145,6 +149,8 @@ export const AdminGalleryCMS: React.FC = () => {
       location: 'Pelataran Mataf Masjidil Haram, Makkah',
       year: 'Musim 2027',
       mediaType: 'photo',
+      isActive: true,
+      isArchived: false,
       videoUrl: '',
       caption: 'Dokumentasi nyata jamaah Al-Ghanim saat menunaikan ibadah di Tanah Suci.',
       date: 'April 2027'
@@ -163,6 +169,9 @@ export const AdminGalleryCMS: React.FC = () => {
       location: item.location,
       year: item.year || 'Musim 2027',
       mediaType: item.mediaType || 'photo',
+      isActive: !item.isArchived && item.isActive !== false,
+      isArchived: item.isArchived === true || item.isActive === false,
+      archivedAt: item.archivedAt,
       videoUrl: item.videoUrl || '',
       caption: item.caption || '',
       date: item.date || '2027'
@@ -229,8 +238,11 @@ export const AdminGalleryCMS: React.FC = () => {
       setIsModalOpen(false);
     } catch (err) {
       console.error(err);
-      showToast('✓ Data tersimpan di tampilan.');
-      setIsModalOpen(false);
+      if (modalMode === 'edit' && editingId) {
+        const previous = gallery.find(item => item.id === editingId);
+        if (previous) setGallery(items => items.map(item => item.id === editingId ? previous : item));
+      }
+      showToast('Gagal menyimpan dokumentasi. Silakan coba lagi.');
     } finally {
       setIsSaving(false);
     }
@@ -248,14 +260,40 @@ export const AdminGalleryCMS: React.FC = () => {
     }
   };
 
+  const totalGalleryCount = gallery.length;
+  const activeGalleryCount = gallery.filter(item => !item.isArchived && item.isActive !== false).length;
+  const archivedGalleryCount = gallery.filter(item => item.isArchived === true || item.isActive === false).length;
   const filteredGallery = gallery.filter(item => {
+    const isArchived = item.isArchived === true || item.isActive === false;
+    if (statusFilter === 'active' && isArchived) return false;
+    if (statusFilter === 'archived' && !isArchived) return false;
+
     const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
-    const matchesSearch = searchQuery === '' || 
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.caption && item.caption.toLowerCase().includes(searchQuery.toLowerCase()));
+    const query = searchQuery.trim().toLowerCase();
+    const matchesSearch = !query ||
+      item.title.toLowerCase().includes(query) ||
+      item.location.toLowerCase().includes(query) ||
+      (item.caption || '').toLowerCase().includes(query);
     return matchesCategory && matchesSearch;
   });
+
+  const handleToggleGalleryArchive = async (item: GalleryPhotoItem) => {
+    const wasArchived = item.isArchived === true || item.isActive === false;
+    const updates = {
+      isArchived: !wasArchived,
+      isActive: wasArchived,
+      ...(!wasArchived ? { archivedAt: new Date().toISOString() } : {})
+    };
+    setGallery(previous => previous.map(photo => photo.id === item.id ? { ...photo, ...updates } : photo));
+    try {
+      await updateGalleryItemInFirestore(item.id, updates);
+      showToast(wasArchived ? '✓ Dokumentasi ditayangkan.' : '✓ Dokumentasi diarsipkan.');
+    } catch (err) {
+      console.error('Error changing gallery visibility:', err);
+      setGallery(previous => previous.map(photo => photo.id === item.id ? item : photo));
+      showToast('Gagal mengubah status dokumentasi.');
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -291,6 +329,67 @@ export const AdminGalleryCMS: React.FC = () => {
             <Plus className="w-4 h-4" />
             <span>Tambah Dokumentasi Baru</span>
           </button>
+        </div>
+      </div>
+
+      {/* Status Tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+          <button
+            onClick={() => setStatusFilter('active')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'active'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/60'
+            }`}
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span>Tayang di Website</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'active' ? 'bg-emerald-700 text-white' : 'bg-emerald-200 text-emerald-800'
+            }`}>
+              {activeGalleryCount}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setStatusFilter('archived')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'archived'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60'
+            }`}
+          >
+            <Archive className="w-3.5 h-3.5" />
+            <span>Diarsipkan (Disimpan)</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'archived' ? 'bg-amber-700 text-white' : 'bg-amber-200 text-amber-900'
+            }`}>
+              {archivedGalleryCount}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setStatusFilter('all')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              statusFilter === 'all'
+                ? 'bg-[#1A1A1A] text-white shadow-sm'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            <span>Semua Dokumentasi</span>
+            <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+              statusFilter === 'all' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
+            }`}>
+              {totalGalleryCount}
+            </span>
+          </button>
+        </div>
+
+        <div className="text-[11px] text-gray-500 font-medium hidden md:block">
+          {statusFilter === 'active' && 'Menampilkan dokumentasi yang aktif tayang di website.'}
+          {statusFilter === 'archived' && 'Menampilkan dokumentasi arsip yang tidak tayang di website.'}
+          {statusFilter === 'all' && 'Menampilkan semua dokumentasi tayang dan arsip.'}
         </div>
       </div>
 
@@ -366,6 +465,13 @@ export const AdminGalleryCMS: React.FC = () => {
                     </span>
                   )}
                 </div>
+                <span className={`absolute top-3 right-3 px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
+                  item.isArchived || item.isActive === false
+                    ? 'bg-amber-500 text-white'
+                    : 'bg-emerald-600 text-white'
+                }`}>
+                  {item.isArchived || item.isActive === false ? 'DIARSIPKAN' : 'TAYANG'}
+                </span>
                 <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/60 text-white/90 text-[10px] backdrop-blur-xs">
                   {item.year || '2027'}
                 </div>
@@ -399,6 +505,19 @@ export const AdminGalleryCMS: React.FC = () => {
                   </button>
 
                   <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => handleToggleGalleryArchive(item)}
+                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold flex items-center gap-1 cursor-pointer ${
+                        item.isArchived || item.isActive === false
+                          ? 'bg-amber-50 text-amber-800 hover:bg-amber-100'
+                          : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                      }`}
+                      title={item.isArchived || item.isActive === false ? 'Tayangkan dokumentasi' : 'Arsipkan dokumentasi'}
+                    >
+                      {item.isArchived || item.isActive === false
+                        ? <><Eye className="w-3.5 h-3.5" /><span>Tayang</span></>
+                        : <><Archive className="w-3.5 h-3.5" /><span>Arsip</span></>}
+                    </button>
                     <button
                       onClick={() => handleOpenEdit(item)}
                       className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 cursor-pointer"
@@ -541,6 +660,34 @@ export const AdminGalleryCMS: React.FC = () => {
                   />
                 </div>
               )}
+
+              <fieldset className="rounded-2xl border border-gray-200 bg-white p-4">
+                <legend className="px-1 text-xs font-bold text-gray-700">Status Dokumentasi</legend>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <label className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-semibold cursor-pointer ${!formData.isArchived ? 'border-emerald-300 bg-emerald-50 text-emerald-800' : 'border-gray-200 text-gray-600'}`}>
+                    <input
+                      type="radio"
+                      name="galleryVisibility"
+                      checked={!formData.isArchived}
+                      onChange={() => setFormData({ ...formData, isActive: true, isArchived: false })}
+                      className="accent-emerald-700"
+                    />
+                    <Eye className="w-4 h-4" />
+                    <span>Tayang Aktif</span>
+                  </label>
+                  <label className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-semibold cursor-pointer ${formData.isArchived ? 'border-amber-300 bg-amber-50 text-amber-800' : 'border-gray-200 text-gray-600'}`}>
+                    <input
+                      type="radio"
+                      name="galleryVisibility"
+                      checked={Boolean(formData.isArchived)}
+                      onChange={() => setFormData({ ...formData, isActive: false, isArchived: true, archivedAt: new Date().toISOString() })}
+                      className="accent-amber-700"
+                    />
+                    <Archive className="w-4 h-4" />
+                    <span>Arsipkan</span>
+                  </label>
+                </div>
+              </fieldset>
 
               {/* Quick Preset Photos Picker */}
               <div>

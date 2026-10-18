@@ -35,19 +35,19 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
           Titik Kantor Resmi &amp; Bimbingan Ibadah
         </h2>
         <p className="font-sans-luxury text-[#555555] text-xs sm:text-sm leading-relaxed px-2">
-          Layanan tatap muka, verifikasi dokumen, dan manasik di Garut, Bandung, &amp; Jakarta.
+          Layanan tatap muka, verifikasi dokumen, dan manasik di Head Office Garut dan Kantor Cabang Bandung.
         </p>
       </div>
 
       {/* Grid Kantor Layanan: Lebih Ringkas, Proporsional & Ramping (Gambar 2) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-stretch">
-        {/* Kantor Cabang Garut (Mandala Umroh) - KANTOR UTAMA (lg:col-span-6) */}
+        {/* Head Office Garut (Mandala Umroh) */}
         <div className="lg:col-span-6 p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-white to-[#FDFCFB] border border-[#A67C52]/70 hover:border-[#A67C52] transition-all space-y-3.5 sm:space-y-4 flex flex-col justify-between shadow-xs relative overflow-hidden">
           <div className="space-y-3 relative z-10">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#A67C52] text-white shadow-2xs">
-                  Kantor Utama
+                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#C5A059] text-white shadow-2xs">
+                  Head Office (Kantor Pusat)
                 </span>
                 <span className="text-[10px] sm:text-[11px] text-[#A67C52] font-semibold bg-[#A67C52]/10 px-2 py-0.5 rounded-full border border-[#A67C52]/20">
                   Priangan Timur (Garut)
@@ -64,7 +64,7 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
                 {OFFICE_DETAILS.garut.title}
               </h3>
               <p className="text-xs sm:text-sm text-[#555555] leading-relaxed mt-0.5">
-                Jl. Sudirman Copong, Garut Kota
+                {OFFICE_DETAILS.garut.address}
               </p>
             </div>
 
@@ -80,7 +80,7 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
                 <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Jam Operasional</span>
                 <p className="flex items-center gap-1.5 text-gray-700 text-xs">
                   <Clock className="w-3.5 h-3.5 text-[#A67C52] flex-shrink-0" />
-                  <span>Senin – Sabtu: 09.00 – 17.00 WIB</span>
+                  <span>{OFFICE_DETAILS.garut.hours}</span>
                 </p>
               </div>
             </div>
@@ -88,7 +88,7 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
 
           <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100 relative z-10">
             <a
-              href="https://share.google/fsqwRYJHLHFaiESVm"
+              href={OFFICE_DETAILS.garut.mapsUrl}
               target="_blank"
               rel="noreferrer"
               className="w-full text-center py-2.5 px-2 rounded-xl bg-white hover:bg-gray-50 text-[#1A1A1A] border border-gray-200 text-xs font-bold uppercase transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
@@ -108,7 +108,7 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
           </div>
         </div>
 
-        {/* Pengenalan Jaringan Kantor Cabang Bandung & Kantor Pusat Jakarta (lg:col-span-6) */}
+        {/* Kantor Cabang Bandung */}
         <div className="lg:col-span-6 flex flex-col justify-between gap-3 sm:gap-3.5">
           {/* Cabang Bandung */}
           <div className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200 hover:border-[#A67C52] transition-all space-y-2 shadow-2xs">
@@ -123,11 +123,11 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
                 {OFFICE_DETAILS.bandung.title}
               </h4>
               <p className="text-xs text-gray-500 mt-0.5">
-                Jl. Soekarno Hatta No. 590, Buahbatu, Bandung
+                {OFFICE_DETAILS.bandung.address}
               </p>
             </div>
             <div className="pt-2 flex items-center justify-between text-xs border-t border-gray-100">
-              <span className="text-[11px] text-gray-500 font-mono">WA: 0813-1670-218</span>
+              <span className="text-[10px] text-gray-500">{OFFICE_DETAILS.bandung.hours}</span>
               <a
                 href={OFFICE_DETAILS.bandung.waLink}
                 target="_blank"
@@ -140,35 +140,6 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
             </div>
           </div>
 
-          {/* Kantor Pusat Jakarta */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-gray-200 hover:border-[#A67C52] transition-all space-y-2 shadow-2xs">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-stone-100 text-stone-700 border border-stone-200">
-                Kantor Pusat Jakarta
-              </span>
-              <span className="text-[10px] text-gray-400 font-medium">PPIU No. 1030/2019</span>
-            </div>
-            <div>
-              <h4 className="font-serif-luxury text-sm sm:text-base font-bold text-[#1A1A1A]">
-                {OFFICE_DETAILS.jakarta.title}
-              </h4>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Gedung Menara Kadin Lt. 12, Kuningan, Jakarta Selatan
-              </p>
-            </div>
-            <div className="pt-2 flex items-center justify-between text-xs border-t border-gray-100">
-              <span className="text-[11px] text-gray-500">Kuningan Rasuna Said</span>
-              <a
-                href={OFFICE_DETAILS.jakarta.waLink}
-                target="_blank"
-                rel="noreferrer"
-                className="text-xs font-bold text-[#A67C52] hover:underline inline-flex items-center gap-1"
-              >
-                <span>Chat Pusat</span>
-                <MessageCircle className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </div>
         </div>
       </div>
 

@@ -1299,7 +1299,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: 'profil',
     question: 'Di mana alamat kantor resmi Al-Ghanim di Garut dan Bandung?',
-    answer: 'Kantor Layanan Garut (Mandala Umroh) berlokasi di Jl. Sudirman Copong, Sukamentri, Garut Kota (Depan Bundaran Copong). Kantor Cabang Bandung berada di Jl. Soekarno Hatta No. 590 (Metro Indah Mall), Buahbatu, Kota Bandung. Sedangkan Kantor Pusat berada di Menara Kadin Indonesia, Kuningan Rasuna Said, Jakarta Selatan. Jamaah dapat berkonsultasi tatap muka setiap hari kerja.',
+    answer: 'Head Office (Kantor Pusat) ALGHANIM berada di Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut. Kantor Cabang Bandung beralamat di Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul. Jam operasional: Senin–Sabtu pukul 10.00–16.00 WIB; khusus Jumat pukul 10.00–14.00 WIB. Minggu dan libur nasional tutup.',
     tags: ['kantor', 'garut', 'bandung', 'alamat', 'lokasi', 'copong', 'mandala', 'tatap muka']
   },
 
@@ -1516,34 +1516,28 @@ export const SOCIAL_MEDIA_LINKS = [
 ];
 
 export const OFFICES_DATA = {
-  jakarta: {
-    city: 'Jakarta',
-    type: 'Kantor Pusat',
-    title: 'Kantor Pusat Jakarta',
-    address: 'Gedung Menara Kadin Indonesia Lt. 12, Jl. H.R. Rasuna Said Blok X-5 Kav. 2-3, Kuningan Timur, Setiabudi, Jakarta Selatan 12950',
-    phone: '+62 813-1670-218',
-    waLink: 'https://wa.me/628131670218?text=Halo%20Admin%20Pusat%20Jakarta%20Al-Ghanim,%20saya%20ingin%20konsultasi%20layanan%20ibadah',
-    hours: 'Senin - Jumat: 08:30 - 17:30 WIB | Sabtu: 08:30 - 14:00 WIB'
-  },
   bandung: {
     city: 'Kota Bandung',
     type: 'Kantor Cabang',
-    title: 'Kantor Cabang Kota Bandung',
-    address: 'Jl. Soekarno Hatta No. 590, Sekejati, Buahbatu, Kota Bandung, Jawa Barat 40286',
+    title: 'Kantor Cabang Bandung',
+    address: 'Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul',
     phone: '+62 813-1670-218',
     waLink: 'https://wa.me/628131670218?text=Halo%20Sales%20Admin%20Cabang%20Bandung%20Al-Ghanim,%20saya%20ingin%20konsultasi%20paket%20umroh',
-    hours: 'Senin - Sabtu: 09:00 - 17:30 WIB'
+    mapsUrl: 'https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16&ie=UTF8&iwloc=',
+    embedUrl: 'https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    hours: 'Senin–Sabtu: 10.00–16.00 WIB (Jumat: 10.00–14.00 WIB, Minggu: Tutup)'
   },
   garut: {
     city: 'Garut',
-    type: 'Kantor Cabang',
-    title: 'Kantor Operasional Garut (Mandala Umroh)',
-    address: 'Jl. Sudirman Copong Garut, Sukamentri, Kec. Garut Kota, Kabupaten Garut, Jawa Barat 44116',
+    type: 'Head Office (Kantor Pusat)',
+    title: 'Head Office (Kantor Pusat)',
+    address: 'Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut',
     phone: '(0262) 4890731 / 0813-1670-218',
     whatsapp: '0813-1670-218',
-    mapsUrl: 'https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.9108831,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.9108831!16s%2Fg%2F11t7k1s3_y',
-    waLink: 'https://wa.me/628131670218?text=Halo%20Sales%20Admin%20Cabang%20Garut%20Al-Ghanim,%20saya%20ingin%20konsultasi%20paket%20umroh',
-    hours: 'Senin - Sabtu: 09:00 - 17:00 WIB'
+    mapsUrl: 'https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D',
+    embedUrl: 'https://maps.google.com/maps?q=-7.1987676,107.913458&t=&z=17&ie=UTF8&iwloc=&output=embed',
+    waLink: 'https://wa.me/628131670218?text=Halo%20Admin%20Head%20Office%20ALGHANIM,%20saya%20ingin%20konsultasi%20paket%20umroh',
+    hours: 'Senin–Sabtu: 10.00–16.00 WIB (Jumat: 10.00–14.00 WIB, Minggu/Libur Nasional: Tutup)'
   }
 };
 
@@ -1885,6 +1879,3 @@ export const INITIAL_PROMO_BANNERS = [
     posterSizeFormat: 'banner-horizontal' as const
   }
 ];
-
-
-
