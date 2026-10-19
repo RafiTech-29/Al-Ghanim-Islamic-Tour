@@ -171,7 +171,7 @@ export const RegulationRatesModal: React.FC<RegulationRatesModalProps> = ({
                   <span>Karakteristik Musiman &amp; Fluktuasi Seat Haramain</span>
                 </div>
                 <p className="text-xs sm:text-sm text-[#444444] leading-relaxed">
-                  Ketersediaan seat penerbangan direct (CGK-JED/MED) dan kamar hotel bintang 5 di depan pelataran Ka'bah memiliki dinamika ketersediaan yang sangat ketat pada musim-musim puncak (High Season &amp; Peak Season).
+                  Ketersediaan seat penerbangan direct (CGK-JED/MED) dan kamar hotel bintang 3 &amp; 4 dekat pelataran Ka'bah memiliki dinamika ketersediaan yang sangat ketat pada musim-musim puncak (High Season &amp; Peak Season).
                 </p>
               </div>
 

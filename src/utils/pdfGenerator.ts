@@ -200,8 +200,8 @@ export const generateConsultationBrochurePDF = (data: ConsultationPDFData) => {
 
   const facilities = [
     ['Penerbangan', (data.airline || 'Direct Saudia Airlines / Garuda Indonesia (CGK-JED/MED)').slice(0, 75)],
-    ['Hotel Makkah', (data.hotelMakkah ? `${data.hotelMakkah}${data.makkahDistance ? ` (${data.makkahDistance})` : ''}` : 'Bintang 5/4 Ring 1 Dekat Masjidil Haram (Swissotel/setaraf)').slice(0, 75)],
-    ['Hotel Madinah', (data.hotelMadinah || 'Bintang 4/5 Dekat Masjid Nabawi (Dallah Taibah/setaraf)').slice(0, 75)],
+    ['Hotel Makkah', (data.hotelMakkah ? `${data.hotelMakkah}${data.makkahDistance ? ` (${data.makkahDistance})` : ''}` : 'Hotel Bintang 3 & 4 Dekat Masjidil Haram').slice(0, 75)],
+    ['Hotel Madinah', (data.hotelMadinah || 'Hotel Bintang 3 & 4 Dekat Masjid Nabawi').slice(0, 75)],
     ['Durasi & Jadwal', `${data.duration || '9 Hari'} • Jadwal: ${data.departureDate || data.targetMonth || 'Bulan Terdekat'}`.slice(0, 75)],
     ['Konsumsi', 'Fullboard 3x Sehari Masakan Khas Nusantara (Higienis & Halal)'],
     ['Transportasi', 'Bus Pariwisata Eksekutif VIP AC & Berpendingin Khusus Saudi'],

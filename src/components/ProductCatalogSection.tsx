@@ -189,7 +189,7 @@ export const ProductCatalogSection = ({
               </h3>
 
               <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                Wujudkan panggilan suci ke Baitullah dengan kepastian keberangkatan resmi, fasilitas Maktab VVIP ber-AC di Arafah &amp; Mina, akomodasi hotel bintang 5 depan pelataran Masjidil Haram, serta bimbingan ibadah intensif sesuai Sunnah.
+                Wujudkan panggilan suci ke Baitullah dengan kepastian keberangkatan resmi, fasilitas Maktab VVIP ber-AC di Arafah &amp; Mina, pilihan akomodasi hotel bintang 3 &amp; 4 di sekitar Masjidil Haram, serta bimbingan ibadah intensif sesuai Sunnah.
               </p>
 
               {/* Trust Badges ala Ventour Haji */}
@@ -208,7 +208,7 @@ export const ProductCatalogSection = ({
                 </div>
                 <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 text-center">
                   <span className="text-xs font-bold text-[#E0B880] block">Pasti Hotel</span>
-                  <span className="text-[11px] text-gray-300">Bintang 5 Front-Row</span>
+                  <span className="text-[11px] text-gray-300">Hotel Bintang 3 &amp; 4</span>
                 </div>
               </div>
             </div>
@@ -300,12 +300,12 @@ export const ProductCatalogSection = ({
                         </div>
                         <div className="flex items-center gap-2">
                           <Building2 className="w-3.5 h-3.5 text-[#A67C52] flex-shrink-0" />
-                          <span><strong>Makkah:</strong> {pkg.hotelMakkah} (Bintang 5 Front-Row)</span>
+                          <span><strong>Makkah:</strong> {pkg.hotelMakkah} (Pilihan Bintang 3 &amp; 4)</span>
                         </div>
                         {pkg.hotelMadinah && (
                           <div className="flex items-center gap-2">
                             <Building2 className="w-3.5 h-3.5 text-[#A67C52] flex-shrink-0" />
-                            <span><strong>Madinah:</strong> {pkg.hotelMadinah} (Bintang 5)</span>
+                            <span><strong>Madinah:</strong> {pkg.hotelMadinah} (Pilihan Bintang 3 &amp; 4)</span>
                           </div>
                         )}
                         <div className="flex items-center gap-2">
@@ -380,9 +380,9 @@ export const ProductCatalogSection = ({
                 <div className="w-8 h-8 rounded-lg bg-[#A67C52] text-white flex items-center justify-center font-bold text-sm">
                   4
                 </div>
-                <h5 className="font-bold text-sm text-[#1A1A1A]">Pasti Hotel Bintang 5</h5>
+                <h5 className="font-bold text-sm text-[#1A1A1A]">Pilihan Hotel Bintang 3 &amp; 4</h5>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Akomodasi hotel bintang 5 terdepan di pelataran Masjidil Haram Makkah &amp; Masjid Nabawi Madinah.
+                  Pilihan akomodasi hotel bintang 3 &amp; 4 di sekitar Masjidil Haram Makkah &amp; Masjid Nabawi Madinah.
                 </p>
               </div>
 

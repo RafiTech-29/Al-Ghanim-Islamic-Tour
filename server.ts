@@ -127,7 +127,7 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
 
   // 4. HAJI FURODA & HAJI KHUSUS
   if (lower.includes("furoda") || lower.includes("mujamalah") || lower.includes("haji khusus") || lower.includes("pihk") || (lower.includes("haji") && !lower.includes("umroh"))) {
-    return `**Program Haji Resmi ALGHANIM (Musim Haji 1447H):**\n\n1. 🕋 **Haji Furoda / Mujamalah VVIP (USD $19.500):**\n   • **Langsung Berangkat Tahun Ini:** Tanpa antre / tanpa masa tunggu bertahun-tahun.\n   • **Legalitas:** Menggunakan Visa Haji Mujamalah resmi Kerajaan Arab Saudi (Tercatat resmi di e-Hajj Kementerian Haji Saudi).\n   • **Fasilitas:** Hotel Bintang 5 depan Masjidil Haram & Nabawi, Tenda Maktab VVIP di Mina & Arafah ber-AC dingin dengan kasur springbed, dokter pendamping, dan pembimbing ibadah sunnah.\n\n2. 🕌 **Haji Khusus PIHK Kuota Kemenag (USD $12.500):**\n   • Nomor Porsi resmi SISKOPATUH Kementerian Agama RI.\n   • Masa tunggu lebih singkat (5–7 tahun) dengan fasilitas hotel bintang 5.\n\n*Konsultasi pendaftaran Haji Furoda dapat menghubungi WhatsApp VIP di **0813-1670-218**.*`;
+    return `**Program Haji Resmi ALGHANIM (Musim Haji 1447H):**\n\n1. 🕋 **Haji Furoda / Mujamalah VVIP (USD $19.500):**\n   • **Langsung Berangkat Tahun Ini:** Tanpa antre / tanpa masa tunggu bertahun-tahun.\n   • **Legalitas:** Menggunakan Visa Haji Mujamalah resmi Kerajaan Arab Saudi (Tercatat resmi di e-Hajj Kementerian Haji Saudi).\n   • **Fasilitas:** Pilihan hotel bintang 3 & 4 dekat Masjidil Haram & Nabawi, Tenda Maktab VVIP di Mina & Arafah ber-AC dingin dengan kasur springbed, dokter pendamping, dan pembimbing ibadah sunnah.\n\n2. 🕌 **Haji Khusus PIHK Kuota Kemenag (USD $12.500):**\n   • Nomor Porsi resmi SISKOPATUH Kementerian Agama RI.\n   • Masa tunggu lebih singkat (5–7 tahun) dengan pilihan fasilitas hotel bintang 3 & 4.\n\n*Konsultasi pendaftaran Haji Furoda dapat menghubungi WhatsApp VIP di **0813-1670-218**.*`;
   }
 
   // 5. LOKASI KANTOR (GARUT / COPONG / BANDUNG)
@@ -170,7 +170,7 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
     lower.includes("swissotel") || 
     lower.includes("pullman")
   ) {
-    return `**Fasilitas Hotel & Akomodasi Bintang 5 ALGHANIM:**\n\n🕋 **Makkah (Bintang 5 — Jarak 50 Meter / Depan Pelataran):**\n• Swissotel Makkah / Pullman Zamzam Tower / Movenpick Hajar di kawasan Clock Tower Masjidil Haram. Akses mudah langsung ke pelataran Thawaf.\n\n🕌 **Madinah (Bintang 4 & 5 — Jarak 50 - 100 Meter):**\n• Rove Madinah / Dallah Taibah / Grand Plaza dekat pintu masuk utama Raudhah & Masjid Nabawi.\n\n🍱 **Katering:** 3x sehari full-board masakan khas Indonesia (Nusantara) yang higienis, lezat, dan bergizi seimbang.`;
+    return `**Fasilitas Hotel & Akomodasi ALGHANIM:**\n\n🕋 **Makkah (Pilihan Bintang 3 & 4):**\n• Pilihan hotel di sekitar Masjidil Haram disesuaikan dengan paket dan ketersediaan jadwal.\n\n🕌 **Madinah (Pilihan Bintang 3 & 4):**\n• Pilihan hotel di sekitar Masjid Nabawi disesuaikan dengan paket dan ketersediaan jadwal.\n\n🍱 **Katering:** 3x sehari full-board masakan khas Indonesia (Nusantara) yang higienis, lezat, dan bergizi seimbang.`;
   }
 
   // 8. HARGA, BIAYA & PAKET
@@ -184,7 +184,7 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
     lower.includes("promo") || 
     lower.includes("jumatain")
   ) {
-    return `**Daftar Paket & Rincian Biaya Umroh ALGHANIM (Musim 1447H/2026):**\n\n1. 🕋 **Umroh Reguler (9 Hari):** Mulai **Rp 28.900.000**\n   • Penerbangan Direct Saudia / Garuda Indonesia\n   • Hotel Bintang 4/5 (50-100m ke Masjidil Haram & Nabawi)\n\n2. 🕌 **Umroh Jum'atain (12 Hari):** Mulai **Rp 34.500.000**\n   • Merasakan 2x Shalat Jum'at di Tanah Suci (1x Makkah, 1x Madinah)\n\n3. 👑 **Umroh VIP Bintang 5 (Bespoke):** By Request\n   • Suite Room View Ka'bah & Mobil Eksekutif GMC Yukon / Alphard\n\n4. 🤲 **Badal Umroh Amanah:** **Rp 2.500.000 / Jiwa**\n   • Sertifikat + Video dokumentasi + Air Zam-zam 5L\n\n5. 💰 **Tabungan Umroh Syariah:** Setoran awal **Rp 5.000.000**, cicilan mulai Rp 800rb/bulan\n\n*Semua paket sudah termasuk: Tiket Pesawat PP, Visa Umroh, Hotel Bintang 5, Makan 3x Menu Indonesia, Koper Fiber 24", Seragam, Air Zamzam 5L, & Muthawwif Ahli Sunnah.*`;
+    return `**Daftar Paket & Rincian Biaya Umroh ALGHANIM (Musim 1447H/2026):**\n\n1. 🕋 **Umroh Reguler (9 Hari):** Mulai **Rp 28.900.000**\n   • Penerbangan Direct Saudia / Garuda Indonesia\n   • Pilihan hotel bintang 3 & 4 dekat Masjidil Haram & Nabawi\n\n2. 🕌 **Umroh Jum'atain (12 Hari):** Mulai **Rp 34.500.000**\n   • Merasakan 2x Shalat Jum'at di Tanah Suci (1x Makkah, 1x Madinah)\n\n3. 👑 **Umroh VIP (Bespoke):** By Request\n   • Pilihan kamar sesuai kebutuhan & Mobil Eksekutif GMC Yukon / Alphard\n\n4. 🤲 **Badal Umroh Amanah:** **Rp 2.500.000 / Jiwa**\n   • Sertifikat + Video dokumentasi + Air Zam-zam 5L\n\n5. 💰 **Tabungan Umroh Syariah:** Setoran awal **Rp 5.000.000**, cicilan mulai Rp 800rb/bulan\n\n*Semua paket sudah termasuk: Tiket Pesawat PP, Visa Umroh, pilihan hotel bintang 3 & 4 sesuai program, Makan 3x Menu Indonesia, Koper Fiber 24\", Seragam, Air Zamzam 5L, & Muthawwif Ahli Sunnah.*`;
   }
 
   // 9. JADWAL KEBERANGKATAN & BULAN

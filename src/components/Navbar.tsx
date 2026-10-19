@@ -301,7 +301,7 @@ export const Navbar = ({
               {/* Item 7: Fasilitas */}
               <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-[#6E6E6E]">
                 <Building2 className="w-3.5 h-3.5 text-[#C5A059] flex-shrink-0" />
-                <span>Hotel Bintang 5 Pelataran Masjidil Haram &amp; Nabawi</span>
+                <span>Hotel Bintang 3 &amp; 4 Dekat Masjidil Haram &amp; Nabawi</span>
               </div>
 
               <span className="text-[#C5A059]/40 font-bold">•</span>

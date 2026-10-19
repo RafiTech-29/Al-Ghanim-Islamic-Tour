@@ -112,7 +112,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenLegal, onOpenO
                 <div className="space-y-2 pt-2 text-xs text-[#444444]">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#A67C52] flex-shrink-0" />
-                    <span>Hotel bintang 5 sangat dekat dengan pelataran masjid</span>
+                    <span>Pilihan hotel bintang 3 &amp; 4 dekat dengan pelataran masjid</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#A67C52] flex-shrink-0" />

@@ -1319,7 +1319,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: 'paket',
     question: 'Hotel apa yang digunakan dan berapa jaraknya ke pelataran Masjid?',
-    answer: 'Untuk paket Reguler & VIP, Al-Ghanim menggunakan Hotel Bintang 4 & Bintang 5 terpilih seperti Swissotel Makkah, Pullman Zamzam, Movenpick Hajar Tower, Fairmont, Rove Madinah, Dallah Taibah, dan Leader Al Muna Kareem. Jarak hotel berkisar 0 s/d 50 meter langsung di depan pelataran Masjidil Haram dan Masjid Nabawi (front-row).',
+    answer: 'Untuk paket Reguler & VIP, Al-Ghanim menyediakan pilihan hotel bintang 3 & 4 sesuai paket dan ketersediaan jadwal. Lokasi serta jarak hotel dari Masjidil Haram dan Masjid Nabawi dapat berbeda pada tiap jadwal; silakan konfirmasi nama hotel dan jarak aktual kepada admin sebelum mendaftar.',
     tags: ['hotel', 'makkah', 'madinah', 'jarak', 'bintang 5', 'pelataran', 'swissotel', 'pullman', 'fairmont']
   },
   {

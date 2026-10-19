@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
   DollarSign, 
   HeartHandshake, 
@@ -9,7 +10,8 @@ import {
   Coins, 
   Wifi, 
   Accessibility,
-  ArrowRight
+  ArrowRight,
+  ChevronDown
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { WHY_CHOOSE_US, OFFICIAL_WA_LINK, OFFICIAL_WA_NUMBER } from '../data/packagesData';
@@ -33,6 +35,9 @@ interface WhyChooseSectionProps {
 }
 
 export const WhyChooseSection = ({ onOpenConsultation, onOpenLegal }: WhyChooseSectionProps) => {
+  const [showAll, setShowAll] = useState(false);
+  const displayedItems = showAll ? WHY_CHOOSE_US : WHY_CHOOSE_US.slice(0, 5);
+
   return (
     <section id="keunggulan-section" className="py-10 sm:py-16 md:py-18 px-4 sm:px-8 max-w-7xl mx-auto space-y-8 sm:space-y-10 bg-white relative w-full max-w-full overflow-x-hidden">
       {/* Section Header */}
@@ -56,7 +61,7 @@ export const WhyChooseSection = ({ onOpenConsultation, onOpenLegal }: WhyChooseS
 
       {/* 10 Keunggulan Grid: Padat, Rapi & Elegan */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5">
-        {WHY_CHOOSE_US.map((item, idx) => {
+        {displayedItems.map((item, idx) => {
           const Icon = ICONS[idx] || ShieldCheck;
           return (
             <motion.div
@@ -86,6 +91,16 @@ export const WhyChooseSection = ({ onOpenConsultation, onOpenLegal }: WhyChooseS
             </motion.div>
           );
         })}
+      </div>
+
+      <div className="text-center pt-1">
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="px-6 py-2.5 rounded-xl bg-white border border-gray-300 hover:border-[#A67C52] text-xs font-bold uppercase tracking-wider text-[#1A1A1A] hover:text-[#A67C52] transition-all shadow-2xs hover:shadow-sm inline-flex items-center gap-2 cursor-pointer"
+        >
+          <span>{showAll ? 'Tampilkan Lebih Sedikit' : `Lihat Semua Keunggulan (${WHY_CHOOSE_US.length} Komitmen)`}</span>
+          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} />
+        </button>
       </div>
 
       {/* Legal & Accreditation Verification Trust Banner */}

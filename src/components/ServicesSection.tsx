@@ -25,7 +25,7 @@ export const ServicesSection = ({
     {
       icon: Building2,
       title: 'Reservasi Hotel Front Row',
-      desc: 'Jaminan kamar hotel bintang 5 terbaik di kompleks Clock Tower Makkah dan pelataran Nabawi dengan akses lift langsung tanpa perlu transportasi jauh.'
+      desc: 'Pilihan kamar hotel bintang 3 & 4 di sekitar Masjidil Haram dan Masjid Nabawi dengan akses yang nyaman tanpa perlu transportasi jauh.'
     },
     {
       icon: Plane,

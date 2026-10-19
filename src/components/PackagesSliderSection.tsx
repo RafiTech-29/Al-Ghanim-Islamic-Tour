@@ -114,7 +114,7 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
     flyerTitle: 'HAJI KHUSUS PIHK KEMENAG RI',
     flyerDurationBadge: '26 HARI',
     flyerRouteText: 'Nomor Porsi Resmi SISKOPATUH Kemenag • Masa Tunggu Singkat 5-7 Tahun • Tenda AC Mina',
-    flyerFreePerks: ['Setoran Awal USD $4.500', 'Manasik Intensif Hotel Bintang 5', 'Dokter & Pembimbing Senior'],
+    flyerFreePerks: ['Setoran Awal USD $4.500', 'Manasik Intensif di Hotel Bintang 3 & 4', 'Dokter & Pembimbing Senior'],
     pricing: {
       quad: 'USD $12.500',
       triple: 'USD $13.800',
@@ -374,7 +374,7 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
             flyerImage: item.image || 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80',
             flyerTitle: item.title.toUpperCase(),
             flyerDurationBadge: (item.duration || '9 Hari').toUpperCase(),
-            flyerRouteText: item.description || 'Program Ibadah Sesuai Sunnah • Fasilitas Hotel Bintang 5',
+            flyerRouteText: item.description || 'Program Ibadah Sesuai Sunnah • Pilihan Hotel Bintang 3 & 4',
             flyerFreePerks: (item.programHighlights && item.programHighlights.length > 0)
               ? item.programHighlights.slice(0, 4)
               : item.features && item.features.length > 0
@@ -386,8 +386,8 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
               double: item.priceDouble || item.doublePrice || (item as any).pricing?.double || item.price
             },
             hotelInfo: {
-              madinah: item.hotelMadinah || 'Hotel Bintang 4/5',
-              makkah: item.hotelMakkah || 'Hotel Bintang 5 Dekat Masjid'
+              madinah: item.hotelMadinah || 'Hotel Bintang 3 & 4',
+              makkah: item.hotelMakkah || 'Hotel Bintang 3 & 4 Dekat Masjid'
             },
             cardTitle: item.title,
             durationPill: item.duration || '9 Hari',

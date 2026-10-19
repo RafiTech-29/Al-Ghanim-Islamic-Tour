@@ -25,7 +25,7 @@ export const ConciergeDrawer = ({ isOpen, onClose, onOpenConsultation }: Concier
     {
       id: '1',
       sender: 'assistant',
-      text: 'Assalamu\'alaikum warahmatullah. Selamat datang di Spiritual Concierge resmi ALGHANIM & Mandala 525 Garut.\n\nSaya siap memberikan informasi akurat mengenai pendaftaran Umroh & Haji, biaya paket, syarat paspor, hotel bintang 5, hingga simulasi tabungan syariah. Ada yang bisa saya bantu hari ini?',
+      text: 'Assalamu\'alaikum warahmatullah. Selamat datang di Spiritual Concierge resmi ALGHANIM & Mandala 525 Garut.\n\nSaya siap memberikan informasi akurat mengenai pendaftaran Umroh & Haji, biaya paket, syarat paspor, pilihan hotel bintang 3 & 4, hingga simulasi tabungan syariah. Ada yang bisa saya bantu hari ini?',
       timestamp: 'Baru saja'
     }
   ]);
@@ -60,7 +60,7 @@ export const ConciergeDrawer = ({ isOpen, onClose, onOpenConsultation }: Concier
     } else if (lower.includes('haji') || lower.includes('furoda') || lower.includes('mujamalah')) {
       return 'Haji Khusus / Furoda';
     } else if (lower.includes('vip') || lower.includes('bintang 5')) {
-      return 'Umroh VIP Bintang 5';
+      return 'Umroh VIP dengan Pilihan Hotel Bintang 3 & 4';
     } else if (lower.includes('garut') || lower.includes('copong') || lower.includes('mandala')) {
       return 'Kantor Mandala 525 Garut';
     } else if (lower.includes('bandung')) {

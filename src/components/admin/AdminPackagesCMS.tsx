@@ -43,14 +43,7 @@ import {
   deletePackageDocumentFieldInFirestore
 } from '../../lib/firestoreService';
 import { 
-  DETAILED_SCHEDULES,
-  thawafKabahImg,
-  qubaImg,
-  jabalUhudImg,
-  nabawiKubahImg,
-  keluargaMakkahImg,
-  kajianNabawiImg,
-  bandaraImg
+  DETAILED_SCHEDULES
 } from '../../data/packagesData';
 import { compressImageFile } from '../../utils/imageCompressor';
 import { 
@@ -59,38 +52,6 @@ import {
   isCustomFlyerAvailable, 
   isCustomItineraryAvailable 
 } from '../../utils/packageDocManager';
-
-// 7 Preset template poster foto jemaah resmi Alghanim
-const PRESET_POSTERS = [
-  {
-    name: 'Template 1: Thawaf Ka\'bah Makkah',
-    url: thawafKabahImg
-  },
-  {
-    name: 'Template 2: Ziarah Masjid Quba',
-    url: qubaImg
-  },
-  {
-    name: 'Template 3: Napak Tilas Jabal Uhud',
-    url: jabalUhudImg
-  },
-  {
-    name: 'Template 4: Kubah Hijau Nabawi',
-    url: nabawiKubahImg
-  },
-  {
-    name: 'Template 5: Keluarga Ihram Makkah',
-    url: keluargaMakkahImg
-  },
-  {
-    name: 'Template 6: Bimbingan Ibadah Nabawi',
-    url: kajianNabawiImg
-  },
-  {
-    name: 'Template 7: Pelepasan Bandara',
-    url: bandaraImg
-  }
-];
 
 export const AdminPackagesCMS: React.FC = () => {
   const [packages, setPackages] = useState<PackageScheduleItem[]>([]);
@@ -195,7 +156,7 @@ export const AdminPackagesCMS: React.FC = () => {
     isActive: true,
     isArchived: false,
     badge: 'BEST SELLER',
-    posterUrl: PRESET_POSTERS[0].url,
+    posterUrl: '',
     flyerUrl: '',
     itineraryPdfUrl: '',
     description: '',
@@ -242,14 +203,14 @@ export const AdminPackagesCMS: React.FC = () => {
       isActive: true,
       isArchived: false,
       badge: 'TERBARU',
-      posterUrl: PRESET_POSTERS[0].url,
+      posterUrl: '',
       flyerUrl: '',
       itineraryPdfUrl: '',
       description: 'Program ibadah umroh berkualitas dan amanah didampingi asatidz berpengalaman sesuai sunnah Rasulullah ﷺ.',
       programHighlights: ['Bimbingan Manasik Sesuai Sunnah', 'Free Executive Lounge Bandara CGK', 'Kereta Cepat Haramain']
     });
     setHighlightsInput('Bimbingan Manasik Sesuai Sunnah\nFree Executive Lounge Bandara CGK\nKereta Cepat Haramain');
-    setUploadPreview(PRESET_POSTERS[0].url);
+    setUploadPreview('');
     setFormFlyerMode('upload');
     setFormItineraryMode('upload');
     setIsModalOpen(true);
@@ -258,7 +219,7 @@ export const AdminPackagesCMS: React.FC = () => {
   const handleOpenEdit = (pkg: PackageScheduleItem) => {
     setModalMode('edit');
     setEditingId(pkg.id);
-    const poster = pkg.image || (pkg as any).posterUrl || PRESET_POSTERS[0].url;
+    const poster = pkg.image || (pkg as any).posterUrl || '';
     setFormData({
       title: pkg.title,
       category: pkg.category,
@@ -523,6 +484,10 @@ export const AdminPackagesCMS: React.FC = () => {
       alert('Mohon isi Harga Paket');
       return;
     }
+    if (!(uploadPreview || formData.posterUrl || '').trim()) {
+      alert('Mohon unggah foto flyer paket Anda.');
+      return;
+    }
 
     setIsSaving(true);
 
@@ -531,7 +496,7 @@ export const AdminPackagesCMS: React.FC = () => {
       .map(s => s.trim())
       .filter(s => s.length > 0);
 
-    const posterImage = uploadPreview || formData.posterUrl || PRESET_POSTERS[0].url;
+    const posterImage = uploadPreview || formData.posterUrl || '';
 
     const payload: Omit<PackageScheduleItem, 'id'> = {
       title: formData.title,
@@ -851,17 +816,24 @@ export const AdminPackagesCMS: React.FC = () => {
                   const quad = pkg.quadPrice || pkg.priceQuad || pkg.price;
                   const triple = pkg.triplePrice || pkg.priceTriple;
                   const double = pkg.doublePrice || pkg.priceDouble;
+                  const posterImage = pkg.image || (pkg as any).posterUrl;
 
                   return (
                     <tr key={pkg.id} className="hover:bg-[#FDFBF7] transition-colors">
                       {/* Nama Paket */}
                       <td className="py-3.5 px-4 max-w-xs">
                         <div className="flex items-center gap-3">
-                          <img
-                            src={pkg.image || (pkg as any).posterUrl || PRESET_POSTERS[0].url}
-                            alt=""
-                            className="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-200"
-                          />
+                          {posterImage ? (
+                            <img
+                              src={posterImage}
+                              alt=""
+                              className="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-gray-200"
+                            />
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg flex-shrink-0 border border-gray-200 bg-gray-50 text-gray-400 flex items-center justify-center">
+                              <ImageIcon className="w-4 h-4" />
+                            </div>
+                          )}
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5">
                               <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-700">
@@ -987,6 +959,7 @@ export const AdminPackagesCMS: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredPackages.map((pkg) => {
             const isFull = pkg.isFullBooked || (pkg.availableSeats !== undefined && pkg.availableSeats <= 0);
+            const posterImage = pkg.image || (pkg as any).posterUrl;
             return (
               <div
                 key={pkg.id}
@@ -995,13 +968,22 @@ export const AdminPackagesCMS: React.FC = () => {
                 <div>
                   {/* Poster Image / Header */}
                   <div className="relative h-44 bg-gray-100 overflow-hidden">
-                    <img
-                      src={pkg.image || (pkg as any).posterUrl || PRESET_POSTERS[0].url}
-                      alt={pkg.title}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    {posterImage ? (
+                      <>
+                        <img
+                          src={posterImage}
+                          alt={pkg.title}
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-400">
+                        <ImageIcon className="w-8 h-8" />
+                        <span className="text-xs font-medium">Belum ada foto flyer</span>
+                      </div>
+                    )}
                     
                     {/* Badges */}
                     <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
@@ -1618,34 +1600,6 @@ export const AdminPackagesCMS: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Preset Options */}
-                <div>
-                  <p className="text-[11px] text-gray-500 mb-1.5 font-medium">Atau pilih dari 7 template foto jemaah resmi:</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
-                    {PRESET_POSTERS.map((preset, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => {
-                          setUploadPreview(preset.url);
-                          setFormData({ ...formData, posterUrl: preset.url });
-                        }}
-                        className={`p-2 rounded-xl border text-[11px] font-medium flex items-center gap-2 transition-all cursor-pointer text-left ${
-                          uploadPreview === preset.url
-                            ? 'border-[#A67C52] bg-[#A67C52]/10 text-[#A67C52] font-bold ring-2 ring-[#A67C52]/30'
-                            : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
-                        }`}
-                      >
-                        <img 
-                          src={preset.url} 
-                          alt={preset.name}
-                          className="w-7 h-7 rounded-lg object-cover flex-shrink-0 border border-gray-200" 
-                        />
-                        <span className="truncate flex-1">{preset.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
 
               {/* 6. Deskripsi & Highlight */}
