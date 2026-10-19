@@ -55,11 +55,11 @@ INFORMASI RESMI PERUSAHAAN (KNOWLEDGE BASE ALGHANIM):
    - KANTOR UTAMA GARUT:
      * Alamat: Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut.
      * Telepon: (0262) 4890731 / Hotline WA: 0813-1670-218.
-     * Jam Operasional: Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu/libur nasional tutup).
+     * Jam Operasional: Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB; Minggu/libur nasional tutup).
      * Konsultan: Ustadz Wildan Firdaus, S.Pd.I. & Tim Mandala 525.
    - KANTOR CABANG KOTA BANDUNG:
      * Alamat: Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul.
-     * Jam Operasional: Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu tutup).
+     * Jam Operasional: Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB; Minggu tutup).
      * Telepon/WA: 0813-1670-218.
    - HOTLINE WHATSAPP NASIONAL RESMI: 0813-1670-218 (Layanan 24 Jam).
 
@@ -133,13 +133,13 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
   // 5. LOKASI KANTOR (GARUT / COPONG / BANDUNG)
   if (lower === "garut" || lower.includes("garut") || lower.includes("copong") || lower.includes("mandala") || lower.includes("pusat")) {
     if (lastUserTopic.includes("daftar") || lastUserTopic.includes("gimana") || lastUserTopic.includes("cara")) {
-      return `**Pendaftaran Langsung di Kantor Utama Garut (Mandala 525):**\n\n📍 **Alamat:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut\n🗺️ **Google Maps:** https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D\n📞 **Hotline WA:** **0813-1670-218** / Telp: (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu/libur nasional tutup)\n👳‍♂️ **Konsultan Ibadah:** Ustadz Wildan Firdaus & Tim Mandala 525\n\n**Dokumen Cukup Dibawa:**\n1. KTP & Kartu Keluarga (KK)\n2. Paspor Asli (jika sudah ada)\n3. Uang Muka (DP) mulai Rp 5.000.000 untuk kunci seat penerbangan\n\n*Tim kami di Copong Garut siap melayani bimbingan pengurusan paspor, penyerahan koper, dan konsultasi manasik.*`;
+      return `**Pendaftaran Langsung di Kantor Utama Garut (Mandala 525):**\n\n📍 **Alamat:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut\n🗺️ **Google Maps:** https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D\n📞 **Hotline WA:** **0813-1670-218** / Telp: (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB; Minggu/libur nasional tutup)\n👳‍♂️ **Konsultan Ibadah:** Ustadz Wildan Firdaus & Tim Mandala 525\n\n**Dokumen Cukup Dibawa:**\n1. KTP & Kartu Keluarga (KK)\n2. Paspor Asli (jika sudah ada)\n3. Uang Muka (DP) mulai Rp 5.000.000 untuk kunci seat penerbangan\n\n*Tim kami di Copong Garut siap melayani bimbingan pengurusan paspor, penyerahan koper, dan konsultasi manasik.*`;
     }
-    return `**Kantor Utama Garut (Mandala Umroh):**\n\n🏢 **Alamat:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut\n🗺️ **Google Maps:** https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D\n📞 **Hotline WhatsApp:** **0813-1670-218**\n☎️ **Telepon Kantor:** (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu/libur nasional tutup)\n👳‍♂️ **Konsultan:** Ustadz Wildan Firdaus, S.Pd.I. & Tim Mandala 525 (@mandala525islamictour)\n\n*Fasilitas kantor: Konsultasi tatap muka, display koper & seragam, pembuatan surat rekomendasi paspor Kemenag, dan bimbingan manasik.*`;
+    return `**Kantor Utama Garut (Mandala Umroh):**\n\n🏢 **Alamat:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut\n🗺️ **Google Maps:** https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D\n📞 **Hotline WhatsApp:** **0813-1670-218**\n☎️ **Telepon Kantor:** (0262) 4890731\n⏰ **Jam Buka:** Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB; Minggu/libur nasional tutup)\n👳‍♂️ **Konsultan:** Ustadz Wildan Firdaus, S.Pd.I. & Tim Mandala 525 (@mandala525islamictour)\n\n*Fasilitas kantor: Konsultasi tatap muka, display koper & seragam, pembuatan surat rekomendasi paspor Kemenag, dan bimbingan manasik.*`;
   }
 
   if (lower === "bandung" || lower.includes("bandung")) {
-    return `**Kantor Cabang Bandung ALGHANIM:**\n\n🏢 **Alamat:** Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul\n🗺️ **Google Maps:** https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16\n📞 **Hotline WhatsApp:** **0813-1670-218**\n⏰ **Jam Operasional:** Senin – Sabtu: 10.00 – 16.00 WIB (Jumat: 10.00 – 14.00 WIB; Minggu tutup)\n\n*Melayani konsultasi, pendaftaran, dan penyerahan berkas bagi jamaah wilayah Bandung Raya & Priangan.*`;
+    return `**Kantor Cabang Bandung ALGHANIM:**\n\n🏢 **Alamat:** Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul\n🗺️ **Google Maps:** https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16\n📞 **Hotline WhatsApp:** **0813-1670-218**\n⏰ **Jam Operasional:** Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB; Minggu tutup)\n\n*Melayani konsultasi, pendaftaran, dan penyerahan berkas bagi jamaah wilayah Bandung Raya & Priangan.*`;
   }
 
   // 6. SYARAT, PASPOR, DOKUMEN & VISA

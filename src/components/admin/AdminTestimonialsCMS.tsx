@@ -33,7 +33,7 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
   onShowToast
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'archived' | 'stars5'>('all');
+  const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'archived' | 'stars5'>('active');
   
   // Reply State
   const [replyingId, setReplyingId] = useState<string | null>(null);
@@ -284,16 +284,6 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
         {/* Filter Tabs */}
         <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
           <button
-            onClick={() => setFilterStatus('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-              filterStatus === 'all'
-                ? 'bg-[#1A1A1A] text-white'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            Semua ({totalCount})
-          </button>
-          <button
             onClick={() => setFilterStatus('active')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
               filterStatus === 'active'
@@ -301,17 +291,27 @@ export const AdminTestimonialsCMS: React.FC<AdminTestimonialsCMSProps> = ({
                 : 'text-emerald-700 hover:bg-emerald-50'
             }`}
           >
-            Tayang ({approvedCount})
+            Tayang di Website ({approvedCount})
           </button>
           <button
-          onClick={() => setFilterStatus('archived')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-            filterStatus === 'archived'
-              ? 'bg-amber-600 text-white shadow-sm'
-              : 'bg-white text-gray-500 border border-gray-200 hover:bg-amber-50'
-          }`}
+            onClick={() => setFilterStatus('archived')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              filterStatus === 'archived'
+                ? 'bg-amber-600 text-white shadow-sm'
+                : 'bg-white text-gray-500 border border-gray-200 hover:bg-amber-50'
+            }`}
           >
-          Diarsipkan ({archivedCount})
+            Diarsipkan ({archivedCount})
+          </button>
+          <button
+            onClick={() => setFilterStatus('all')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+              filterStatus === 'all'
+                ? 'bg-[#1A1A1A] text-white'
+                : 'text-gray-600 hover:bg-gray-100'
+            }`}
+          >
+            Semua Data ({totalCount})
           </button>
           <button
             onClick={() => setFilterStatus('stars5')}

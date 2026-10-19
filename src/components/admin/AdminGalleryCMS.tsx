@@ -26,64 +26,9 @@ import {
   subscribeToGallery, 
   addGalleryItemToFirestore, 
   updateGalleryItemInFirestore, 
-  deleteGalleryItemFromFirestore,
-  restoreDefaultGalleryToFirestore
+  deleteGalleryItemFromFirestore
 } from '../../lib/firestoreService';
 import { compressImageFile } from '../../utils/imageCompressor';
-import { 
-  thawafKabahImg,
-  qubaImg,
-  jabalUhudImg,
-  nabawiKubahImg,
-  keluargaMakkahImg,
-  kajianNabawiImg,
-  bandaraImg
-} from '../../data/packagesData';
-
-const PRESET_GALLERY_PHOTOS = [
-  {
-    name: 'Template 1: Thawaf Ka\'bah Makkah',
-    category: 'Makkah',
-    url: thawafKabahImg,
-    location: 'Pelataran Mataf Masjidil Haram, Makkah'
-  },
-  {
-    name: 'Template 2: Shalat Sunnah Masjid Quba',
-    category: 'Madinah',
-    url: qubaImg,
-    location: 'Pelataran Masjid Quba, Madinah Al-Munawwarah'
-  },
-  {
-    name: 'Template 3: Napak Tilas Jabal Uhud',
-    category: 'Madinah',
-    url: jabalUhudImg,
-    location: 'Kawasan Bersejarah Jabal Uhud, Madinah'
-  },
-  {
-    name: 'Template 4: Kubah Hijau & Raudhah Nabawi',
-    category: 'Madinah',
-    url: nabawiKubahImg,
-    location: 'Pelataran Kubah Hijau Masjid Nabawi, Madinah'
-  },
-  {
-    name: 'Template 5: Keluarga Ihram Makkah',
-    category: 'Makkah',
-    url: keluargaMakkahImg,
-    location: 'Pelataran Suci Masjidil Haram, Makkah'
-  },
-  {
-    name: 'Template 6: Bimbingan Ibadah Nabawi',
-    category: 'Manasik',
-    url: kajianNabawiImg,
-    location: 'Pelataran Naungan Payung Masjid Nabawi, Madinah'
-  },
-  {
-    name: 'Template 7: Pelepasan Bandara Soetta T3',
-    category: 'Keberangkatan',
-    url: bandaraImg,
-    location: 'Bandara Internasional Soekarno-Hatta Terminal 3'
-  }
-];
 
 export const AdminGalleryCMS: React.FC = () => {
   const [gallery, setGallery] = useState<GalleryPhotoItem[]>([]);
@@ -108,15 +53,15 @@ export const AdminGalleryCMS: React.FC = () => {
   const [formData, setFormData] = useState<Omit<GalleryPhotoItem, 'id'>>({
     title: '',
     category: 'Makkah',
-    image: PRESET_GALLERY_PHOTOS[0].url,
-    location: 'Pelataran Mataf Masjidil Haram, Makkah',
-    year: 'Musim 1448 H / 2027',
+    image: '',
+    location: '',
+    year: '',
     mediaType: 'photo',
     isActive: true,
     isArchived: false,
     videoUrl: '',
-    caption: 'Dokumentasi nyata jamaah Al-Ghanim saat menunaikan ibadah di Tanah Suci.',
-    date: 'April 2027'
+    caption: '',
+    date: ''
   });
 
   const [uploadPreview, setUploadPreview] = useState<string>('');
@@ -145,15 +90,15 @@ export const AdminGalleryCMS: React.FC = () => {
     setFormData({
       title: '',
       category: 'Makkah',
-      image: PRESET_GALLERY_PHOTOS[0].url,
-      location: 'Pelataran Mataf Masjidil Haram, Makkah',
-      year: 'Musim 2027',
+      image: '',
+      location: '',
+      year: '',
       mediaType: 'photo',
       isActive: true,
       isArchived: false,
       videoUrl: '',
-      caption: 'Dokumentasi nyata jamaah Al-Ghanim saat menunaikan ibadah di Tanah Suci.',
-      date: 'April 2027'
+      caption: '',
+      date: ''
     });
     setUploadPreview('');
     setIsModalOpen(true);
@@ -195,17 +140,6 @@ export const AdminGalleryCMS: React.FC = () => {
     } finally {
       setIsCompressing(false);
     }
-  };
-
-  const handleSelectPreset = (preset: typeof PRESET_GALLERY_PHOTOS[0]) => {
-    setFormData(prev => ({
-      ...prev,
-      title: prev.title || preset.name,
-      category: preset.category,
-      image: preset.url,
-      location: preset.location
-    }));
-    setUploadPreview(preset.url);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -689,47 +623,15 @@ export const AdminGalleryCMS: React.FC = () => {
                 </div>
               </fieldset>
 
-              {/* Quick Preset Photos Picker */}
-              <div>
-                <label className="block text-xs font-bold uppercase text-[#1A1A1A] mb-1.5">
-                  Pilih Cepat Foto Dokumentasi (Preset Resmi)
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  {PRESET_GALLERY_PHOTOS.map((preset, idx) => (
-                    <button
-                      type="button"
-                      key={idx}
-                      onClick={() => handleSelectPreset(preset)}
-                      className={`p-2 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer ${
-                        formData.image === preset.url
-                          ? 'border-[#A67C52] bg-[#A67C52]/10 ring-2 ring-[#A67C52]/30'
-                          : 'border-gray-200 hover:border-[#A67C52] bg-white'
-                      }`}
-                    >
-                      <img
-                        src={preset.url}
-                        alt={preset.name}
-                        className="w-10 h-10 rounded-lg object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="min-w-0">
-                        <p className="text-[11px] font-bold text-[#1A1A1A] truncate">{preset.name}</p>
-                        <p className="text-[9px] text-[#A67C52] font-semibold">{preset.category}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* Custom Image URL or Upload */}
               <div className="space-y-2">
                 <label className="block text-xs font-bold uppercase text-[#1A1A1A]">
-                  Atau Masukkan URL Gambar / Unggah File Sendiri
+                  URL Gambar atau Unggah File Dokumentasi Sendiri
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="https://images.unsplash.com/... atau URL gambar"
+                    placeholder="Masukkan URL gambar..."
                     value={formData.image}
                     onChange={(e) => {
                       setFormData({ ...formData, image: e.target.value });

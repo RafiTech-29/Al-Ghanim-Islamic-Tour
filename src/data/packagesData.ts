@@ -1299,7 +1299,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: 'profil',
     question: 'Di mana alamat kantor resmi Al-Ghanim di Garut dan Bandung?',
-    answer: 'Head Office (Kantor Pusat) ALGHANIM berada di Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut. Kantor Cabang Bandung beralamat di Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul. Jam operasional: Senin–Sabtu pukul 10.00–16.00 WIB; khusus Jumat pukul 10.00–14.00 WIB. Minggu dan libur nasional tutup.',
+    answer: 'Head Office (Kantor Pusat) ALGHANIM berada di Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut. Kantor Cabang Bandung beralamat di Jl. Terusan Buahbatu No. 275C, Kujangsari, Bandung Kidul. Jam operasional: Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB). Minggu dan libur nasional tutup.',
     tags: ['kantor', 'garut', 'bandung', 'alamat', 'lokasi', 'copong', 'mandala', 'tatap muka']
   },
 
@@ -1525,7 +1525,7 @@ export const OFFICES_DATA = {
     waLink: 'https://wa.me/628131670218?text=Halo%20Sales%20Admin%20Cabang%20Bandung%20Al-Ghanim,%20saya%20ingin%20konsultasi%20paket%20umroh',
     mapsUrl: 'https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16&ie=UTF8&iwloc=',
     embedUrl: 'https://maps.google.com/maps?q=Jl.+Terusan+Buahbatu+No.+275C+Kujangsari+Bandung+Kidul&t=&z=16&ie=UTF8&iwloc=&output=embed',
-    hours: 'Senin–Sabtu: 10.00–16.00 WIB (Jumat: 10.00–14.00 WIB, Minggu: Tutup)'
+    hours: 'Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB, Minggu: Tutup)'
   },
   garut: {
     city: 'Garut',
@@ -1537,7 +1537,7 @@ export const OFFICES_DATA = {
     mapsUrl: 'https://www.google.com/maps/place/Mandala+Umroh/@-7.1987676,107.913458,17z/data=!3m1!4b1!4m6!3m5!1s0x2e68b104425f10ab:0xab1f9dc7619e16f9!8m2!3d-7.1987676!4d107.913458!16s%2Fg%2F11b66kx955?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D',
     embedUrl: 'https://maps.google.com/maps?q=-7.1987676,107.913458&t=&z=17&ie=UTF8&iwloc=&output=embed',
     waLink: 'https://wa.me/628131670218?text=Halo%20Admin%20Head%20Office%20ALGHANIM,%20saya%20ingin%20konsultasi%20paket%20umroh',
-    hours: 'Senin–Sabtu: 10.00–16.00 WIB (Jumat: 10.00–14.00 WIB, Minggu/Libur Nasional: Tutup)'
+    hours: 'Senin – Sabtu: 09.00 – 16.00 WIB (Jumat: 09.00 – 14.00 WIB, Minggu/Libur Nasional: Tutup)'
   }
 };
 

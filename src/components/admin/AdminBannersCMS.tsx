@@ -28,24 +28,6 @@ import {
 import { OFFICIAL_WA_LINK } from '../../data/packagesData';
 import { compressImageFile } from '../../utils/imageCompressor';
 
-const PRESET_BANNERS = [
-  {
-    name: 'Poster Promo Umroh Tegak (Flyer 4:5)',
-    url: 'https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=1080&q=80',
-    aspectRatio: 'portrait' as const
-  },
-  {
-    name: 'Promo Ka\'bah Ramadhan (Landscape 16:9)',
-    url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80',
-    aspectRatio: 'landscape' as const
-  },
-  {
-    name: 'Promo Haji VVIP Furoda',
-    url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80',
-    aspectRatio: 'landscape' as const
-  }
-];
-
 export const AdminBannersCMS: React.FC = () => {
   const [banners, setBanners] = useState<PromoBannerItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,7 +52,7 @@ export const AdminBannersCMS: React.FC = () => {
     title: '',
     subtitle: '',
     badgeText: 'HOT PROMO BULAN INI',
-    imageUrl: PRESET_BANNERS[0].url,
+    imageUrl: '',
     targetLink: OFFICIAL_WA_LINK,
     ctaText: 'Klaim Promo via WhatsApp',
     startDate: '2026-08-01',
@@ -108,7 +90,7 @@ export const AdminBannersCMS: React.FC = () => {
       title: '',
       subtitle: '',
       badgeText: 'HOT PROMO BULAN INI',
-      imageUrl: PRESET_BANNERS[0].url,
+      imageUrl: '',
       targetLink: OFFICIAL_WA_LINK,
       ctaText: 'Klaim Promo via WhatsApp',
       startDate: new Date().toISOString().split('T')[0],
@@ -118,7 +100,7 @@ export const AdminBannersCMS: React.FC = () => {
       aspectRatio: 'portrait',
       posterSizeFormat: 'flyer-vertical'
     });
-    setUploadPreview(PRESET_BANNERS[0].url);
+    setUploadPreview('');
     setIsModalOpen(true);
   };
 
@@ -129,7 +111,7 @@ export const AdminBannersCMS: React.FC = () => {
       title: banner.title,
       subtitle: banner.subtitle,
       badgeText: banner.badgeText || 'HOT PROMO',
-      imageUrl: banner.imageUrl || PRESET_BANNERS[0].url,
+      imageUrl: banner.imageUrl || '',
       targetLink: banner.targetLink || OFFICIAL_WA_LINK,
       ctaText: banner.ctaText || 'Klaim Promo via WhatsApp',
       startDate: banner.startDate || '',
@@ -140,7 +122,7 @@ export const AdminBannersCMS: React.FC = () => {
       aspectRatio: banner.aspectRatio || 'portrait',
       posterSizeFormat: banner.posterSizeFormat || 'flyer-vertical'
     });
-    setUploadPreview(banner.imageUrl || PRESET_BANNERS[0].url);
+    setUploadPreview(banner.imageUrl || '');
     setIsModalOpen(true);
   };
 
@@ -176,13 +158,19 @@ export const AdminBannersCMS: React.FC = () => {
       return;
     }
 
+    const imageUrl = uploadPreview.trim() || formData.imageUrl.trim();
+    if (!imageUrl) {
+      alert('Mohon unggah foto poster atau masukkan URL gambar sebelum menyimpan.');
+      return;
+    }
+
     setIsSaving(true);
 
     const payload: Omit<PromoBannerItem, 'id'> = {
       ...formData,
       isActive: !formData.isArchived,
       isArchived: Boolean(formData.isArchived),
-      imageUrl: uploadPreview || formData.imageUrl || PRESET_BANNERS[0].url
+      imageUrl
     };
 
     // Optimistic UI update
@@ -383,23 +371,29 @@ export const AdminBannersCMS: React.FC = () => {
               {/* Preview Thumbnail with proper aspect ratio container */}
               <div className="flex items-center gap-4 w-full md:w-auto">
                 <div 
-                  onClick={() => setLightboxImage({ url: banner.imageUrl || PRESET_BANNERS[0].url, title: banner.title })}
-                  className={`rounded-xl bg-neutral-900 overflow-hidden flex-shrink-0 relative border border-gray-300 group cursor-pointer shadow-xs ${
+                  onClick={() => banner.imageUrl && setLightboxImage({ url: banner.imageUrl, title: banner.title })}
+                  className={`rounded-xl bg-neutral-900 overflow-hidden flex-shrink-0 relative border border-gray-300 group shadow-xs ${banner.imageUrl ? 'cursor-pointer' : ''} ${
                     banner.aspectRatio === 'landscape' 
                       ? 'w-28 h-20' 
                       : 'w-20 h-28 sm:w-24 sm:h-32'
                   }`}
                   title="Klik untuk melihat poster ukuran penuh"
                 >
-                  <img
-                    src={banner.imageUrl || PRESET_BANNERS[0].url}
-                    alt={banner.title}
-                    className="w-full h-full object-contain"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-                    <Maximize2 className="w-4 h-4" />
-                  </div>
+                  {banner.imageUrl ? (
+                    <>
+                      <img
+                        src={banner.imageUrl}
+                        alt={banner.title}
+                        className="w-full h-full object-contain"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                        <Maximize2 className="w-4 h-4" />
+                      </div>
+                    </>
+                  ) : (
+                    <ImageIcon className="w-6 h-6 text-gray-400" />
+                  )}
 
                   {!banner.isArchived && banner.isActive !== false ? (
                     <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-bold">
@@ -439,7 +433,8 @@ export const AdminBannersCMS: React.FC = () => {
               {/* Action Buttons */}
               <div className="flex items-center gap-3 w-full md:w-auto justify-end border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
                 <button
-                  onClick={() => setLightboxImage({ url: banner.imageUrl || PRESET_BANNERS[0].url, title: banner.title })}
+                  onClick={() => banner.imageUrl && setLightboxImage({ url: banner.imageUrl, title: banner.title })}
+                  disabled={!banner.imageUrl}
                   className="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                   title="Lihat Pratinjau Asli"
                 >
@@ -620,33 +615,21 @@ export const AdminBannersCMS: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Preset Templates */}
                 <div>
-                  <p className="text-[11px] text-gray-500 mb-1.5 font-medium">Atau pilih contoh template:</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    {PRESET_BANNERS.map((preset, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => {
-                          setUploadPreview(preset.url);
-                          setFormData({ 
-                            ...formData, 
-                            imageUrl: preset.url,
-                            aspectRatio: preset.aspectRatio
-                          });
-                        }}
-                        className={`p-2 rounded-xl border text-[11px] font-medium flex items-center gap-1.5 truncate transition-all cursor-pointer ${
-                          uploadPreview === preset.url
-                            ? 'border-[#A67C52] bg-[#A67C52]/10 text-[#A67C52] font-bold'
-                            : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
-                        }`}
-                      >
-                        <ImageIcon className="w-3 h-3 flex-shrink-0" />
-                        <span className="truncate">{preset.name}</span>
-                      </button>
-                    ))}
-                  </div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Atau Masukkan URL Gambar Sendiri
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="https://.../poster-promo.jpg"
+                    value={formData.imageUrl}
+                    onChange={(e) => {
+                      const imageUrl = e.target.value;
+                      setFormData(prev => ({ ...prev, imageUrl }));
+                      setUploadPreview(imageUrl);
+                    }}
+                    className="w-full bg-[#F9F9F9] border border-gray-200 focus:border-[#A67C52] rounded-xl px-4 py-2.5 text-xs text-[#1A1A1A] outline-none"
+                  />
                 </div>
               </div>
 

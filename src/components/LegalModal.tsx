@@ -1,5 +1,5 @@
-import { X, Award, ShieldCheck, CheckCircle2, FileText, ExternalLink } from 'lucide-react';
-import { LEGAL_INFO, OFFICIAL_WA_LINK, OFFICIAL_WA_NUMBER } from '../data/packagesData';
+import { X, Award, ShieldCheck, CheckCircle2, ExternalLink } from 'lucide-react';
+import { LEGAL_INFO, OFFICIAL_WA_NUMBER } from '../data/packagesData';
 
 interface LegalModalProps {
   isOpen: boolean;
@@ -66,6 +66,22 @@ export const LegalModal = ({ isOpen, onClose }: LegalModalProps) => {
               <p className="text-[#666666]">Integrasi Sistem Pengawasan SISKOPATUH:</p>
               <p className="font-bold text-[#1A1A1A] mt-0.5">{LEGAL_INFO.siskopatuhId}</p>
             </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#A67C52]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="font-bold text-[#1A1A1A]">Verifikasi Resmi Keanggotaan SAPUHI</h3>
+              <p className="text-xs text-[#666666] mt-0.5">Keanggotaan ALGHANIM terdaftar pada SAPUHI dengan ID 172.</p>
+            </div>
+            <a
+              href="https://www.sapuhi.id/members/172"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#A67C52] hover:bg-[#8E653E] text-white text-xs font-bold transition-colors shrink-0"
+            >
+              <span>Verifikasi Keanggotaan</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </div>
 
           {/* 5 Pasti Umroh Detail */}

@@ -56,7 +56,6 @@ export const OFFICIAL_9_PARTNERS: OfficialPartner[] = [
     category: 'association',
     categoryLabel: 'Asosiasi PPIU/PIHK',
     fallbackText: 'SAPUHI',
-    websiteUrl: 'https://sapuhi.id'
   },
 
   // 2. Maskapai Penerbangan (6)
