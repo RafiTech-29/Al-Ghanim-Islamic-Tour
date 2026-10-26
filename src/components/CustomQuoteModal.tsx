@@ -200,16 +200,16 @@ export const CustomQuoteModal = ({ isOpen, onClose, onSubmitQuote }: CustomQuote
             <div className="p-5 rounded-xl bg-[#F5F5F5] border border-gray-200 space-y-4">
               <h3 className="font-serif-luxury text-lg font-bold text-[#1A1A1A] flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#A67C52]" />
-                2. Pilihan Hotel Bintang 5 &amp; Penerbangan
+                2. Pilihan Hotel Bintang 3/4 &amp; Penerbangan
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-[#666666] block mb-1.5 font-medium">Hotel Makkah (Front Row Ka'bah)</label>
+                  <label className="text-xs text-[#666666] block mb-1.5 font-medium">Hotel Makkah (Bintang 3/4)</label>
                   <div className="space-y-2">
                     {[
-                      { id: 'raffles', name: 'Raffles Makkah Palace / Dar Al Ghufran (Kaaba View Suite)', tag: 'Ultra Luxury' },
-                      { id: 'fairmont', name: 'Fairmont Makkah Clock Royal Tower (Signature Room)', tag: 'Favorite' },
-                      { id: 'dar_altawhid', name: 'Dar Al Tawhid InterContinental Makkah (Plaza Level)', tag: 'Exclusive' },
+                      { id: 'raffles', name: 'Maysan Al - Maqom (Bintang 4)', tag: 'Dekat Masjid' },
+                      { id: 'fairmont', name: 'Hotel Bintang 3/4 sesuai program', tag: 'Pilihan Program' },
+                      { id: 'dar_altawhid', name: 'Hotel setaraf bintang 3/4', tag: 'Sesuai Ketersediaan' },
                     ].map((h) => (
                       <button
                         type="button"
@@ -223,7 +223,7 @@ export const CustomQuoteModal = ({ isOpen, onClose, onSubmitQuote }: CustomQuote
                       >
                         <div>
                           <p className="font-semibold text-[#1A1A1A]">{h.name}</p>
-                          <span className="text-[10px] text-[#666666]">Bintang 5 Diamond • Akses Pelataran &lt;1 Menit</span>
+                          <span className="text-[10px] text-[#666666]">Hotel bintang 3/4 • dekat masjid sesuai program</span>
                         </div>
                         <span className="text-[10px] px-2 py-0.5 rounded bg-[#F5F5F5] text-[#A67C52] font-semibold">{h.tag}</span>
                       </button>

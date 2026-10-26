@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { AlGhanimLogo } from './AlGhanimLogo';
 import { NavTabType } from './Navbar';
-import { OFFICE_DETAILS } from '../data/packagesData';
 import jabalUhudRealImg from '../assets/images/jabal_uhud_real_1789544121355.jpg';
 import thawafKaabaRealImg from '../assets/images/thawaf_kaaba_real_1789579638381.jpg';
 import kajianNabawiRealImg from '../assets/images/jamaah_kajian_nabawi_real_1789632646013.jpg';
@@ -159,11 +158,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onOpenLegal, onOpenR
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-[#C5A059] flex-shrink-0 mt-0.5" />
                   <p>
-                    {OFFICE_DETAILS.garut.address}
+                    Jl. Sudirman Copong No. 525, Sukamentri, Garut Kota, Kab. Garut
                   </p>
                 </div>
                 <a
-                  href={OFFICE_DETAILS.garut.mapsUrl}
+                  href="https://share.google/fsqwRYJHLHFaiESVm"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1 text-[11px] text-[#DFC386] hover:underline pl-6.5 font-medium"
@@ -330,7 +329,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick, onOpenLegal, onOpenR
 
               {/* Location Map */}
               <a
-                href={OFFICE_DETAILS.garut.mapsUrl}
+                href="https://share.google/fsqwRYJHLHFaiESVm"
                 target="_blank"
                 rel="noreferrer"
                 title="Petunjuk Lokasi Google Maps Kantor Garut"

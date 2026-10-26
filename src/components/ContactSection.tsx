@@ -45,15 +45,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const [availablePackages, setAvailablePackages] = useState<PackageScheduleItem[]>(DETAILED_SCHEDULES);
 
   const MAPS_EMBED_URLS = {
-    garut: OFFICES_DATA.garut.embedUrl,
-    bandung: OFFICES_DATA.bandung.embedUrl
+    garut: `https://maps.google.com/maps?q=${encodeURIComponent(OFFICES_DATA.garut.address)}&t=&z=17&ie=UTF8&iwloc=&output=embed`,
+    bandung: `https://maps.google.com/maps?q=${encodeURIComponent(OFFICES_DATA.bandung.address)}&t=&z=16&ie=UTF8&iwloc=&output=embed`
   };
 
   // Subscribe to real-time packages from CMS / Firestore
   useEffect(() => {
     const unsubscribe = subscribeToPackages((items) => {
       if (items && items.length > 0) {
-        setAvailablePackages(items.filter((item) => !item.isArchived && item.isActive !== false));
+        setAvailablePackages(items.filter((item) => item.isActive !== false));
       }
     });
     return () => unsubscribe();
@@ -635,7 +635,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-[#C5A059] text-white text-xs font-bold uppercase tracking-wider">
+                <span className="px-3 py-1 rounded-full bg-[#A67C52] text-white text-xs font-bold uppercase tracking-wider">
                   Head Office (Kantor Pusat)
                 </span>
                 <div className="p-2 rounded-xl bg-[#F5F5F5] text-[#A67C52]">
@@ -823,7 +823,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
             {/* Bottom floating details badge on map */}
             <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-md bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-gray-200 shadow-xl space-y-2">
               <div className="flex items-center justify-between">
-                <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full text-white ${selectedMapCity === 'garut' ? 'bg-[#C5A059]' : 'bg-[#A67C52]'}`}>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#A67C52] text-white">
                   {selectedMapCity === 'garut' ? 'Head Office (Kantor Pusat)' : 'Kantor Cabang Bandung'}
                 </span>
                 <span className="text-[11px] text-gray-500 font-semibold">0813-1670-218</span>
@@ -833,7 +833,7 @@ Mohon panduan pendaftaran dan ketersediaan jadwalnya. Terima kasih.`;
               </p>
               <div className="pt-1 flex items-center gap-2">
                 <a
-                  href={selectedMapCity === 'garut' ? OFFICES_DATA.garut.mapsUrl : OFFICES_DATA.bandung.mapsUrl}
+                  href={selectedMapCity === 'garut' ? OFFICES_DATA.garut.mapsUrl : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(OFFICES_DATA.bandung.address)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="flex-1 py-1.5 px-3 rounded-lg bg-[#A67C52] hover:bg-[#8E653E] text-white text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"

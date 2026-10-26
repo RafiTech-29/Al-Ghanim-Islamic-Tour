@@ -706,18 +706,18 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                     Hotel Makkah
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-[#A67C52]/15 text-[#8E653E] text-[10px] font-bold">
-                    Bintang 5 VIP
+                    Bintang 4
                   </span>
                 </div>
 
                 <div>
                   <h4 className="font-bold text-sm text-[#1A1A1A]">
-                    {selectedJamaah.hotelMakkah || 'Swissotel Al Maqam Makkah'}
+                    {selectedJamaah.hotelMakkah || 'Maysan Al - Maqom (Bintang 4)'}
                   </h4>
                   {/* Realtime Distance Display Otomatis */}
                   <div className="flex items-center gap-1.5 text-xs text-[#A67C52] font-bold mt-1">
                     <MapPin className="w-3.5 h-3.5 text-rose-500 animate-pulse flex-shrink-0" />
-                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMakkah || 'Swissotel Al Maqam', 'makkah')}</span>
+                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMakkah || 'Maysan Al - Maqom', 'makkah')}</span>
                   </div>
                   <p className="text-[11px] text-gray-500 leading-relaxed mt-1">
                     Depan Pelataran Masjidil Haram, Clock Towers, Ajyad St, Makkah, Arab Saudi
@@ -725,7 +725,7 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                 </div>
 
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMakkah || 'Swissotel Al Maqam') + ' Makkah Saudi Arabia')}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMakkah || 'Maysan Al - Maqom') + ' Makkah Saudi Arabia')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#A67C52] text-[#A67C52] hover:text-white border border-[#A67C52]/40 text-xs font-bold transition-all shadow-2xs cursor-pointer mt-1"
@@ -742,18 +742,18 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                     Hotel Madinah
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-stone-200 text-stone-800 text-[10px] font-bold">
-                    Bintang 4/5
+                    Bintang 3/4
                   </span>
                 </div>
 
                 <div>
                   <h4 className="font-bold text-sm text-[#1A1A1A]">
-                    {selectedJamaah.hotelMadinah || 'Dallah Taibah Madinah'}
+                    {selectedJamaah.hotelMadinah || 'Jawharat Al Rasheed (Bintang 3)'}
                   </h4>
                   {/* Realtime Distance Display Otomatis */}
                   <div className="flex items-center gap-1.5 text-xs text-[#A67C52] font-bold mt-1">
                     <MapPin className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />
-                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMadinah || 'Dallah Taibah', 'madinah')}</span>
+                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMadinah || 'Jawharat Al Rasheed', 'madinah')}</span>
                   </div>
                   <p className="text-[11px] text-gray-500 leading-relaxed mt-1">
                     Kawasan Markaziah Utara, Madinah, Arab Saudi
@@ -761,7 +761,7 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                 </div>
 
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMadinah || 'Dallah Taibah') + ' Madinah Saudi Arabia')}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMadinah || 'Jawharat Al Rasheed') + ' Madinah Saudi Arabia')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#A67C52] text-[#A67C52] hover:text-white border border-[#A67C52]/40 text-xs font-bold transition-all shadow-2xs cursor-pointer mt-1"

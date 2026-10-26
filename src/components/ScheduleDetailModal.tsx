@@ -146,12 +146,12 @@ export const ScheduleDetailModal = ({
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500 font-semibold text-[11px] uppercase">Makkah Al-Mukarramah:</span>
                   <span className="text-[10px] bg-amber-50 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200">
-                    Bintang 5
+                    Bintang 4
                   </span>
                 </div>
                 <p className="font-bold text-[#1A1A1A] text-xs sm:text-sm">
                   {isVip || isFuroda
-                    ? 'Raffles Makkah Palace / Fairmont Clock Tower Suite'
+                    ? 'Hotel Bintang 3/4 sesuai program'
                     : pkg.hotelMakkah}
                 </p>
                 <p className="text-[#A67C52] text-[11px] font-medium flex items-center gap-1 mt-1">
@@ -164,12 +164,12 @@ export const ScheduleDetailModal = ({
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500 font-semibold text-[11px] uppercase">Madinah Al-Munawwarah:</span>
                   <span className="text-[10px] bg-amber-50 text-amber-800 font-bold px-2 py-0.5 rounded border border-amber-200">
-                    Bintang 5
+                    Bintang 3
                   </span>
                 </div>
                 <p className="font-bold text-[#1A1A1A] text-xs sm:text-sm">
                   {isVip || isFuroda
-                    ? 'The Oberoi Madinah / Dar Al Taqwa (Depan Gerbang Wanita & Pria)'
+                    ? 'Hotel Bintang 3/4 sesuai program'
                     : pkg.hotelMadinah}
                 </p>
                 <p className="text-[#A67C52] text-[11px] font-medium flex items-center gap-1 mt-1">

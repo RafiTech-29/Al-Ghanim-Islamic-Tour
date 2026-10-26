@@ -138,8 +138,6 @@ export interface TestimonialItem {
   };
   createdAt?: any;
   createdTimestamp?: number;
-  isArchived?: boolean;
-  archivedAt?: string;
   isDeleted?: boolean;
   deletedAt?: string;
   deletedBy?: string;
@@ -367,5 +365,6 @@ export interface TrashArchiveItem {
   deletedBy?: string;
   originalData: any;
 }
+
 
 

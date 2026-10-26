@@ -38,7 +38,7 @@ export const TabunganCalculatorModal = ({ isOpen, onClose, onRegistered }: Tabun
 
   const packagePrices = {
     reguler4: { name: 'Umroh Reguler Bintang 4', price: 28_500_000 },
-    reguler5: { name: 'Umroh Eksekutif Bintang 5', price: 33_000_000 },
+    reguler5: { name: 'Umroh Eksekutif Bintang 3/4', price: 33_000_000 },
     vip: { name: 'Umroh VIP Custom Bespoke', price: 46_000_000 },
   };
 
@@ -146,7 +146,7 @@ export const TabunganCalculatorModal = ({ isOpen, onClose, onRegistered }: Tabun
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
                   { id: 'reguler4', title: 'Reguler Bintang 4', price: 'Rp 28.5 Jt', desc: '9 Hari Direct Garuda/Saudia' },
-                  { id: 'reguler5', title: 'Eksekutif Bintang 5', price: 'Rp 33.0 Jt', desc: '12 Hari Clock Tower Suites' },
+                  { id: 'reguler5', title: 'Eksekutif Bintang 3/4', price: 'Rp 33.0 Jt', desc: '12 Hari, hotel sesuai program' },
                   { id: 'vip', title: 'VIP Bespoke Suite', price: 'Rp 46.0 Jt', desc: 'Private Ground & Front Row' },
                 ].map((item) => (
                   <button

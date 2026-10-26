@@ -1170,7 +1170,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
                     <ul className="space-y-1 text-gray-600 pl-4 list-disc">
                       <li>Tiket Pesawat PP Internasional</li>
                       <li>Visa Umroh Resmi Kemenag</li>
-                      <li>Hotel Bintang 4/5 Dekat Masjid</li>
+                      <li>Hotel Bintang 3/4 Dekat Masjid</li>
                       <li>Makan 3x Sehari Fullboard Buffet</li>
                       <li>Transportasi Bus Full AC Executive</li>
                       <li>Muthawif & Tour Leader Bersertifikat</li>

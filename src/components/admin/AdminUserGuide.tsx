@@ -19,7 +19,7 @@ import {
   Phone
 } from 'lucide-react';
 import { AlGhanimLogo } from '../AlGhanimLogo';
-import { OFFICIAL_WA_NUMBER, OFFICES_DATA } from '../../data/packagesData';
+import { OFFICIAL_WA_NUMBER } from '../../data/packagesData';
 
 export const AdminUserGuide: React.FC = () => {
   const handlePrint = () => {
@@ -72,7 +72,7 @@ export const AdminUserGuide: React.FC = () => {
                 Izin PPIU Kemenag RI No. U.444 / 2021 | Terakreditasi "A" | Anggota SAPUHI &amp; IATA
               </p>
               <p className="text-[10px] text-gray-500">
-                Head Office: {OFFICES_DATA.garut.address} | WA: {OFFICIAL_WA_NUMBER}
+                Head Office: Jl. Sudirman Copong No. 525, Sukamentri, Garut Kota, Kab. Garut | WA: {OFFICIAL_WA_NUMBER}
               </p>
             </div>
           </div>

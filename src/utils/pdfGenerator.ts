@@ -1,6 +1,5 @@
 import { jsPDF } from 'jspdf';
 import { JamaahProgressItem } from '../types';
-import { OFFICES_DATA } from '../data/packagesData';
 
 export interface ConsultationPDFData {
   fullName: string;
@@ -69,7 +68,7 @@ export const generateConsultationBrochurePDF = (data: ConsultationPDFData) => {
   doc.setTextColor(100, 100, 100);
   doc.setFontSize(8);
   doc.text('Izin Resmi Kemenag RI: PPIU No. 1030 Tahun 2019 • Akreditasi "A" BAN-PPIU', 14, 28);
-  doc.text(`Head Office: ${OFFICES_DATA.garut.address} • WA: 0813-1670-218`, 14, 32);
+  doc.text('Head Office: Jl. Sudirman Copong No. 525, Sukamentri, Garut • WA: 0813-1670-218', 14, 32);
 
   // Right Header Meta Box
   doc.setFillColor(245, 245, 245);
@@ -200,8 +199,8 @@ export const generateConsultationBrochurePDF = (data: ConsultationPDFData) => {
 
   const facilities = [
     ['Penerbangan', (data.airline || 'Direct Saudia Airlines / Garuda Indonesia (CGK-JED/MED)').slice(0, 75)],
-    ['Hotel Makkah', (data.hotelMakkah ? `${data.hotelMakkah}${data.makkahDistance ? ` (${data.makkahDistance})` : ''}` : 'Hotel Bintang 3 & 4 Dekat Masjidil Haram').slice(0, 75)],
-    ['Hotel Madinah', (data.hotelMadinah || 'Hotel Bintang 3 & 4 Dekat Masjid Nabawi').slice(0, 75)],
+    ['Hotel Makkah', (data.hotelMakkah ? `${data.hotelMakkah}${data.makkahDistance ? ` (${data.makkahDistance})` : ''}` : 'Hotel Bintang 3/4 dekat Masjidil Haram').slice(0, 75)],
+    ['Hotel Madinah', (data.hotelMadinah || 'Hotel Bintang 3/4 dekat Masjid Nabawi').slice(0, 75)],
     ['Durasi & Jadwal', `${data.duration || '9 Hari'} • Jadwal: ${data.departureDate || data.targetMonth || 'Bulan Terdekat'}`.slice(0, 75)],
     ['Konsumsi', 'Fullboard 3x Sehari Masakan Khas Nusantara (Higienis & Halal)'],
     ['Transportasi', 'Bus Pariwisata Eksekutif VIP AC & Berpendingin Khusus Saudi'],
@@ -297,13 +296,13 @@ export const generateConsultationBrochurePDF = (data: ConsultationPDFData) => {
   doc.setFontSize(7.5);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(60, 60, 60);
-  doc.text('Jl. Jenderal Sudirman No. 30 (Copong),', rightBoxX, currentY + 13);
-  doc.text('Sukamentri, Garut Kota, Kabupaten Garut', rightBoxX, currentY + 17);
+  doc.text('Jl. Sudirman Copong No. 525', rightBoxX, currentY + 13);
+  doc.text('Sukamentri, Garut Kota, Kab. Garut', rightBoxX, currentY + 17);
   doc.setFont('helvetica', 'bold');
   doc.text('Hotline WhatsApp: 0813-1670-218', rightBoxX, currentY + 22);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 100, 100);
-  doc.textWithLink('Buka Google Maps Kantor Garut', rightBoxX, currentY + 27, { url: OFFICES_DATA.garut.mapsUrl });
+  doc.text('Google Maps: share.google/fsqwRYJHLHFaiESVm', rightBoxX, currentY + 27);
 
   // Footer Signature & Stamp Note
   currentY += 40;
@@ -361,7 +360,7 @@ export const generatePassportRecommendationPDF = (jamaah: JamaahProgressItem) =>
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(80, 80, 80);
   doc.text('Izin Penyelenggara Perjalanan Ibadah Umrah (PPIU) No. 1030 Tahun 2019 Kemenag RI', pageWidth / 2, 30, { align: 'center' });
-  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address} • Telp/WA: 0813-1670-218`, pageWidth / 2, 34, { align: 'center', maxWidth: pageWidth - 36 });
+  doc.text('Head Office Garut: Jl. Sudirman Copong No. 525 • Telp/WA: 0813-1670-218', pageWidth / 2, 34, { align: 'center' });
 
   // Double Line
   doc.setLineWidth(0.8);
@@ -429,7 +428,7 @@ export const generatePassportRecommendationPDF = (jamaah: JamaahProgressItem) =>
   doc.setTextColor(20, 120, 50);
   doc.text(`${jamaah.paymentStatus} (Telah Terdaftar Resmi di Sistem ALGHANIM)`, 63, y + 36, { maxWidth: pageWidth - 85 });
 
-  y += 50;
+  y += 57;
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(26, 26, 26);
   const bodyText = 'Adalah benar jamaah yang telah terdaftar dan terkonfirmasi untuk menunaikan Ibadah Umroh ke Tanah Suci (Makkah & Madinah) bersama biro perjalanan kami. Sehubungan dengan hal tersebut, kami memohon bantuan Bapak/Ibu Kepala Kantor Imigrasi agar dapat memberikan fasilitas penerbitan Paspor Republik Indonesia untuk yang bersangkutan.';
@@ -519,13 +518,13 @@ export const generateJamaahTrackingCardPDF = (jamaah: JamaahProgressItem) => {
   doc.text(`Jadwal Keberangkatan: ${jamaah.departureDate} (${jamaah.airline})`, 20, y + 37, { maxWidth: pageWidth - 48 });
 
   // Progress Milestone Box
-  y += 50;
+  y += 58;
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(166, 124, 82);
   doc.text(`STATUS PROGRES SAAT INI: TAHAP ${jamaah.progressStep} DARI 5`, 14, y);
 
-  y += 4;
+  y += 6;
   doc.setFillColor(255, 255, 255);
   doc.setDrawColor(220, 220, 220);
   doc.roundedRect(14, y, pageWidth - 28, 58, 2, 2, 'FD');
@@ -571,17 +570,17 @@ export const generateJamaahTrackingCardPDF = (jamaah: JamaahProgressItem) => {
     doc.setFontSize(7.5);
     if (isDone) {
       doc.setTextColor(20, 140, 60);
-      doc.text(`[${s.status}]`, pageWidth - 20, stepY, { align: 'right' });
+      doc.text(`[${s.status}]`, pageWidth - 20, stepY, { align: 'right', maxWidth: 55 });
     } else {
       doc.setTextColor(130, 130, 130);
-      doc.text(`[ ${s.status} ]`, pageWidth - 20, stepY, { align: 'right' });
+      doc.text(`[ ${s.status} ]`, pageWidth - 20, stepY, { align: 'right', maxWidth: 55 });
     }
     
     stepY += 9;
   });
 
   // Financial & Hotel Info
-  y += 60;
+  y += 66;
   doc.setFillColor(245, 245, 245);
   doc.roundedRect(14, y, pageWidth - 28, 38, 2, 2, 'F');
 
@@ -605,9 +604,8 @@ export const generateJamaahTrackingCardPDF = (jamaah: JamaahProgressItem) => {
   doc.setFontSize(7.5);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 100, 100);
-  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address}`, 14, y, { maxWidth: pageWidth - 28 });
-  doc.textWithLink('Buka Google Maps Kantor Garut', 14, y + 5, { url: OFFICES_DATA.garut.mapsUrl });
-  doc.text(`Diunduh pada: ${today} melalui Portal Transparansi ALGHANIM Islamic Tour`, 14, y + 10);
+  doc.text('Head Office Garut: Jl. Sudirman Copong No. 525, Sukamentri • Maps: share.google/fsqwRYJHLHFaiESVm', 14, y);
+  doc.text(`Diunduh pada: ${today} melalui Portal Transparansi ALGHANIM Islamic Tour`, 14, y + 5);
 
   // Save
   doc.save(`Status_Jamaah_ALGHANIM_${jamaah.nij}.pdf`);
@@ -651,7 +649,7 @@ export const generatePartnershipProgramPDF = (programTitle: string) => {
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 100, 100);
   doc.text('PT. Al-Ghanimah Berkah Bersama • PPIU Kemenag RI No. 1030 Thn. 2019 (Akreditasi A)', 14, 28);
-  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address} • WA: 0813-1670-218`, 14, 32, { maxWidth: pageWidth - 28 });
+  doc.text('Head Office Garut: Jl. Sudirman Copong No. 525, Sukamentri • WA: 0813-1670-218', 14, 32);
 
   // Right Meta
   doc.setFillColor(245, 245, 245);
@@ -817,7 +815,7 @@ export const generatePartnershipProgramPDF = (programTitle: string) => {
 
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(166, 124, 82);
-  doc.text(`Hotline Kemitraan: 0813-1670-218 • Head Office: ${OFFICES_DATA.garut.address}`, 18, currentY + 25, { maxWidth: pageWidth - 36 });
+  doc.text('Hotline Kemitraan: 0813-1670-218 • Head Office: Jl. Sudirman Copong No. 525, Sukamentri', 18, currentY + 25);
 
   // Footer
   currentY += 36;
@@ -828,7 +826,7 @@ export const generatePartnershipProgramPDF = (programTitle: string) => {
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(120, 120, 120);
   doc.text('Dokumen Panduan Kemitraan Resmi • PT. Al-Ghanimah Berkah Bersama (ALGHANIM Islamic Tour).', 14, currentY + 5);
-  doc.textWithLink('Buka Google Maps Kantor Garut', 14, currentY + 9, { url: OFFICES_DATA.garut.mapsUrl });
+  doc.text(`Tautan Peta Kantor: share.google/fsqwRYJHLHFaiESVm`, 14, currentY + 9);
 
   const cleanName = programTitle.replace(/[^a-zA-Z0-9]/g, '_');
   doc.save(`Panduan_Kemitraan_ALGHANIM_${cleanName}.pdf`);
@@ -958,10 +956,10 @@ export const generateFullMarketingKitPDF = () => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   doc.setTextColor(40, 40, 40);
-  doc.text(`Alamat Head Office: ${OFFICES_DATA.garut.address}`, 20, y + 14, { maxWidth: pageWidth - 40 });
+  doc.text('Alamat Head Office: Jl. Sudirman Copong No. 525, Sukamentri, Garut Kota, Kab. Garut', 20, y + 14);
   doc.text('WhatsApp Mitra: 0813-1670-218 • Instagram: @alghanimislamictour', 20, y + 20);
   doc.setFont('helvetica', 'bold');
-  doc.textWithLink('Buka Google Maps Kantor Garut', 20, y + 26, { url: OFFICES_DATA.garut.mapsUrl });
+  doc.text('Google Maps: share.google/fsqwRYJHLHFaiESVm', 20, y + 26);
 
   // Footer
   y += 36;
@@ -1024,7 +1022,7 @@ export const generateBadalUmrohReceiptPDF = (data: BadalUmrohPDFData) => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.text('PT. Al-Ghanimah Berkah Bersama • PPIU No. 1030 Thn. 2019 Kemenag RI (Akreditasi A)', 14, 28);
-  doc.text(`Head Office Garut: ${OFFICES_DATA.garut.address} • WA: 0813-1670-218`, 14, 32, { maxWidth: pageWidth - 28 });
+  doc.text('Head Office Garut: Jl. Sudirman Copong No. 525, Sukamentri • WA: 0813-1670-218', 14, 32);
 
   // Right Header Meta Box
   doc.setFillColor(245, 245, 245);
@@ -1203,7 +1201,7 @@ export const generateBadalUmrohReceiptPDF = (data: BadalUmrohPDFData) => {
   doc.text('WhatsApp: 0813-1670-218', rightBoxX, currentY + 18);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(60, 60, 60);
-  doc.text('Jl. Jenderal Sudirman No. 30 (Copong),', rightBoxX, currentY + 23);
+  doc.text('Jl. Sudirman Copong No. 525, Sukamentri, Garut', rightBoxX, currentY + 23);
 
   // Footer
   currentY += 38;
@@ -1266,7 +1264,7 @@ export const generateJamaahRegistrationSlipPDF = (jamaah: JamaahProgressItem) =>
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.text('Izin PPIU Kemenag RI No. 1030 Tahun 2019 • Akreditasi "A"', 14, 24.5);
-  doc.text(`Head Office: ${OFFICES_DATA.garut.address} • Hotline WA: 0813-1670-218`, 14, 28.5, { maxWidth: pageWidth - 28 });
+  doc.text('Head Office: Jl. Sudirman Copong No. 525, Sukamentri, Garut • Hotline WA: 0813-1670-218', 14, 28.5);
 
   // Right Header Meta Box
   doc.setFillColor(245, 245, 245);
@@ -1420,7 +1418,7 @@ export const generateJamaahRegistrationSlipPDF = (jamaah: JamaahProgressItem) =>
   });
 
   // SECTION 2: RINCIAN PEMBAYARAN & FINANSIAL
-  currentY += 50;
+  currentY += 56;
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(166, 124, 82);
@@ -1660,8 +1658,14 @@ export const generateItineraryUmrohPDF = (jamaah?: JamaahProgressItem) => {
   ];
 
   days.forEach((d) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8.5);
     const wrapped = doc.splitTextToSize(d.desc, pageWidth - 32);
-    const dayHeight = 5 + (wrapped.length * 4) + 3;
+    const title = `${d.day}: ${d.route}`;
+    const wrappedTitle = doc.splitTextToSize(title, pageWidth - 28);
+    const titleHeight = wrappedTitle.length * 4.5;
+    const descriptionHeight = wrapped.length * 4;
+    const dayHeight = titleHeight + 3 + descriptionHeight + 3;
 
     if (curY + dayHeight > 275) {
       doc.addPage();
@@ -1671,14 +1675,14 @@ export const generateItineraryUmrohPDF = (jamaah?: JamaahProgressItem) => {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8.5);
     doc.setTextColor(166, 124, 82);
-    doc.text(`${d.day}: ${d.route}`, 14, curY, { maxWidth: pageWidth - 28 });
-    curY += 4.5;
+    doc.text(wrappedTitle, 14, curY);
+    curY += titleHeight + 3;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(70, 70, 70);
     doc.text(wrapped, 18, curY);
-    curY += (wrapped.length * 4) + 3;
+    curY += descriptionHeight + 3;
   });
 
   // Footer
@@ -1689,3 +1693,4 @@ export const generateItineraryUmrohPDF = (jamaah?: JamaahProgressItem) => {
 
   doc.save(`Itinerary_Perjalanan_Umroh_ALGHANIM.pdf`);
 };
+

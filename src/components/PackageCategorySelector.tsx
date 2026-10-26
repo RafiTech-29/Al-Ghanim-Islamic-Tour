@@ -35,14 +35,14 @@ export const PackageCategorySelector: React.FC<PackageCategorySelectorProps> = (
   className = ''
 }) => {
   const [livePackages, setLivePackages] = useState<PackageScheduleItem[]>([]);
-  const [hasCmsPackages, setHasCmsPackages] = useState(false);
   const [isManualInput, setIsManualInput] = useState<boolean>(false);
 
   // Subscribe to real-time Firestore packages so CMS additions & edits immediately reflect
   useEffect(() => {
     const unsub = subscribeToPackages((items) => {
-      setHasCmsPackages(items.length > 0);
-      setLivePackages(items.filter((item) => !item.isArchived && item.isActive !== false));
+      if (items && items.length > 0) {
+        setLivePackages(items.filter((item) => item.isActive !== false));
+      }
     });
     return () => unsub();
   }, []);
@@ -86,7 +86,7 @@ export const PackageCategorySelector: React.FC<PackageCategorySelectorProps> = (
 
     // Ensure each category has options by populating from CATEGORIZED_PACKAGES if empty or complementary
     CATEGORY_TABS.forEach((tab) => {
-      if (!hasCmsPackages && map[tab].length === 0) {
+      if (map[tab].length === 0) {
         const staticCat = CATEGORIZED_PACKAGES.find((c) => c.badge === tab);
         if (staticCat) {
           map[tab] = staticCat.packages.map((p) => ({
@@ -99,7 +99,7 @@ export const PackageCategorySelector: React.FC<PackageCategorySelectorProps> = (
     });
 
     return map;
-  }, [livePackages, hasCmsPackages]);
+  }, [livePackages]);
 
   // Determine initial category from value
   const detectInitialCategory = (): CategoryTab => {

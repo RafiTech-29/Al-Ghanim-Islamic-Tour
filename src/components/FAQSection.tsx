@@ -11,7 +11,7 @@ import {
   CreditCard,
   GraduationCap
 } from 'lucide-react';
-import { FAQ_DATA, OFFICIAL_WA_LINK, OFFICIAL_WA_NUMBER, OFFICES_DATA } from '../data/packagesData';
+import { FAQ_DATA, OFFICIAL_WA_LINK, OFFICIAL_WA_NUMBER } from '../data/packagesData';
 
 interface FAQSectionProps {
   onOpenConsultation?: (title?: string) => void;
@@ -236,7 +236,7 @@ export const FAQSection = ({ onOpenConsultation }: FAQSectionProps) => {
             Punya Pertanyaan Lain Seputar Ibadah Umroh?
           </h3>
           <p className="text-xs text-gray-300">
-            Konsultan kami siap membantu di Head Office Garut ({OFFICES_DATA.garut.address}) &amp; Kantor Cabang Bandung ({OFFICES_DATA.bandung.address}).
+            Konsultan kami siap membantu di Head Office Garut (Jl. Sudirman Copong No. 525) &amp; Kantor Cabang Bandung.
           </p>
         </div>
 

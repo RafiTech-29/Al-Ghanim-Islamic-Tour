@@ -12,8 +12,7 @@ import {
   ExternalLink,
   Film,
   MessageSquarePlus,
-  ShieldCheck,
-  ArrowRight
+  ShieldCheck
 } from 'lucide-react';
 import { 
   TESTIMONIALS_DATA, 
@@ -59,7 +58,7 @@ export const TestimonialsGallerySection = ({
     };
   }, []);
 
-  const activeTestimonials = testimonialsList.filter((t) => t.status !== 'hidden' && !t.isArchived);
+  const activeTestimonials = testimonialsList.filter((t) => t.status !== 'hidden');
   const displayedTestimonials = isHomepage
     ? activeTestimonials.slice(0, 3)
     : showAllTestimonials ? activeTestimonials : activeTestimonials.slice(0, 6);
@@ -70,7 +69,6 @@ export const TestimonialsGallerySection = ({
   ).toFixed(1);
 
   const filteredGallery = galleryItems.filter((item) => {
-    if (item.isArchived || item.isActive === false) return false;
     if (selectedPhotoCategory === 'all') return true;
     return item.category === selectedPhotoCategory;
   });
@@ -134,8 +132,7 @@ export const TestimonialsGallerySection = ({
                 onClick={onNavigateToGalleryTab}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-[#A67C52] text-[#8e653d] hover:bg-[#A67C52]/5 text-xs font-bold transition-all cursor-pointer"
               >
-                <span>Lihat Semua Ulasan di Galeri &amp; Testimoni ({activeTestimonials.length})</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Lihat Semua Ulasan di Galeri &amp; Testimoni</span>
               </button>
             )}
             <button
@@ -359,8 +356,7 @@ export const TestimonialsGallerySection = ({
               onClick={onNavigateToGalleryTab}
               className="px-6 py-2.5 rounded-xl bg-white border border-gray-300 hover:border-[#A67C52] text-xs font-bold text-[#1A1A1A] hover:text-[#A67C52] transition-all shadow-sm cursor-pointer"
             >
-              <span>Lihat Selengkapnya di Galeri &amp; Testimoni ({filteredGallery.length} Foto/Video)</span>
-              <ArrowRight className="w-4 h-4" />
+              Lihat Selengkapnya di Galeri &amp; Testimoni
             </button>
           </div>
         )}

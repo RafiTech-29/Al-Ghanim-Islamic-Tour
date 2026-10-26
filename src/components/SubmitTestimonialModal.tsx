@@ -14,7 +14,7 @@ interface SubmitTestimonialModalProps {
 const PACKAGE_OPTIONS = [
   'Umroh Reguler Syawal 1448 H (9 Hari)',
   'Umroh VIP Plus Kereta Cepat Haramain (12 Hari)',
-  'Umroh Liburan Akhir Tahun Bintang 5 (10 Hari)',
+  'Umroh Liburan Akhir Tahun (10 Hari)',
   'Umroh Awal Musim 1448 H / Promo Berkah',
   'Haji Khusus / Furoda Mujamalah Kuota Resmi',
   'Badal Umroh / Badal Haji Amanah ALGHANIM',

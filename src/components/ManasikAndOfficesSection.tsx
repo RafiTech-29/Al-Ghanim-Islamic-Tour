@@ -46,7 +46,7 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
           <div className="space-y-3 relative z-10">
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#C5A059] text-white shadow-2xs">
+                <span className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#A67C52] text-white shadow-2xs">
                   Head Office (Kantor Pusat)
                 </span>
                 <span className="text-[10px] sm:text-[11px] text-[#A67C52] font-semibold bg-[#A67C52]/10 px-2 py-0.5 rounded-full border border-[#A67C52]/20">
@@ -88,7 +88,7 @@ export const ManasikAndOfficesSection: React.FC<ManasikAndOfficesSectionProps> =
 
           <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100 relative z-10">
             <a
-              href={OFFICE_DETAILS.garut.mapsUrl}
+              href="https://share.google/fsqwRYJHLHFaiESVm"
               target="_blank"
               rel="noreferrer"
               className="w-full text-center py-2.5 px-2 rounded-xl bg-white hover:bg-gray-50 text-[#1A1A1A] border border-gray-200 text-xs font-bold uppercase transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"

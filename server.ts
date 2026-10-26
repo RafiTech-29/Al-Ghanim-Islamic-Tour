@@ -64,7 +64,7 @@ INFORMASI RESMI PERUSAHAAN (KNOWLEDGE BASE ALGHANIM):
    - HOTLINE WHATSAPP NASIONAL RESMI: 0813-1670-218 (Layanan 24 Jam).
 
 3. PAKET IBADAH & PROGRAM UTAMA:
-   - Umroh Reguler (OT) 9 & 12 Hari: Mulai Rp 28,9 Jt (Direct Saudia / Garuda Indonesia, Hotel Bintang 4/5 dekat 50m ke pelataran Haram/Nabawi seperti Swissotel / Pullman Zamzam / Rove / Dallah Taibah, makan 3x menu Indonesia, gratis air zam-zam 5L, koper fiber 24", muthawwif lulusan Madinah/Al-Azhar).
+   - Umroh Reguler (OT) 9 & 12 Hari: Mulai Rp 28,9 Jt (Direct Saudia / Garuda Indonesia, hotel bintang 3/4 dekat masjid seperti Maysan Al - Maqom / Jawharat Al Rasheed atau setaraf, makan 3x menu Indonesia, gratis air zam-zam 5L, koper fiber 24", muthawwif lulusan Madinah/Al-Azhar).
    - Umroh Jum'atain 12 Hari: Rp 34,5 Jt (Mendapatkan 2x Shalat Jum'at di Masjid Nabawi & Masjidil Haram).
    - Umroh Custom VIP Private (PT): Bespoke / Sesuai Permintaan (Jadwal bebas, mobil VIP GMC Yukon / Toyota Alphard, Suite View Ka'bah, 1 Muthawwif khusus keluarga).
    - Program Badal Umroh Amanah: Rp 2.500.000 / Jiwa (Dilaksanakan oleh asatidz/penuntut ilmu di Makkah & Madinah, 1 pelaksana untuk 1 nama almarhum/sakit berat, dapat sertifikat berbingkai, video dokumentasi niat & thawaf, serta air zam-zam 5L).
@@ -210,7 +210,7 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
     lower.includes("booking seat") ||
     lower.includes("kunci seat")
   ) {
-    return `**Tata Cara & Alur Pendaftaran Umroh di ALGHANIM:**\n\n1. **Pilih Paket & Tanggal:** Tentukan program (Reguler 9/12 hari, VIP Bintang 5, atau Tabungan Syariah).\n2. **Booking Seat & DP:** Setorkan uang muka (DP) mulai dari Rp 5.000.000 untuk mengunci nomor kursi penerbangan dan kamar hotel.\n3. **Serahkan Dokumen:** Paspor asli (masa berlaku min. 7 bulan, min. 2 kata), salinan KTP, KK, dan pasfoto 4x6 latar belakang putih (fokus wajah 80%).\n4. **Bimbingan Manasik:** Ikuti bimbingan manasik intensif sesuai Sunnah di Garut / Bandung.\n5. **Pelunasan & Berangkat:** Pelunasan biaya maksimal H-30 sebelum keberangkatan, lalu kumpul di Terminal 3 Bandara Soekarno Hatta.\n\n📍 *Bisa mendaftar langsung di Kantor Utama Garut (Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut) atau online via WhatsApp di **0813-1670-218**.*`;
+    return `**Tata Cara & Alur Pendaftaran Umroh di ALGHANIM:**\n\n1. **Pilih Paket & Tanggal:** Tentukan program (Reguler 9/12 hari, VIP, atau Tabungan Syariah).\n2. **Booking Seat & DP:** Setorkan uang muka (DP) mulai dari Rp 5.000.000 untuk mengunci nomor kursi penerbangan dan kamar hotel.\n3. **Serahkan Dokumen:** Paspor asli (masa berlaku min. 7 bulan, min. 2 kata), salinan KTP, KK, dan pasfoto 4x6 latar belakang putih (fokus wajah 80%).\n4. **Bimbingan Manasik:** Ikuti bimbingan manasik intensif sesuai Sunnah di Garut / Bandung.\n5. **Pelunasan & Berangkat:** Pelunasan biaya maksimal H-30 sebelum keberangkatan, lalu kumpul di Terminal 3 Bandara Soekarno Hatta.\n\n📍 *Bisa mendaftar langsung di Kantor Utama Garut (Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut) atau online via WhatsApp di **0813-1670-218**.*`;
   }
 
   // 11. FASILITAS & PERLENGKAPAN
@@ -239,7 +239,7 @@ function generateKnowledgeBaseReply(message: string, history: Array<{ sender?: s
   }
 
   // Default intelligent contextual fallback
-  return `Assalamu'alaikum warahmatullah. Terima kasih atas pertanyaan Anda seputar **"${message}"**.\n\n**ALGHANIM Islamic Tour & Mandala 525 Garut** siap melayani:\n\n• 🌟 **Program Kemitraan & Agen:** Ujrah syiar berkah & bimbingan kemitraan cabang.\n• 🕋 **Paket Ibadah:** Umroh Reguler 9/12 Hari (Direct Saudia, Bintang 5), VIP Ka'bah View, Badal Umroh, & Tabungan Syariah.\n• 🏢 **Kantor Utama Garut:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut (Hotline WA: **0813-1670-218**).\n\nSilakan ketik pertanyaan spesifik mengenai kemitraan, harga paket, syarat paspor, atau lokasi kantor kami.`;
+  return `Assalamu'alaikum warahmatullah. Terima kasih atas pertanyaan Anda seputar **"${message}"**.\n\n**ALGHANIM Islamic Tour & Mandala 525 Garut** siap melayani:\n\n• 🌟 **Program Kemitraan & Agen:** Ujrah syiar berkah & bimbingan kemitraan cabang.\n• 🕋 **Paket Ibadah:** Umroh Reguler 9/12 Hari (Direct Saudia, hotel bintang 3/4), VIP Ka'bah View, Badal Umroh, & Tabungan Syariah.\n• 🏢 **Kantor Utama Garut:** Jl. Jenderal Sudirman No. 30 (Copong), Sukamentri, Garut Kota, Kabupaten Garut (Hotline WA: **0813-1670-218**).\n\nSilakan ketik pertanyaan spesifik mengenai kemitraan, harga paket, syarat paspor, atau lokasi kantor kami.`;
 }
 
 // Health check endpoint
