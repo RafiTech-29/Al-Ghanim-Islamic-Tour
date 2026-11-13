@@ -54,9 +54,9 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({
     const unsub = subscribeToPartnerRegistrations((data) => {
       if (data && data.length > 0) {
         // Merge with initial registrations if missing
-        const merged = [...data];
+        const merged = data.filter((partner) => !partner.isArchived);
         INITIAL_PARTNER_REGISTRATIONS.forEach((init) => {
-          if (!merged.find(m => m.id === init.id || m.partnerCode === init.partnerCode)) {
+          if (!data.find(m => m.id === init.id || m.partnerCode === init.partnerCode)) {
             merged.push(init);
           }
         });
@@ -66,7 +66,12 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({
         setActivePartner((prev) => {
           if (prev) {
             const updated = merged.find(p => p.id === prev.id || (p.partnerCode && p.partnerCode.toLowerCase() === prev.partnerCode?.toLowerCase()));
-            return updated || prev;
+            return updated || (data.some(p =>
+              p.isArchived && (
+                p.id === prev.id ||
+                (p.partnerCode && p.partnerCode.toLowerCase() === prev.partnerCode?.toLowerCase())
+              )
+            ) ? null : prev);
           }
           return null;
         });

@@ -66,12 +66,17 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
   // Subscribe to realtime changes from Firestore
   useEffect(() => {
     const unsub = subscribeToJamaah((data) => {
-      setAllJamaahList(data);
+      const activeJamaah = data.filter((jamaah) => !jamaah.isArchived);
+      setAllJamaahList(activeJamaah);
       // Synchronize data only if a jamaah was already actively searched by the visitor
       setSelectedJamaah((prev) => {
         if (prev) {
-          const updated = data.find(j => j.id === prev.id || j.nij.toLowerCase() === prev.nij.toLowerCase());
-          return updated || prev;
+          const updated = activeJamaah.find(j => j.id === prev.id || j.nij.toLowerCase() === prev.nij.toLowerCase());
+          if (updated) return updated;
+          const archived = data.some(j =>
+            j.isArchived && (j.id === prev.id || j.nij.toLowerCase() === prev.nij.toLowerCase())
+          );
+          return archived ? null : prev;
         }
         return null;
       });
@@ -706,18 +711,18 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                     Hotel Makkah
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-[#A67C52]/15 text-[#8E653E] text-[10px] font-bold">
-                    Bintang 4
+                    Bintang 5 VIP
                   </span>
                 </div>
 
                 <div>
                   <h4 className="font-bold text-sm text-[#1A1A1A]">
-                    {selectedJamaah.hotelMakkah || 'Maysan Al - Maqom (Bintang 4)'}
+                    {selectedJamaah.hotelMakkah || 'Swissotel Al Maqam Makkah'}
                   </h4>
                   {/* Realtime Distance Display Otomatis */}
                   <div className="flex items-center gap-1.5 text-xs text-[#A67C52] font-bold mt-1">
                     <MapPin className="w-3.5 h-3.5 text-rose-500 animate-pulse flex-shrink-0" />
-                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMakkah || 'Maysan Al - Maqom', 'makkah')}</span>
+                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMakkah || 'Swissotel Al Maqam', 'makkah')}</span>
                   </div>
                   <p className="text-[11px] text-gray-500 leading-relaxed mt-1">
                     Depan Pelataran Masjidil Haram, Clock Towers, Ajyad St, Makkah, Arab Saudi
@@ -725,7 +730,7 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                 </div>
 
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMakkah || 'Maysan Al - Maqom') + ' Makkah Saudi Arabia')}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMakkah || 'Swissotel Al Maqam') + ' Makkah Saudi Arabia')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#A67C52] text-[#A67C52] hover:text-white border border-[#A67C52]/40 text-xs font-bold transition-all shadow-2xs cursor-pointer mt-1"
@@ -742,18 +747,18 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                     Hotel Madinah
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-stone-200 text-stone-800 text-[10px] font-bold">
-                    Bintang 3/4
+                    Bintang 4/5
                   </span>
                 </div>
 
                 <div>
                   <h4 className="font-bold text-sm text-[#1A1A1A]">
-                    {selectedJamaah.hotelMadinah || 'Jawharat Al Rasheed (Bintang 3)'}
+                    {selectedJamaah.hotelMadinah || 'Dallah Taibah Madinah'}
                   </h4>
                   {/* Realtime Distance Display Otomatis */}
                   <div className="flex items-center gap-1.5 text-xs text-[#A67C52] font-bold mt-1">
                     <MapPin className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />
-                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMadinah || 'Jawharat Al Rasheed', 'madinah')}</span>
+                    <span>Jarak: {getAutoHotelDistance(selectedJamaah.hotelMadinah || 'Dallah Taibah', 'madinah')}</span>
                   </div>
                   <p className="text-[11px] text-gray-500 leading-relaxed mt-1">
                     Kawasan Markaziah Utara, Madinah, Arab Saudi
@@ -761,7 +766,7 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
                 </div>
 
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMadinah || 'Jawharat Al Rasheed') + ' Madinah Saudi Arabia')}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((selectedJamaah.hotelMadinah || 'Dallah Taibah') + ' Madinah Saudi Arabia')}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#A67C52] text-[#A67C52] hover:text-white border border-[#A67C52]/40 text-xs font-bold transition-all shadow-2xs cursor-pointer mt-1"
@@ -1149,9 +1154,9 @@ export const JamaahTransparencyPortal: React.FC<JamaahTransparencyPortalProps> =
               <div className="w-8 h-8 rounded-xl bg-[#A67C52]/10 text-[#A67C52] flex items-center justify-center font-bold text-xs">
                 1
               </div>
-              <h4 className="font-bold text-xs text-[#1A1A1A]">Input NIJ / WhatsApp</h4>
+              <h4 className="font-bold text-xs text-[#1A1A1A]">Input NIJ Jamaah</h4>
               <p className="text-[11px] text-gray-600 leading-relaxed">
-                Ketikkan nomor identitas jamaah Anda (format: <code>AG-2026-XXX</code>) atau nomor WhatsApp terdaftar.
+                Ketikkan nomor identitas jamaah Anda (format: <code>AG-2026-XXX</code>).
               </p>
             </div>
 

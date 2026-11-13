@@ -227,7 +227,10 @@ export interface JamaahProgressItem {
   equipmentStatus: 'Telah Diserahkan' | 'Lengkap Diterima Jamaah' | 'Siap Diambil di Kantor Garut' | 'Dalam Proses Packing' | 'Menunggu Pelunasan' | string;
   notes: string;
   isConvertedFromInquiry?: boolean;
+  sourceInquiryId?: string;
   conversionDate?: string;
+  isArchived?: boolean;
+  archivedAt?: any;
   createdAt?: any;
   createdTimestamp?: number;
   createdAtFormatted?: string;
@@ -246,6 +249,7 @@ export interface InquiryItem {
   message: string;
   createdAt: string;
   status: 'Baru' | 'Dihubungi' | 'Selesai';
+  convertedToJamaahId?: string;
   isDeleted?: boolean;
   deletedAt?: string;
   deletedBy?: string;
@@ -279,6 +283,8 @@ export interface PartnerRegistrationItem {
   address?: string;
   nik?: string;
   notes?: string;
+  isArchived?: boolean;
+  archivedAt?: any;
   isDeleted?: boolean;
   deletedAt?: string;
   deletedBy?: string;
@@ -365,6 +371,3 @@ export interface TrashArchiveItem {
   deletedBy?: string;
   originalData: any;
 }
-
-
-

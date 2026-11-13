@@ -54,7 +54,9 @@ import {
   LayoutGrid,
   Table,
   Plane,
-  Sparkles
+  Sparkles,
+  Archive,
+  RotateCcw
 } from 'lucide-react';
 import { JamaahProgressItem, InquiryItem, PartnerRegistrationItem, TestimonialItem } from '../types';
 import { DETAILED_SCHEDULES, calculatePartnerCommissions, INITIAL_JAMAAH_DATA } from '../data/packagesData';
@@ -93,6 +95,7 @@ import {
 import { 
   subscribeToJamaah, 
   addJamaahToFirestore, 
+  convertInquiryToJamaahInFirestore,
   updateJamaahInFirestore, 
   deleteJamaahFromFirestore,
   deleteAllDemoJamaahFromFirestore,
@@ -106,8 +109,11 @@ import {
   subscribeToPartnerRegistrations,
   addPartnerRegistrationToFirestore,
   deletePartnerFromFirestore,
+  deleteMultiplePartnersFromFirestore,
+  setPartnerArchivedInFirestore,
   updatePartnerStatusInFirestore,
   updatePartnerInFirestore,
+  setJamaahArchivedInFirestore,
   subscribeToTestimonials,
   addTestimonialToFirestore,
   updateTestimonialInFirestore,
@@ -216,14 +222,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
 
   // Search Filter in Jamaah Tab
   const [jamaahSearch, setJamaahSearch] = useState('');
-  const [jamaahStatusFilter, setJamaahStatusFilter] = useState<'pending' | 'ready' | 'all'>('pending');
-  const [partnerStatusFilter, setPartnerStatusFilter] = useState<'pending' | 'Disetujui' | 'all'>('pending');
+  const [jamaahStatusFilter, setJamaahStatusFilter] = useState<'pending' | 'ready' | 'all' | 'archived'>('pending');
+  const [partnerStatusFilter, setPartnerStatusFilter] = useState<'pending' | 'Disetujui' | 'all' | 'archived'>('pending');
   const [showDemoOptionsDropdown, setShowDemoOptionsDropdown] = useState(false);
   const [inquirySearch, setInquirySearch] = useState('');
   const [inquiryStatusFilter, setInquiryStatusFilter] = useState<'all' | 'Baru' | 'Dihubungi' | 'Selesai'>('Baru');
   const [inquiryTypeFilter, setInquiryTypeFilter] = useState<string>('all');
   const [copiedPhoneId, setCopiedPhoneId] = useState<string | null>(null);
   const [partnerSearch, setPartnerSearch] = useState('');
+  const [selectedJamaahIds, setSelectedJamaahIds] = useState<string[]>([]);
+  const [selectedPartnerIds, setSelectedPartnerIds] = useState<string[]>([]);
 
   // Guide accordion toggle (default closed / hidden)
   const [showDataFlowGuide, setShowDataFlowGuide] = useState(false);
@@ -297,7 +305,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
   const [selectedInquiryIds, setSelectedInquiryIds] = useState<string[]>([]);
   const [bulkDeleteModal, setBulkDeleteModal] = useState<{
     isOpen: boolean;
-    mode: 'selected' | 'completed' | 'all';
+    mode: 'selected' | 'all';
     count: number;
   }>({
     isOpen: false,
@@ -323,6 +331,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
 
   // Modal: Add/Edit Partner Form State
   const [isAddPartnerOpen, setIsAddPartnerOpen] = useState(false);
+  const [partnerBulkDeleteModal, setPartnerBulkDeleteModal] = useState<{
+    isOpen: boolean;
+    count: number;
+  }>({ isOpen: false, count: 0 });
+  const [jamaahBulkDeleteModal, setJamaahBulkDeleteModal] = useState<{
+    isOpen: boolean;
+    ids: string[];
+  }>({ isOpen: false, ids: [] });
   const [isEditPartnerOpen, setIsEditPartnerOpen] = useState(false);
   const [editingPartner, setEditingPartner] = useState<PartnerRegistrationItem | null>(null);
   const [newBinaanItem, setNewBinaanItem] = useState<{
@@ -703,21 +719,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
     try {
       setConvertingInquiryId(inq.id);
       const parsed = cleanInquiryMessage(inq.message);
-      
+      const nik = parsed.nik?.trim() || '';
+      if (!/^\d{16}$/.test(nik)) {
+        showToast('Konversi memerlukan NIK 16 digit yang valid.');
+        return;
+      }
+
+      const existingConversion = jamaahList.find((jamaah) => jamaah.sourceInquiryId === inq.id);
+      if (existingConversion) {
+        showToast(`Data ${inq.name} sudah ada di Manifest dengan NIJ ${existingConversion.nij}.`);
+        setJamaahSearch('');
+        setJamaahStatusFilter('all');
+        setActiveAdminTab('jamaah');
+        return;
+      }
+
       const currentYear = new Date().getFullYear();
-      const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+      const randomSuffix = Math.floor(100000 + Math.random() * 900000);
       const autoNij = `AG-${currentYear}-${randomSuffix}`;
       
       // Sesuai instruksi: isi hanya apa yang diisi oleh jamaah (NIK & WA), sisanya biarkan admin yang edit
-      const ktpVal = (parsed.nik && parsed.nik !== 'Belum diisi' && parsed.nik !== '-') 
-        ? parsed.nik.trim() 
-        : '-';
-
       const targetPkg = inq.packageInterest || '-';
 
       const itemToSave: Omit<JamaahProgressItem, 'id'> = {
         nij: autoNij,
-        ktp: ktpVal,
+        ktp: nik,
         fullName: inq.name,
         phone: inq.phone,
         birthDate: '-',
@@ -746,10 +772,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
         conversionDate: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
       };
 
-      await addJamaahToFirestore(itemToSave);
-      await updateInquiryStatusInFirestore(inq.id, 'Selesai');
+      await convertInquiryToJamaahInFirestore(inq.id, itemToSave);
 
       showToast(`✓ Berhasil konversi "${inq.name}" ke Manifest! (NIK & WA tersalin otomatis, silakan lengkapi data)`);
+      setJamaahSearch('');
+      setJamaahStatusFilter('all');
       setActiveAdminTab('jamaah');
     } catch (err) {
       console.error('Error converting inquiry to manifest:', err);
@@ -768,10 +795,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
 
   // BULK: Select All / Deselect All
   const handleSelectAllInquiries = (currentFiltered: InquiryItem[]) => {
-    if (selectedInquiryIds.length === currentFiltered.length && currentFiltered.length > 0) {
-      setSelectedInquiryIds([]);
+    const filteredIds = currentFiltered.map((inquiry) => inquiry.id);
+    const areAllFilteredSelected = filteredIds.length > 0
+      && filteredIds.every((id) => selectedInquiryIds.includes(id));
+
+    if (areAllFilteredSelected) {
+      setSelectedInquiryIds((prev) => prev.filter((id) => !filteredIds.includes(id)));
     } else {
-      setSelectedInquiryIds(currentFiltered.map((i) => i.id));
+      setSelectedInquiryIds((prev) => [...new Set([...prev, ...filteredIds])]);
     }
   };
 
@@ -791,12 +822,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
   };
 
   // BULK: Request Delete Modal
-  const handleRequestBulkDelete = (mode: 'selected' | 'completed' | 'all') => {
+  const handleRequestBulkDelete = (mode: 'selected' | 'all') => {
     let count = 0;
     if (mode === 'selected') {
       count = selectedInquiryIds.length;
-    } else if (mode === 'completed') {
-      count = inquiriesList.filter((i) => i.status === 'Selesai').length;
     } else if (mode === 'all') {
       count = inquiriesList.length;
     }
@@ -823,11 +852,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
         await deleteMultipleInquiriesFromFirestore(selectedInquiryIds);
         showToast(`✓ ${selectedInquiryIds.length} pesan terpilih berhasil dihapus.`);
         setSelectedInquiryIds([]);
-      } else if (mode === 'completed') {
-        const completedIds = inquiriesList.filter((i) => i.status === 'Selesai').map((i) => i.id);
-        await deleteMultipleInquiriesFromFirestore(completedIds);
-        showToast(`✓ ${completedIds.length} pesan berstatus 'Selesai' berhasil dibersihkan.`);
-        setSelectedInquiryIds((prev) => prev.filter((id) => !completedIds.includes(id)));
       } else if (mode === 'all') {
         await deleteAllInquiriesFromFirestore();
         showToast('✓ Semua log pesan & leads berhasil dihapus bersih.');
@@ -1019,6 +1043,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
 
   const filteredJamaah = jamaahList
     .filter(j => {
+      const isArchived = Boolean(j.isArchived);
+      if (jamaahStatusFilter === 'archived' ? !isArchived : isArchived) return false;
+
       const q = jamaahSearch.toLowerCase();
       const matchesSearch = 
         j.fullName.toLowerCase().includes(q) ||
@@ -1029,6 +1056,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
       const matchesStatus = 
         jamaahStatusFilter === 'all' 
           ? true 
+          : jamaahStatusFilter === 'archived'
+          ? true
           : jamaahStatusFilter === 'ready' 
           ? (j.progressStep || 1) === 5 
           : (j.progressStep || 1) < 5;
@@ -1039,6 +1068,68 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
       const timeB = parseTimestampToMillis(b.createdAt) || (b as any).createdTimestamp || 0;
       return timeB - timeA;
     });
+
+  const selectedFilteredJamaahCount = filteredJamaah.filter((jamaah) =>
+    selectedJamaahIds.includes(jamaah.id)
+  ).length;
+  const selectedFilteredJamaahIds = filteredJamaah
+    .filter((jamaah) => selectedJamaahIds.includes(jamaah.id))
+    .map((jamaah) => jamaah.id);
+  const archivedJamaahCount = jamaahList.filter((jamaah) => jamaah.isArchived).length;
+
+  const handleToggleSelectJamaah = (id: string) => {
+    setSelectedJamaahIds((prev) =>
+      prev.includes(id) ? prev.filter((jamaahId) => jamaahId !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAllJamaah = () => {
+    const filteredIds = filteredJamaah.map((jamaah) => jamaah.id);
+    const areAllFilteredSelected = filteredIds.length > 0
+      && filteredIds.every((id) => selectedJamaahIds.includes(id));
+
+    if (areAllFilteredSelected) {
+      setSelectedJamaahIds((prev) => prev.filter((id) => !filteredIds.includes(id)));
+    } else {
+      setSelectedJamaahIds((prev) => [...new Set([...prev, ...filteredIds])]);
+    }
+  };
+
+  const handleArchiveSelectedJamaah = async () => {
+    if (selectedFilteredJamaahIds.length === 0) return;
+    const ids = [...selectedFilteredJamaahIds];
+    try {
+      await Promise.all(ids.map((id) => setJamaahArchivedInFirestore(id, jamaahStatusFilter !== 'archived')));
+      setSelectedJamaahIds([]);
+      showToast(jamaahStatusFilter === 'archived'
+        ? `✓ ${ids.length} jamaah berhasil dipulihkan dari arsip.`
+        : `✓ ${ids.length} jamaah berhasil diarsipkan.`);
+    } catch (error) {
+      console.error('Error updating jamaah archive:', error);
+      showToast('Gagal memperbarui arsip jamaah.');
+    }
+  };
+
+  const handleRequestJamaahBulkDelete = () => {
+    if (selectedFilteredJamaahIds.length === 0) {
+      showToast('Pilih jamaah yang ingin dihapus.');
+      return;
+    }
+    setJamaahBulkDeleteModal({ isOpen: true, ids: [...selectedFilteredJamaahIds] });
+  };
+
+  const handleConfirmJamaahBulkDelete = async () => {
+    const ids = [...jamaahBulkDeleteModal.ids];
+    setJamaahBulkDeleteModal({ isOpen: false, ids: [] });
+    try {
+      await Promise.all(ids.map((id) => deleteJamaahFromFirestore(id)));
+      setSelectedJamaahIds((prev) => prev.filter((id) => !ids.includes(id)));
+      showToast(`✓ ${ids.length} data jamaah berhasil dihapus.`);
+    } catch (error) {
+      console.error('Error bulk deleting jamaah:', error);
+      showToast('Gagal menghapus data jamaah terpilih.');
+    }
+  };
 
   const handleCopyPhone = (id: string, phone: string) => {
     navigator.clipboard.writeText(phone);
@@ -1220,10 +1311,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
 
     return matchesSearch && matchesStatus && matchesType;
   });
+  const selectedFilteredInquiryCount = filteredInquiries.filter((inquiry) =>
+    selectedInquiryIds.includes(inquiry.id)
+  ).length;
 
   const newInquiriesCount = inquiriesList.filter(i => (i.status || 'Baru') === 'Baru').length;
   const aiInquiriesCount = inquiriesList.filter(i => i.type === 'Tanya AI').length;
-  const pendingPartnersCount = partnersList.filter(p => (p.status || 'Menunggu Verifikasi') === 'Menunggu Verifikasi' || (p.status as string) === 'Pending').length;
+  const activeJamaahCount = jamaahList.filter((jamaah) => !jamaah.isArchived).length;
+  const activePartnersCount = partnersList.filter((partner) => !partner.isArchived).length;
+  const pendingPartnersCount = partnersList.filter(p => !p.isArchived && ((p.status || 'Menunggu Verifikasi') === 'Menunggu Verifikasi' || (p.status as string) === 'Pending')).length;
 
   const filteredPartners = partnersList.filter(p => {
     const q = partnerSearch.toLowerCase().trim();
@@ -1235,16 +1331,81 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
       p.tier.toLowerCase().includes(q)
     );
 
-    const isApproved = p.status === 'Disetujui';
-    const matchesStatus = 
-      partnerStatusFilter === 'all' 
-        ? true 
-        : partnerStatusFilter === 'Disetujui' 
-        ? isApproved 
-        : !isApproved; // 'pending' matches Menunggu Verifikasi, Dihubungi, etc.
+    const isArchived = Boolean(p.isArchived);
+    if (partnerStatusFilter === 'archived' ? !isArchived : isArchived) return false;
+
+    const status = p.status || 'Menunggu Verifikasi';
+    const matchesStatus =
+      partnerStatusFilter === 'all'
+        ? true
+        : partnerStatusFilter === 'Disetujui'
+        ? status === 'Disetujui'
+        : status !== 'Disetujui';
 
     return matchesSearch && matchesStatus;
   });
+  const selectedFilteredPartnerCount = filteredPartners.filter((partner) =>
+    selectedPartnerIds.includes(partner.id)
+  ).length;
+  const selectedFilteredPartnerIds = filteredPartners
+    .filter((partner) => selectedPartnerIds.includes(partner.id))
+    .map((partner) => partner.id);
+  const archivedPartnersCount = partnersList.filter((partner) => partner.isArchived).length;
+
+  const handleToggleSelectPartner = (id: string) => {
+    setSelectedPartnerIds((prev) =>
+      prev.includes(id) ? prev.filter((partnerId) => partnerId !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAllPartners = () => {
+    const filteredIds = filteredPartners.map((partner) => partner.id);
+    const areAllFilteredSelected = filteredIds.length > 0
+      && filteredIds.every((id) => selectedPartnerIds.includes(id));
+
+    if (areAllFilteredSelected) {
+      setSelectedPartnerIds((prev) => prev.filter((id) => !filteredIds.includes(id)));
+    } else {
+      setSelectedPartnerIds((prev) => [...new Set([...prev, ...filteredIds])]);
+    }
+  };
+
+  const handleRequestPartnerBulkDelete = () => {
+    if (selectedFilteredPartnerIds.length === 0) {
+      showToast('Pilih permohonan yang ingin dihapus.');
+      return;
+    }
+    setPartnerBulkDeleteModal({ isOpen: true, count: selectedFilteredPartnerIds.length });
+  };
+
+  const handleConfirmPartnerBulkDelete = async () => {
+    const ids = [...selectedFilteredPartnerIds];
+    setPartnerBulkDeleteModal((prev) => ({ ...prev, isOpen: false }));
+
+    try {
+      await deleteMultiplePartnersFromFirestore(ids);
+      setSelectedPartnerIds((prev) => prev.filter((id) => !ids.includes(id)));
+      showToast(`✓ ${ids.length} permohonan kemitraan berhasil dihapus.`);
+    } catch (error) {
+      console.error('Error bulk deleting partner registrations:', error);
+      showToast('Gagal menghapus permohonan kemitraan terpilih.');
+    }
+  };
+
+  const handleArchiveSelectedPartners = async () => {
+    if (selectedFilteredPartnerIds.length === 0) return;
+    const ids = [...selectedFilteredPartnerIds];
+    try {
+      await Promise.all(ids.map((id) => setPartnerArchivedInFirestore(id, partnerStatusFilter !== 'archived')));
+      setSelectedPartnerIds([]);
+      showToast(partnerStatusFilter === 'archived'
+        ? `✓ ${ids.length} permohonan berhasil dipulihkan dari arsip.`
+        : `✓ ${ids.length} permohonan berhasil diarsipkan.`);
+    } catch (error) {
+      console.error('Error updating partner archive:', error);
+      showToast('Gagal memperbarui arsip permohonan mitra.');
+    }
+  };
 
   // ---------------- LOGIN SCREEN (KHUSUS ADMIN, TANPA NAVBAR PUBLIK) ----------------
   if (!isAuthenticated) {
@@ -1435,7 +1596,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                   activeAdminTab === 'jamaah' ? 'bg-white/25 text-white' : 'bg-white/10 text-gray-300'
                 }`}>
-                  {jamaahList.length}
+                  {activeJamaahCount}
                 </span>
               </button>
 
@@ -1492,7 +1653,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                     activeAdminTab === 'partners' ? 'bg-white/25 text-white' : 'bg-white/10 text-gray-300'
                   }`}>
-                    {partnersList.length}
+                    {activePartnersCount}
                   </span>
                 </div>
               </button>
@@ -1744,11 +1905,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 </div>
               </div>
               <div className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#1A1A1A] mb-1">
-                {jamaahList.length}
+                {activeJamaahCount}
               </div>
               <div className="text-[11px] text-gray-500 flex items-center justify-between">
-                <span>{jamaahList.filter(j => (j.progressStep || 1) < 5).length} Antrean Persiapan</span>
-                <span className="font-semibold text-emerald-600">{jamaahList.filter(j => (j.progressStep || 1) === 5).length} Siap Berangkat</span>
+                <span>{jamaahList.filter(j => !j.isArchived && (j.progressStep || 1) < 5).length} Antrean Persiapan</span>
+                <span className="font-semibold text-emerald-600">{jamaahList.filter(j => !j.isArchived && (j.progressStep || 1) === 5).length} Siap Berangkat</span>
               </div>
             </div>
 
@@ -1793,7 +1954,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 </div>
               </div>
               <div className="font-serif-luxury text-2xl sm:text-3xl font-bold text-[#1A1A1A] mb-1 flex items-center gap-2">
-                <span>{partnersList.length}</span>
+                <span>{activePartnersCount}</span>
                 {pendingPartnersCount > 0 && (
                   <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white animate-pulse">
                     {pendingPartnersCount} Menunggu
@@ -1801,7 +1962,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 )}
               </div>
               <div className="text-[11px] text-gray-500 flex items-center justify-between">
-                <span>{partnersList.filter(p => p.status === 'Disetujui').length} Disetujui</span>
+                <span>{partnersList.filter(p => !p.isArchived && p.status === 'Disetujui').length} Disetujui</span>
                 <span className="font-semibold text-amber-600">{pendingPartnersCount} Menunggu</span>
               </div>
             </div>
@@ -1939,7 +2100,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 activeAdminTab === 'jamaah' ? 'bg-[#A67C52] text-white' : 'bg-white border border-gray-200 text-gray-700'
               }`}
             >
-              Manifest ({jamaahList.length})
+              Manifest ({activeJamaahCount})
             </button>
             <button
               onClick={() => setActiveAdminTab('inquiries')}
@@ -1955,7 +2116,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 activeAdminTab === 'partners' ? 'bg-[#A67C52] text-white' : 'bg-white border border-gray-200 text-gray-700'
               }`}
             >
-              Mitra ({partnersList.length})
+              Mitra ({activePartnersCount})
             </button>
             <button
               onClick={() => setActiveAdminTab('packages')}
@@ -2005,7 +2166,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                     Manifest &amp; Live Tracking Jamaah
                   </h3>
                   <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">
-                    {jamaahList.length} Jamaah
+                    {activeJamaahCount} Jamaah
                   </span>
                 </div>
                 <p className="text-xs text-gray-500 mt-0.5">
@@ -2096,7 +2257,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 )}
               </div>
 
-              {/* Status Filter Badges: Antrean Persiapan (Step 1-4) vs Siap Berangkat (Step 5) vs Semua Riwayat */}
+              {/* Status filters for active jamaah and the archive */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none text-xs">
                 <button
                   type="button"
@@ -2107,7 +2268,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                       : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
                   }`}
                 >
-                  Antrean Persiapan ({jamaahList.filter(j => (j.progressStep || 1) < 5).length})
+                  Antrean Persiapan ({jamaahList.filter(j => !j.isArchived && (j.progressStep || 1) < 5).length})
                 </button>
                 <button
                   type="button"
@@ -2118,7 +2279,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                       : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
                   }`}
                 >
-                  Siap Berangkat ({jamaahList.filter(j => (j.progressStep || 1) === 5).length})
+                  Siap Berangkat ({jamaahList.filter(j => !j.isArchived && (j.progressStep || 1) === 5).length})
                 </button>
                 <button
                   type="button"
@@ -2129,9 +2290,68 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
-                  Semua Riwayat ({jamaahList.length})
+                  Semua Riwayat ({jamaahList.filter(j => !j.isArchived).length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setJamaahStatusFilter('archived')}
+                  className={`px-3 py-1.5 rounded-xl font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                    jamaahStatusFilter === 'archived'
+                      ? 'bg-slate-700 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  }`}
+                >
+                  Arsip ({archivedJamaahCount})
                 </button>
               </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-[#FAF8F5] border border-stone-200">
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={handleSelectAllJamaah}
+                disabled={filteredJamaah.length === 0}
+                className="px-3 py-1.5 rounded-xl bg-white hover:bg-gray-100 disabled:opacity-50 text-[#1A1A1A] text-xs font-bold border border-gray-200 transition-colors cursor-pointer disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <input
+                  type="checkbox"
+                  checked={filteredJamaah.length > 0 && selectedFilteredJamaahCount === filteredJamaah.length}
+                  onChange={() => {}}
+                  className="rounded text-[#A67C52]"
+                  tabIndex={-1}
+                />
+                <span>Pilih Semua ({selectedFilteredJamaahCount}/{filteredJamaah.length})</span>
+              </button>
+              {selectedFilteredJamaahCount > 0 && (
+                <>
+                  <span className="text-xs font-semibold text-gray-600">{selectedFilteredJamaahCount} dipilih</span>
+                  <button
+                    type="button"
+                    onClick={handleArchiveSelectedJamaah}
+                    className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    {jamaahStatusFilter === 'archived' ? <RotateCcw className="w-3.5 h-3.5" /> : <Archive className="w-3.5 h-3.5" />}
+                    <span>{jamaahStatusFilter === 'archived' ? 'Pulihkan Terpilih' : 'Arsipkan Terpilih'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleRequestJamaahBulkDelete}
+                    className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Hapus Terpilih ({selectedFilteredJamaahCount})</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedJamaahIds([])}
+                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold border border-gray-200 transition-colors cursor-pointer"
+                  >
+                    Batal
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -2168,7 +2388,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
               {filteredJamaah.map((jamaah) => (
                 <div
                   key={jamaah.id}
-                  className="bg-white rounded-2xl border border-gray-200/90 hover:border-[#A67C52]/50 p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative overflow-hidden"
+                  className={`bg-white rounded-2xl border hover:border-[#A67C52]/50 p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative overflow-hidden ${selectedJamaahIds.includes(jamaah.id) ? 'border-[#A67C52] ring-2 ring-[#A67C52]/30' : 'border-gray-200/90'}`}
                 >
                   {/* Top Color Accent Line */}
                   <div className={`absolute top-0 left-0 right-0 h-1 ${
@@ -2177,6 +2397,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
 
                   {/* Header Kartu: Nama & Badge */}
                   <div className="space-y-1.5 pt-1">
+                    <div className="flex items-center justify-between">
+                      <label className="inline-flex items-center gap-2 text-[11px] font-semibold text-gray-500 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedJamaahIds.includes(jamaah.id)}
+                          onChange={() => handleToggleSelectJamaah(jamaah.id)}
+                          className="rounded text-[#A67C52] cursor-pointer"
+                          aria-label={`Pilih jamaah ${jamaah.fullName}`}
+                        />
+                        Pilih jamaah
+                      </label>
+                      {jamaahStatusFilter === 'archived' && (
+                        <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold">Diarsipkan</span>
+                      )}
+                    </div>
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -2525,22 +2760,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                 >
                   <input
                     type="checkbox"
-                    checked={filteredInquiries.length > 0 && selectedInquiryIds.length === filteredInquiries.length}
+                    checked={filteredInquiries.length > 0 && selectedFilteredInquiryCount === filteredInquiries.length}
                     onChange={() => {}} // Handled by button onClick
                     className="rounded text-[#A67C52] cursor-pointer"
                   />
-                  <span>Pilih Semua ({selectedInquiryIds.length}/{filteredInquiries.length})</span>
+                  <span>Pilih Semua ({selectedFilteredInquiryCount}/{filteredInquiries.length})</span>
                 </button>
-
-                {inquiriesList.some(i => i.status === 'Selesai') && (
-                  <button
-                    onClick={() => handleRequestBulkDelete('completed')}
-                    title="Hapus semua pesan yang sudah bertatus 'Selesai'"
-                    className="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-rose-50 text-gray-700 hover:text-rose-700 text-xs font-semibold transition-colors cursor-pointer border border-gray-200 hover:border-rose-200"
-                  >
-                    Bersihkan Status 'Selesai'
-                  </button>
-                )}
 
                 {inquiriesList.length > 0 && (
                   <button
@@ -2887,37 +3112,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                           <span>Hubungi via WA</span>
                         </a>
 
-                        {/* 1-CLICK CONVERSION TO MANIFEST: Hanya untuk jamaah yang mengisi NIK & mengisi Formulir Pendaftaran Paket Ibadah */}
+                        {/* Conversion is available only for registrations with a valid NIK. */}
                         {(() => {
                           const isFormulirPendaftaran = Boolean(
                             inq.type === 'Formulir Pendaftaran Paket Ibadah' ||
-                            inq.type?.toLowerCase().includes('pendaftaran') ||
-                            inq.message?.toLowerCase().includes('formulir pendaftaran') ||
-                            (parsedMsg.refCode && parsedMsg.refCode.startsWith('REF/AG')) ||
-                            inq.message?.includes('Pendaftaran via Formulir')
+                            inq.message?.toLowerCase().includes('pendaftaran via formulir pendaftaran paket ibadah')
                           );
+                          const nik = parsedMsg.nik?.trim() || '';
+                          const hasValidNik = /^\d{16}$/.test(nik);
 
-                          const hasFilledNik = Boolean(
-                            parsedMsg.nik &&
-                            parsedMsg.nik !== 'Belum diisi' &&
-                            parsedMsg.nik !== '-' &&
-                            parsedMsg.nik.trim().length >= 4
-                          );
-
-                          // Tombol konversi HANYA muncul untuk Formulir Pendaftaran yang telah mengisi NIK
-                          if (!isFormulirPendaftaran || !hasFilledNik) {
+                          if (!isFormulirPendaftaran || !hasValidNik) {
                             return null;
                           }
 
-                          const alreadyInManifest = jamaahList.some(
-                            j => j.fullName.trim().toLowerCase() === inq.name.trim().toLowerCase() ||
-                            (j.phone && j.phone === inq.phone) ||
-                            (parsedMsg.nik && j.ktp === parsedMsg.nik.trim())
+                          const isInManifest = Boolean(inq.convertedToJamaahId) || jamaahList.some(
+                            (jamaah) =>
+                              jamaah.sourceInquiryId === inq.id ||
+                              jamaah.ktp === nik
                           );
 
-                          if (alreadyInManifest) {
+                          if (isInManifest) {
                             return (
-                              <span className="px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center gap-1">
+                              <span
+                                aria-disabled="true"
+                                className="px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center gap-1"
+                              >
                                 <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
                                 <span>Tersedia di Manifest</span>
                               </span>
@@ -2927,7 +3146,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                           return (
                             <button
                               onClick={() => handleConvertToManifest(inq)}
-                              disabled={convertingInquiryId === inq.id}
+                              disabled={convertingInquiryId === inq.id || inq.status === 'Selesai'}
                               className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#A67C52] to-[#8E653E] hover:from-[#8E653E] hover:to-[#735130] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs hover:shadow-md cursor-pointer disabled:opacity-50 whitespace-nowrap"
                               title="Konversi otomatis NIK & WA calon jamaah ini ke Manifest resmi"
                             >
@@ -2936,7 +3155,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                               ) : (
                                 <UserPlus className="w-3.5 h-3.5 text-white" />
                               )}
-                              <span>Konversi ke Manifest</span>
+                              <span>{inq.status === 'Selesai' ? 'Selesai' : 'Konversi ke Manifest'}</span>
                             </button>
                           );
                         })()}
@@ -3021,7 +3240,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                   : 'bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100'
               }`}
             >
-              Menunggu Verifikasi ({partnersList.filter(p => p.status !== 'Disetujui').length})
+              Menunggu Verifikasi ({partnersList.filter(p => !p.isArchived && p.status !== 'Disetujui').length})
             </button>
             <button
               onClick={() => setPartnerStatusFilter('Disetujui')}
@@ -3031,7 +3250,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                   : 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
               }`}
             >
-              Disetujui / Aktif ({partnersList.filter(p => p.status === 'Disetujui').length})
+              Disetujui / Aktif ({partnersList.filter(p => !p.isArchived && p.status === 'Disetujui').length})
             </button>
             <button
               onClick={() => setPartnerStatusFilter('all')}
@@ -3041,22 +3260,84 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              Semua Mitra ({partnersList.length})
+              Semua Mitra ({partnersList.filter(p => !p.isArchived).length})
             </button>
+            <button
+              onClick={() => setPartnerStatusFilter('archived')}
+              className={`px-3 py-1.5 rounded-xl font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                partnerStatusFilter === 'archived'
+                  ? 'bg-slate-700 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              }`}
+            >
+              Arsip ({archivedPartnersCount})
+            </button>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-[#FAF8F5] border border-stone-200">
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={handleSelectAllPartners}
+                disabled={filteredPartners.length === 0}
+                className="px-3 py-1.5 rounded-xl bg-white hover:bg-gray-100 disabled:opacity-50 text-[#1A1A1A] text-xs font-bold border border-gray-200 transition-colors cursor-pointer disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <input
+                  type="checkbox"
+                  checked={filteredPartners.length > 0 && selectedFilteredPartnerCount === filteredPartners.length}
+                  onChange={() => {}}
+                  className="rounded text-[#A67C52]"
+                  tabIndex={-1}
+                />
+                <span>Pilih Semua ({selectedFilteredPartnerCount}/{filteredPartners.length})</span>
+              </button>
+              {selectedFilteredPartnerCount > 0 && (
+                <>
+                  <span className="text-xs font-semibold text-gray-600">{selectedFilteredPartnerCount} dipilih</span>
+                  <button
+                    type="button"
+                    onClick={handleArchiveSelectedPartners}
+                    className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    {partnerStatusFilter === 'archived' ? <RotateCcw className="w-3.5 h-3.5" /> : <Archive className="w-3.5 h-3.5" />}
+                    <span>{partnerStatusFilter === 'archived' ? 'Pulihkan Terpilih' : 'Arsipkan Terpilih'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleRequestPartnerBulkDelete}
+                    className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Hapus Terpilih ({selectedFilteredPartnerCount})</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedPartnerIds([])}
+                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold border border-gray-200 transition-colors cursor-pointer"
+                  >
+                    Batal
+                  </button>
+                </>
+              )}
+            </div>
           </div>
 
           {filteredPartners.length === 0 ? (
             <div className="p-12 text-center rounded-3xl bg-[#F5F5F5] border border-dashed border-gray-300 space-y-3">
               <Building2 className="w-10 h-10 text-gray-400 mx-auto" />
               <h4 className="font-bold text-sm text-[#1A1A1A]">
-                {partnerStatusFilter === 'pending' 
-                  ? 'Tidak Ada Mitra Menunggu Verifikasi' 
-                  : partnerStatusFilter === 'Disetujui' 
-                  ? 'Belum Ada Mitra yang Disetujui' 
+                {partnerStatusFilter === 'archived'
+                  ? 'Belum Ada Permohonan di Arsip'
+                  : partnerStatusFilter === 'pending'
+                  ? 'Tidak Ada Mitra Menunggu Verifikasi'
+                  : partnerStatusFilter === 'Disetujui'
+                  ? 'Belum Ada Mitra yang Disetujui'
                   : 'Belum Ada Pendaftaran Mitra'}
               </h4>
               <p className="text-xs text-[#666666]">
-                {partnerStatusFilter === 'pending'
+                {partnerStatusFilter === 'archived'
+                  ? 'Permohonan yang diarsipkan akan muncul di sini.'
+                  : partnerStatusFilter === 'pending'
                   ? 'Semua permohonan kemitraan telah disetujui atau belum ada pendaftaran baru.'
                   : 'Formulir kemitraan yang diisi di halaman kemitraan akan otomatis tersimpan di sini.'}
               </p>
@@ -3066,6 +3347,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
               <table className="w-full text-left text-xs text-[#1A1A1A]">
                 <thead className="bg-[#F5F5F5] border-b border-gray-200 font-bold uppercase tracking-wider text-[#666666]">
                   <tr>
+                    <th className="p-3 w-10">
+                      <input
+                        type="checkbox"
+                        checked={filteredPartners.length > 0 && selectedFilteredPartnerCount === filteredPartners.length}
+                        onChange={handleSelectAllPartners}
+                        className="rounded text-[#A67C52] cursor-pointer"
+                        aria-label="Pilih semua permohonan kemitraan yang ditampilkan"
+                      />
+                    </th>
                     <th className="p-4">Nama Mitra &amp; Kontak</th>
                     <th className="p-4">Kode Akses Portal</th>
                     <th className="p-4">Skema Kemitraan</th>
@@ -3081,9 +3371,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                     const waShareMessage = `Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\nYth. Bpk/Ibu *${p.name}*,\n\nSelamat! Akun Kemitraan *${p.tier}* ALGHANIM Islamic Tour Anda telah aktif.\n\n*Kode Akses Portal Mitra Anda:* *${currentCode}*\n\nSilakan akses Portal Mandiri Kemitraan melalui tautan berikut:\n${portalUrl}\n\nMasukkan Kode Mitra di atas untuk melihat KTA digital, memantau komisi, mengunduh materi promosi, serta mendaftarkan jamaah binaan Anda.\n\nJazakumullah khairan katsiran.`;
 
                     return (
-                      <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
+                      <tr key={p.id} className={`hover:bg-gray-50/80 transition-colors ${selectedPartnerIds.includes(p.id) ? 'bg-[#FAF8F5]' : ''}`}>
+                        <td className="p-3">
+                          <input
+                            type="checkbox"
+                            checked={selectedPartnerIds.includes(p.id)}
+                            onChange={() => handleToggleSelectPartner(p.id)}
+                            className="rounded text-[#A67C52] cursor-pointer"
+                            aria-label={`Pilih permohonan ${p.name}`}
+                          />
+                        </td>
                         <td className="p-4">
-                          <div className="font-bold text-sm text-[#1A1A1A]">{p.name}</div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className="font-bold text-sm text-[#1A1A1A]">{p.name}</div>
+                            {partnerStatusFilter === 'archived' && (
+                              <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold">Diarsipkan</span>
+                            )}
+                          </div>
                           <div className="text-[11px] text-gray-500 font-mono">WA: {p.phone}</div>
                           <div className="text-[10px] text-gray-400 mt-0.5">
                             {formatDateTimeFriendly((p as any).timestampISO || (p as any).timestamp || p.createdAt)}
@@ -3143,8 +3447,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
                             value={p.status || 'Menunggu Verifikasi'}
                             onChange={async (e) => {
                               const newStatus = e.target.value as 'Menunggu Verifikasi' | 'Disetujui' | 'Dihubungi';
-                              await updatePartnerStatusInFirestore(p.id, newStatus);
-                              showToast(`Status mitra "${p.name}" diubah ke "${newStatus}"`);
+                              try {
+                                await updatePartnerStatusInFirestore(p.id, newStatus);
+                                showToast(`Status mitra "${p.name}" diubah ke "${newStatus}"`);
+                              } catch (error) {
+                                console.error('Error updating partner status:', error);
+                                showToast('Gagal memperbarui status mitra.');
+                              }
                             }}
                             className={`text-xs font-bold rounded-xl px-2.5 py-1 border outline-none cursor-pointer block ${
                               p.status === 'Disetujui'
@@ -5170,15 +5479,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
               <h3 className="font-serif-luxury text-xl font-bold text-gray-900">
                 {bulkDeleteModal.mode === 'all'
                   ? 'Hapus Semua Log Pesan?'
-                  : bulkDeleteModal.mode === 'completed'
-                  ? 'Bersihkan Pesan Berstatus Selesai?'
                   : `Hapus ${bulkDeleteModal.count} Pesan Terpilih?`}
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed">
                 {bulkDeleteModal.mode === 'all'
                   ? `Tindakan ini akan menghapus permanen seluruh (${bulkDeleteModal.count}) riwayat pesan, prospek, dan log chat AI dari Cloud Database Firestore.`
-                  : bulkDeleteModal.mode === 'completed'
-                  ? `Tindakan ini akan menghapus (${bulkDeleteModal.count}) pesan yang sudah berstatus 'Selesai' secara permanen untuk merapikan daftar.`
                   : `Sebanyak ${bulkDeleteModal.count} pesan yang Anda centang akan dihapus permanen dari Cloud Database Firestore.`}
               </p>
             </div>
@@ -5203,6 +5508,80 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onBackToPublicWe
               >
                 <Trash2 className="w-4 h-4" />
                 <span>Ya, Hapus Sekarang</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {partnerBulkDeleteModal.isOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 space-y-5 shadow-2xl border border-rose-100">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="font-serif-luxury text-xl font-bold text-gray-900">
+                Hapus {partnerBulkDeleteModal.count} Permohonan Terpilih?
+              </h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                {partnerBulkDeleteModal.count} permohonan kemitraan yang dipilih akan dihapus dari daftar.
+              </p>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-[11px] text-amber-800 flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-600" />
+              <span>Data yang telah dihapus tidak dapat dipulihkan dari daftar admin.</span>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setPartnerBulkDeleteModal((prev) => ({ ...prev, isOpen: false }))}
+                className="flex-1 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs cursor-pointer transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmPartnerBulkDelete}
+                className="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs cursor-pointer transition-colors shadow-md flex items-center justify-center gap-1.5"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Ya, Hapus</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {jamaahBulkDeleteModal.isOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 space-y-5 shadow-2xl border border-rose-100">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div className="text-center space-y-2">
+              <h3 className="font-serif-luxury text-xl font-bold text-gray-900">
+                Hapus {jamaahBulkDeleteModal.ids.length} Jamaah Terpilih?
+              </h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Data yang dipilih akan dihapus dari Manifest. Untuk menyembunyikan data tanpa menghapusnya, gunakan fitur arsip.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setJamaahBulkDeleteModal({ isOpen: false, ids: [] })}
+                className="flex-1 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs cursor-pointer transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmJamaahBulkDelete}
+                className="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs cursor-pointer transition-colors shadow-md flex items-center justify-center gap-1.5"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Ya, Hapus</span>
               </button>
             </div>
           </div>

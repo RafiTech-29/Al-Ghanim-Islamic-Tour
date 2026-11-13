@@ -96,8 +96,8 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'USD $23.500'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)'
+      madinah: 'The Oberoi / Dar Al Taqwa ★5',
+      makkah: 'Fairmont / Raffles Palace ★5 (0m)'
     },
     cardTitle: 'Haji Furoda VVIP Tanpa Antre',
     durationPill: '22-25 Hari',
@@ -114,15 +114,15 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
     flyerTitle: 'HAJI KHUSUS PIHK KEMENAG RI',
     flyerDurationBadge: '26 HARI',
     flyerRouteText: 'Nomor Porsi Resmi SISKOPATUH Kemenag • Masa Tunggu Singkat 5-7 Tahun • Tenda AC Mina',
-    flyerFreePerks: ['Setoran Awal USD $4.500', 'Manasik Intensif Hotel Bintang 3/4', 'Dokter & Pembimbing Senior'],
+    flyerFreePerks: ['Setoran Awal USD $4.500', 'Manasik Intensif Hotel Bintang 5', 'Dokter & Pembimbing Senior'],
     pricing: {
       quad: 'USD $12.500',
       triple: 'USD $13.800',
       double: 'USD $15.500'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)'
+      madinah: 'Rove Madinah ★5 (100m)',
+      makkah: 'Swissotel Makkah ★5 (50m)'
     },
     cardTitle: 'Haji Khusus PIHK Resmi',
     durationPill: '26 Hari',
@@ -146,9 +146,9 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'Rp 53,9 Jt'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)',
-      extra: 'Hotel setaraf bintang 3/4'
+      madinah: 'Rove Madinah (★4/5 - 100m)',
+      makkah: 'Swissotel Makkah (★5 Pelataran)',
+      extra: 'Almaty Rahat Palace ★5'
     },
     cardTitle: 'Umroh Plus Kazakhstan',
     durationPill: '15 Hari',
@@ -172,8 +172,8 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'Rp 34,5 Jt'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)'
+      madinah: 'Grand Plaza / Dallah Taibah ★4/5',
+      makkah: 'Mather Al Eiman / Swissotel ★4/5'
     },
     cardTitle: 'Umroh Reguler Direct',
     durationPill: '9 Hari',
@@ -197,8 +197,8 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'Rp 47,5 Jt'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)'
+      madinah: 'Dar Al Eiman Royal ★5 (50m)',
+      makkah: 'Pullman Zamzam / Fairmont ★5 (50m)'
     },
     cardTitle: 'Umroh Premium Pelataran',
     durationPill: '10 Hari',
@@ -222,9 +222,9 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'Rp 45,5 Jt'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)',
-      extra: 'Hotel setaraf bintang 3/4'
+      madinah: 'Rove Madinah ★5 (100m)',
+      makkah: 'Swissotel Makkah ★5 (50m)',
+      extra: 'Cave Hotel Cappadocia ★5'
     },
     cardTitle: 'Umroh Plus Turki Cappadocia',
     durationPill: '15 Hari',
@@ -248,8 +248,8 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'Rp 38,5 Jt'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)'
+      madinah: 'Leader Al Muna Kareem ★5 (100m)',
+      makkah: 'Movenpick Hajar Tower ★5 (50m)'
     },
     cardTitle: 'Umroh Jum\'atain 12 Hari',
     durationPill: '12 Hari',
@@ -272,9 +272,9 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'Rp 42,5 Jt'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)',
-      extra: 'Hotel setaraf bintang 3/4'
+      madinah: 'Rove Madinah ★5 (100m)',
+      makkah: 'Swissotel Makkah ★5 (50m)',
+      extra: 'Grand Millennium Dubai ★5'
     },
     cardTitle: 'Umroh Plus Dubai & Thaif',
     durationPill: '12 Hari',
@@ -297,8 +297,8 @@ export const SLIDER_PACKAGES: SliderPackageItem[] = [
       double: 'Rp 52,9 Jt'
     },
     hotelInfo: {
-      madinah: 'Jawharat Al Rasheed (Bintang 3)',
-      makkah: 'Maysan Al - Maqom (Bintang 4)'
+      madinah: 'Dallah Taibah ★5 (100m)',
+      makkah: 'Swissotel / Pullman Zamzam ★5 (50m)'
     },
     cardTitle: 'Umroh Ramadhan I\'tikaf',
     durationPill: '16 Hari',
@@ -375,7 +375,7 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
             flyerImage: item.image || 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80',
             flyerTitle: item.title.toUpperCase(),
             flyerDurationBadge: (item.duration || '9 Hari').toUpperCase(),
-            flyerRouteText: item.description || 'Program Ibadah Sesuai Sunnah • Hotel Bintang 3/4',
+            flyerRouteText: item.description || 'Program Ibadah Sesuai Sunnah • Fasilitas Hotel Bintang 5',
             flyerFreePerks: (item.programHighlights && item.programHighlights.length > 0)
               ? item.programHighlights.slice(0, 4)
               : item.features && item.features.length > 0
@@ -387,8 +387,8 @@ export const PackagesSliderSection: React.FC<PackagesSliderSectionProps> = ({
               double: item.priceDouble || item.doublePrice || (item as any).pricing?.double || item.price
             },
             hotelInfo: {
-              madinah: item.hotelMadinah || 'Hotel Bintang 3/4',
-              makkah: item.hotelMakkah || 'Hotel Bintang 3/4 Dekat Masjid'
+              madinah: item.hotelMadinah || 'Hotel Bintang 4/5',
+              makkah: item.hotelMakkah || 'Hotel Bintang 5 Dekat Masjid'
             },
             cardTitle: item.title,
             durationPill: item.duration || '9 Hari',

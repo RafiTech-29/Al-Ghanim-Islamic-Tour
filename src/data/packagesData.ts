@@ -176,7 +176,7 @@ export const PACKAGES_DATA: PackageItem[] = [
     priceSuffix: 'Jt',
     features: [
       { icon: 'flight', text: 'Direct Flights (Saudia/Garuda)' },
-      { icon: 'hotel', text: 'Hotel Bintang 3/4 Dekat Masjid' },
+      { icon: 'hotel', text: 'Hotel Bintang 3/4/5 Dekat Masjid' },
       { icon: 'utensils', text: 'Full Board Makanan Khas Indonesia' },
       { icon: 'droplet', text: 'Free Air Zam-zam 5 Liter' }
     ],
@@ -660,7 +660,7 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     airlineLogoText: 'Oman Air',
     hotelMakkah: 'Maysan Al Maqam',
     hotelMadinah: 'ODST',
-    hotelDistanceMakkah: 'Hotel Bintang 3/4 (Dekat Masjid)',
+    hotelDistanceMakkah: 'Setaraf Bintang 4/5 (Dekat Pelataran)',
     price: 'Rp 27.900.000',
     originalPrice: 'Rp 31.900.000',
     discountedPrice: 'Rp 27.900.000',
@@ -807,8 +807,8 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     duration: '9 Hari (4 Hari Madinah, 5 Hari Makkah)',
     airline: 'Saudia Airlines (Direct CGK - MED / JED - CGK)',
     airlineLogoText: 'Saudia Direct',
-    hotelMakkah: 'Maysan Al - Maqom (Bintang 4)',
-    hotelMadinah: 'Jawharat Al Rasheed (Bintang 3)',
+    hotelMakkah: 'Swissotel Makkah / Pullman Zamzam (Bintang 5 - 50m)',
+    hotelMadinah: 'Rove Madinah / Grand Plaza (Bintang 4 - 150m)',
     hotelDistanceMakkah: '50 Meter (Pelataran Masjidil Haram)',
     price: 'Rp 28.900.000',
     totalSeats: 45,
@@ -816,7 +816,7 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     isFullBooked: false,
     features: [
       { icon: 'plane', text: 'Penerbangan Langsung Tanpa Transit' },
-      { icon: 'building-2', text: 'Hotel Bintang 3/4 Dekat Masjid' },
+      { icon: 'building-2', text: 'Hotel Bintang 5 Depan Pelataran' },
       { icon: 'train', text: 'Opsi Free Kereta Cepat Haramain' },
       { icon: 'utensils', text: 'Makan 3x Sehari Masakan Nusantara' }
     ],
@@ -840,8 +840,8 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     duration: '12 Hari (5 Hari Madinah, 7 Hari Makkah)',
     airline: 'Garuda Indonesia (Direct CGK - JED)',
     airlineLogoText: 'Garuda Indonesia Direct',
-    hotelMakkah: 'Maysan Al - Maqom (Bintang 4)',
-    hotelMadinah: 'Jawharat Al Rasheed (Bintang 3)',
+    hotelMakkah: 'Movenpick Hajar Tower / Safwah Royale (Bintang 5 - 50m)',
+    hotelMadinah: 'Dallah Taibah / Leader Al Muna Kareem (Bintang 5 - 100m)',
     hotelDistanceMakkah: '50 Meter (Pelataran Masjidil Haram)',
     price: 'Rp 34.500.000',
     totalSeats: 45,
@@ -850,7 +850,7 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     features: [
       { icon: 'plane', text: 'Garuda Indonesia Direct Flight' },
       { icon: 'clock', text: '2x Shalat Jum\'at (Makkah & Madinah)' },
-      { icon: 'shield-check', text: 'Hotel Bintang 3/4 Dekat Masjid' },
+      { icon: 'shield-check', text: 'Hotel Bintang 5 Front-Row' },
       { icon: 'users', text: 'Didampingi Muthawwif Senior Madinah' }
     ],
     description: 'Kesempatan istimewa merasakan dua kali Shalat Jum\'at di Masjid Nabawi dan Masjidil Haram dengan durasi lebih panjang.',
@@ -872,8 +872,8 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     duration: 'Bebas (7, 9, 10, 12, 14+ Hari)',
     airline: 'Saudia / Emirates / Qatar Airways (Business / First Class)',
     airlineLogoText: 'Business / First Class',
-    hotelMakkah: 'Hotel Bintang 3/4 sesuai program',
-    hotelMadinah: 'Hotel Bintang 3/4 sesuai program',
+    hotelMakkah: 'Raffles Makkah Palace / Fairmont Clock Tower Suite',
+    hotelMadinah: 'The Oberoi Madinah / Dar Al Taqwa (Depan Gerbang Wanita & Pria)',
     hotelDistanceMakkah: '0 Meter (Akses Lift Khusus ke Haram)',
     price: 'Mulai Rp 48.000.000',
     totalSeats: 12,
@@ -936,8 +936,8 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     duration: '12 - 14 Hari',
     airline: 'Turkish Airlines / Emirates / Saudia',
     airlineLogoText: 'Turkish / Emirates',
-    hotelMakkah: 'Maysan Al - Maqom (Bintang 4)',
-    hotelMadinah: 'Jawharat Al Rasheed (Bintang 3)',
+    hotelMakkah: 'Swissotel Makkah (Bintang 5)',
+    hotelMadinah: 'Dallah Taibah Madinah (Bintang 5)',
     hotelDistanceMakkah: '50 Meter',
     price: 'Rp 36.800.000',
     totalSeats: 40,
@@ -953,7 +953,7 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     programHighlights: [
       '3 Hari menjelajahi Istanbul: Hagia Sophia, Blue Mosque, Topkapi Palace',
       'Bosphorus Cruise menyaksikan dua benua Asia & Eropa',
-      'Ibadah Umroh 2x dengan hotel bintang 3/4 di Makkah & Madinah',
+      'Ibadah Umroh 2x dengan hotel bintang 5 di Makkah & Madinah',
       'Tiket masuk objek wisata dan makan halal terjamin'
     ]
   },
@@ -968,8 +968,8 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     duration: 'Pilihan Masa Nabung: 6, 12, 24, 36 Bulan',
     airline: 'Bebas Pilih Maskapai Saat Pelunasan',
     airlineLogoText: 'Bank Syariah Mitra',
-    hotelMakkah: 'Pilihan Bintang 3 / 4',
-    hotelMadinah: 'Pilihan Bintang 3 / 4',
+    hotelMakkah: 'Pilihan Bintang 3 / 4 / 5',
+    hotelMadinah: 'Pilihan Bintang 3 / 4 / 5',
     hotelDistanceMakkah: 'Dekat Masjidil Haram',
     price: 'Setoran Awal Rp 5.000.000',
     pricePrefix: 'Cicilan mulai',
@@ -1002,8 +1002,8 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     duration: '22 - 25 Hari',
     airline: 'Saudia Airlines (Direct CGK - JED)',
     airlineLogoText: 'Saudia Direct VVIP',
-    hotelMakkah: 'Hotel Bintang 3/4 sesuai program',
-    hotelMadinah: 'Hotel Bintang 3/4 sesuai program',
+    hotelMakkah: 'Raffles Makkah Palace / Fairmont Clock Tower (Bintang 5)',
+    hotelMadinah: 'The Oberoi Madinah / Dar Al Taqwa (Bintang 5)',
     hotelDistanceMakkah: 'Maktab 111/112 VIP Mina & Arafah',
     price: 'USD $19.500',
     totalSeats: 25,
@@ -1015,11 +1015,11 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
       { icon: 'star', text: 'Maktab VVIP Mina & Arafah Ber-AC & Kasur Springbed' },
       { icon: 'award', text: 'Bimbingan Asatidz Pembimbing Senior & Tim Medis' }
     ],
-    description: 'Ibadah Haji tanpa masa tunggu dengan Visa Haji Mujamalah resmi Kerajaan Arab Saudi, fasilitas Maktab VVIP terdekat dari Jamarat, serta akomodasi hotel bintang 3/4 sesuai program.',
+    description: 'Ibadah Haji tanpa masa tunggu dengan Visa Haji Mujamalah resmi Kerajaan Arab Saudi, fasilitas Maktab VVIP terdekat dari Jamarat, serta akomodasi hotel bintang 5.',
     programHighlights: [
       'Kepastian Visa Haji Furoda Resmi Terdaftar di E-Hajj Saudi',
       'Tenda AC VVIP Mina & Arafah dengan buffet katering masakan Indonesia',
-      'Akomodasi hotel bintang 3/4 di Makkah & Madinah',
+      'Hotel Suite Bintang 5 di Makkah & Madinah (0 Meter ke Masjid)',
       'Transportasi Bus VIP Eksekutif & Pendampingan Penuh dari Jakarta'
     ]
   },
@@ -1034,8 +1034,8 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     duration: '25 - 28 Hari',
     airline: 'Garuda Indonesia / Saudia Direct',
     airlineLogoText: 'Garuda / Saudia',
-    hotelMakkah: 'Hotel Bintang 3/4 sesuai program',
-    hotelMadinah: 'Hotel Bintang 3/4 sesuai program',
+    hotelMakkah: 'Swissotel Makkah / Pullman Zamzam (Bintang 5)',
+    hotelMadinah: 'Dallah Taibah / Rove Madinah (Bintang 5)',
     hotelDistanceMakkah: 'Tenda Maktab Khusus Ber-AC Mina',
     price: 'USD $12.500 (Setoran Awal $4.500)',
     totalSeats: 45,
@@ -1044,14 +1044,14 @@ export const DETAILED_SCHEDULES: PackageScheduleItem[] = [
     features: [
       { icon: 'file-text', text: 'Nomor Porsi Resmi SISKOPATUH Kemenag RI' },
       { icon: 'award', text: 'Penyelenggara Ibadah Haji Khusus (PIHK) Berizin' },
-      { icon: 'building', text: 'Hotel Bintang 3/4 Dekat Masjid' },
+      { icon: 'building', text: 'Hotel Bintang 5 Dekat Pelataran Masjid' },
       { icon: 'users', text: 'Manasik Intensif Teori & Praktik di Hotel Tanah Air' }
     ],
     description: 'Pendaftaran Haji Khusus resmi berkuota pemerintah dengan masa tunggu yang jauh lebih singkat dan fasilitas akomodasi premium.',
     programHighlights: [
       'Mendapatkan Bukti Setoran BPIH & Nomor Porsi Haji Resmi Kemenag',
       'Masa tunggu hanya 5-7 tahun (dibandingkan reguler 25-35 tahun)',
-      'Akomodasi Hotel Bintang 3/4 di Makkah & Madinah',
+      'Akomodasi Hotel Bintang 5 di Makkah & Madinah',
       'Bimbingan manasik komprehensif bersama asatidz berpengalaman'
     ]
   },
@@ -1319,8 +1319,8 @@ export const FAQ_DATA: FAQItem[] = [
   {
     category: 'paket',
     question: 'Hotel apa yang digunakan dan berapa jaraknya ke pelataran Masjid?',
-    answer: 'Al-Ghanim menggunakan hotel bintang 3 dan 4 di Makkah dan Madinah, seperti Maysan Al - Maqom dan Jawharat Al Rasheed atau hotel setaraf. Lokasi hotel dipilih agar dekat dengan masjid; nama dan jarak hotel mengikuti program keberangkatan.',
-    tags: ['hotel', 'makkah', 'madinah', 'jarak', 'bintang 3', 'bintang 4', 'pelataran']
+    answer: 'Untuk paket Reguler & VIP, Al-Ghanim menggunakan Hotel Bintang 4 & Bintang 5 terpilih seperti Swissotel Makkah, Pullman Zamzam, Movenpick Hajar Tower, Fairmont, Rove Madinah, Dallah Taibah, dan Leader Al Muna Kareem. Jarak hotel berkisar 0 s/d 50 meter langsung di depan pelataran Masjidil Haram dan Masjid Nabawi (front-row).',
+    tags: ['hotel', 'makkah', 'madinah', 'jarak', 'bintang 5', 'pelataran', 'swissotel', 'pullman', 'fairmont']
   },
   {
     category: 'paket',
@@ -1640,8 +1640,8 @@ export const INITIAL_JAMAAH_DATA: JamaahProgressItem[] = [
     duration: '9 Hari / 7 Malam',
     airline: 'Saudia Airlines (Direct)',
     flightNumber: 'Direct CGK - JED',
-    hotelMakkah: 'Maysan Al - Maqom (Bintang 4)',
-    hotelMadinah: 'Jawharat Al Rasheed (Bintang 3)',
+    hotelMakkah: 'Swissotel Al Maqam Makkah (Bintang 5)',
+    hotelMadinah: 'Dallah Taibah Madinah (Bintang 4)',
     paymentStatus: 'DP Terbayar',
     dpAmount: 'Rp 10.000.000',
     totalAmount: 'Rp 31.500.000',
@@ -1684,9 +1684,9 @@ export const INITIAL_JAMAAH_DATA: JamaahProgressItem[] = [
     ticketNumber: 'GA/126-88022026',
     seatNumber: 'Seat 18A / 18B',
     airportMeetingTime: '06:00 WIB (Terminal 3 Bandara CGK)',
-    hotelMakkah: 'Maysan Al - Maqom (Bintang 4)',
+    hotelMakkah: 'Pullman Zamzam Makkah (Bintang 5)',
     hotelMakkahDistance: 'Pelataran Langsung Masjidil Haram',
-    hotelMadinah: 'Jawharat Al Rasheed (Bintang 3)',
+    hotelMadinah: 'Rove Hotel Madinah (Bintang 5)',
     hotelMadinahDistance: '70m ke Pelataran Masjid Nabawi',
     roomType: 'DOUBLE (Ber-2)',
     roomMakkahNumber: '2108',
@@ -1724,7 +1724,7 @@ export const INITIAL_JAMAAH_DATA: JamaahProgressItem[] = [
     ticketNumber: 'EK/SV-88032026',
     seatNumber: 'Group Allotment',
     airportMeetingTime: '14:00 WIB (Terminal 3 Bandara CGK)',
-    hotelMakkah: 'Maysan Al - Maqom (Bintang 4)',
+    hotelMakkah: 'Movenpick Hotel Hajar Tower Makkah (Bintang 5)',
     hotelMakkahDistance: 'Pelataran Menara Jam Makkah',
     hotelMadinah: 'Nozol Royal Inn Madinah (Bintang 4)',
     hotelMadinahDistance: '100m ke Masjid Nabawi',
@@ -1793,7 +1793,7 @@ export const INITIAL_PARTNER_REGISTRATIONS: PartnerRegistrationItem[] = [
     address: 'Jl. Otista No. 112, Tarogong Kaler, Garut',
     binaanJamaah: [
       { id: 'bin-c1', name: 'Rombongan KBIH Al-Falah (20 Pax)', registeredDate: '10 Jan 2026', packageName: 'Umroh Akbar Syawal', status: 'Lunas', commissionAmount: 'Rp 40.000.000' },
-      { id: 'bin-c2', name: 'Keluarga Bpk. H. Mahmudin (6 Pax)', registeredDate: '18 Jan 2026', packageName: 'Umroh VIP', status: 'Lunas', commissionAmount: 'Rp 15.000.000' },
+      { id: 'bin-c2', name: 'Keluarga Bpk. H. Mahmudin (6 Pax)', registeredDate: '18 Jan 2026', packageName: 'Umroh VIP Bintang 5', status: 'Lunas', commissionAmount: 'Rp 15.000.000' },
       { id: 'bin-c3', name: 'Ibu Hj. Mariam & Rombongan (8 Pax)', registeredDate: '02 Feb 2026', packageName: 'Umroh Ramadhan', status: 'Proses Visa', commissionAmount: 'Rp 20.000.000' }
     ]
   },
@@ -1876,3 +1876,6 @@ export const INITIAL_PROMO_BANNERS = [
     posterSizeFormat: 'banner-horizontal' as const
   }
 ];
+
+
+

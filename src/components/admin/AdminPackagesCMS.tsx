@@ -1411,7 +1411,7 @@ export const AdminPackagesCMS: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      placeholder="Contoh: Maysan Al - Maqom (Bintang 4)"
+                      placeholder="Contoh: Swissotel Al Maqam Makkah ★5"
                       value={formData.hotelMakkah}
                       onChange={(e) => setFormData({ ...formData, hotelMakkah: e.target.value })}
                       className="w-full bg-[#F9F9F9] border border-gray-200 focus:border-[#A67C52] rounded-xl px-4 py-2.5 text-xs text-[#1A1A1A] outline-none"

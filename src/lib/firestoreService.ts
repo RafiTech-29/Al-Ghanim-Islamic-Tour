@@ -10,7 +10,8 @@ import {
   serverTimestamp,
   getDocs,
   setDoc,
-  deleteField
+  deleteField,
+  runTransaction
 } from 'firebase/firestore';
 import { db, auth } from './firebase';
 import { JamaahProgressItem, InquiryItem, PartnerRegistrationItem, PackageScheduleItem, PromoBannerItem, GalleryPhotoItem, TestimonialItem } from '../types';
@@ -402,6 +403,63 @@ export async function addJamaahToFirestore(jamaah: Omit<JamaahProgressItem, 'id'
   }
 }
 
+export async function convertInquiryToJamaahInFirestore(
+  inquiryId: string,
+  jamaah: Omit<JamaahProgressItem, 'id'>
+): Promise<string> {
+  try {
+    if (!/^\d{16}$/.test(jamaah.ktp.trim())) {
+      throw new Error('A valid 16-digit NIK is required to convert an inquiry to the manifest.');
+    }
+
+    const inquiryRef = doc(db, INQUIRIES_COLLECTION, inquiryId);
+    const jamaahRef = doc(db, JAMAAH_COLLECTION, `lead-${inquiryId}`);
+    const now = new Date();
+
+    await runTransaction(db, async (transaction) => {
+      const [inquirySnapshot, jamaahSnapshot] = await Promise.all([
+        transaction.get(inquiryRef),
+        transaction.get(jamaahRef)
+      ]);
+
+      if (!inquirySnapshot.exists()) {
+        throw new Error(`Inquiry ${inquiryId} was not found.`);
+      }
+
+      if (jamaahSnapshot.exists() && jamaahSnapshot.data().sourceInquiryId !== inquiryId) {
+        throw new Error(`Manifest document for inquiry ${inquiryId} is already in use.`);
+      }
+
+      if (!jamaahSnapshot.exists()) {
+        transaction.set(jamaahRef, sanitizeFirestorePayload({
+          ...jamaah,
+          sourceInquiryId: inquiryId,
+          createdAt: serverTimestamp(),
+          createdTimestamp: now.getTime(),
+          createdAtFormatted: now.toLocaleString('id-ID', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        }));
+      }
+
+      transaction.set(inquiryRef, {
+        status: 'Selesai',
+        convertedToJamaahId: jamaahRef.id,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    });
+
+    return jamaahRef.id;
+  } catch (error) {
+    console.error('Error converting inquiry to jamaah in Firestore:', error);
+    throw error;
+  }
+}
+
 export async function updateJamaahInFirestore(id: string, updates: Partial<JamaahProgressItem>) {
   try {
     const docRef = doc(db, JAMAAH_COLLECTION, id);
@@ -427,6 +485,20 @@ export async function deleteJamaahFromFirestore(id: string) {
     }, { merge: true });
   } catch (error) {
     console.error('Error soft-deleting jamaah from Firestore:', error);
+    throw error;
+  }
+}
+
+export async function setJamaahArchivedInFirestore(id: string, isArchived: boolean) {
+  try {
+    const docRef = doc(db, JAMAAH_COLLECTION, id);
+    await setDoc(docRef, {
+      isArchived,
+      archivedAt: isArchived ? serverTimestamp() : deleteField(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error('Error updating jamaah archive status:', error);
     throw error;
   }
 }
@@ -683,6 +755,35 @@ export async function deletePartnerFromFirestore(id: string) {
     }, { merge: true });
   } catch (error) {
     console.error('Error soft-deleting partner from Firestore:', error);
+    throw error;
+  }
+}
+
+export async function deleteMultiplePartnersFromFirestore(ids: string[]) {
+  try {
+    await Promise.all(ids.map(async (id) => {
+      const docRef = doc(db, PARTNERS_COLLECTION, id);
+      await setDoc(docRef, {
+        isDeleted: true,
+        deletedAt: serverTimestamp()
+      }, { merge: true });
+    }));
+  } catch (error) {
+    console.error('Error batch soft-deleting partner registrations from Firestore:', error);
+    throw error;
+  }
+}
+
+export async function setPartnerArchivedInFirestore(id: string, isArchived: boolean) {
+  try {
+    const docRef = doc(db, PARTNERS_COLLECTION, id);
+    await setDoc(docRef, {
+      isArchived,
+      archivedAt: isArchived ? serverTimestamp() : deleteField(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error('Error updating partner archive status:', error);
     throw error;
   }
 }
@@ -1073,5 +1174,3 @@ export async function deleteTestimonialFromFirestore(id: string) {
     throw error;
   }
 }
-
-
